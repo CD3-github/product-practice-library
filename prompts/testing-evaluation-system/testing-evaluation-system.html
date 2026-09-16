@@ -1,0 +1,353 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width,initial-scale=1">
+  <meta name="robots" content="noindex,nofollow,noarchive,nosnippet,noimageindex">
+  <title>Testing & Evaluation System · Product Practice Library</title>
+  <script>document.documentElement.dataset.theme = localStorage.getItem('ppl-theme') || (matchMedia('(prefers-color-scheme: dark)').matches ? 'dark' : 'light');</script>
+  <style>
+    :root {
+      color-scheme: light;
+      --paper: light-dark(#fbfbfa, #17181b);
+      --paper-2: light-dark(#f2f2ef, #202126);
+      --glass: light-dark(#f7f7f4, #1c1d21);
+      --ink: light-dark(#1b1c1a, #f1f1ed);
+      --muted: light-dark(#686b66, #a9aba5);
+      --line: light-dark(#deded8, #34363c);
+      --line-strong: light-dark(#bfc0b9, #555861);
+      --orientation: light-dark(#575077, #c5bfdf);
+      --orientation-soft: light-dark(#eceaf2, #343142);
+      --attention: light-dark(#456219, #d4ed96);
+      --attention-soft: light-dark(#eef3e4, #303829);
+      --attention-edge: light-dark(#a5be70, #9ebd62);
+      --comparison: light-dark(#eceef4, #333645);
+      --danger: light-dark(#8b4a3e, #e1a29a);
+      --sans: "Avenir Next", "Avenir", Inter, ui-sans-serif, -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
+      --max: 1600px;
+      --header: 76px;
+    }
+    :root[data-theme="dark"] { color-scheme: dark; }
+    * { box-sizing: border-box; }
+    html { scroll-behavior: smooth; scroll-padding-top: 100px; }
+    body { margin: 0; color: var(--ink); background: var(--paper); font-family: var(--sans); font-size: 14px; line-height: 1.8; -webkit-font-smoothing: antialiased; }
+    a { color: inherit; }
+    button { font: inherit; color: inherit; }
+    h1, h2, h3, h4, p { margin-top: 0; }
+    h1, h2, h3, h4 { line-height: 1.24; }
+    .site-header { position: sticky; top: 0; z-index: 50; border-bottom: 1px solid var(--line); background: color-mix(in srgb, var(--paper) 92%, transparent); backdrop-filter: blur(16px); }
+    .nav-shell { width: 100%; max-width: var(--max); min-height: var(--header); margin: auto; padding: 14px 32px; display: flex; align-items: center; gap: 26px; }
+    .wordmark { color: var(--ink); text-decoration: none; white-space: nowrap; font-size: 15px; font-weight: 600; letter-spacing: -.02em; }
+    .library-nav { margin-left: auto; display: flex; align-items: center; gap: 20px; color: var(--muted); font-size: 12px; }
+    .library-nav span { white-space: nowrap; }
+    .library-nav .active { color: var(--attention); font-weight: 600; border-bottom: 2px solid var(--attention-edge); padding-bottom: 5px; }
+    .header-actions { display: flex; align-items: center; gap: 7px; padding-left: 2px; }
+    .header-action { min-width: 42px; min-height: 34px; padding: 6px 10px; border: 1px solid var(--line); border-radius: 7px; background: var(--paper-2); color: var(--muted); cursor: pointer; font-size: 11px; font-weight: 600; line-height: 1; text-decoration: none; display: inline-grid; place-items: center; }
+    .header-action:hover { color: var(--ink); border-color: var(--line-strong); }
+    .source-link { min-width: 58px; }
+    .page-shell { width: 100%; max-width: var(--max); margin: auto; display: grid; grid-template-columns: 220px minmax(0,1fr); }
+    .toc { position: sticky; top: var(--header); align-self: start; height: calc(100dvh - var(--header)); padding: 40px 24px 28px; overflow-y: auto; border-right: 1px solid var(--line); }
+    .toc-label, .kicker, .eyebrow { color: var(--orientation); font-size: 11px; font-weight: 600; letter-spacing: .09em; text-transform: uppercase; }
+    .toc-label { margin-bottom: 14px; color: var(--muted); }
+    .toc a { display: block; margin: 3px 0; padding: 9px 11px; color: var(--muted); text-decoration: none; font-size: 12px; line-height: 1.45; border-radius: 8px; }
+    .toc a:hover { color: var(--ink); background: var(--paper-2); }
+    .toc a.active { color: var(--attention); background: var(--attention-soft); box-shadow: inset 2px 0 var(--attention-edge); }
+    .content { min-width: 0; padding: 0 clamp(28px,4vw,72px) 100px; }
+    .hero { padding: 58px 0 44px; border-bottom: 1px solid var(--line); }
+    .hero h1 { max-width: 960px; margin: 14px 0 0; font-size: clamp(44px,6vw,80px); font-weight: 600; letter-spacing: -.055em; }
+    .hero-deck { max-width: 830px; margin: 22px 0 0; color: var(--muted); font-size: clamp(18px,2vw,25px); line-height: 1.55; }
+    .hero-meta { display: flex; flex-wrap: wrap; gap: 8px; margin-top: 26px; }
+    .meta-chip { padding: 4px 8px; border: 1px solid var(--line); border-radius: 5px; color: var(--muted); background: var(--paper-2); font-size: 11px; line-height: 1.5; }
+    .scope-thesis { margin-top: 30px; padding: 20px 22px; border: 1px solid var(--line); border-left: 3px solid var(--attention-edge); border-radius: 10px; background: var(--glass); font-size: 18px; line-height: 1.65; }
+    .section { padding: 52px 0 0; scroll-margin-top: 110px; }
+    .section-head { margin-bottom: 26px; }
+    .section h2 { margin: 8px 0 0; font-size: clamp(28px,3.6vw,46px); font-weight: 600; letter-spacing: -.035em; }
+    .section-intro { max-width: 760px; margin: 13px 0 0; color: var(--muted); font-size: 15px; }
+    .note { margin: 22px 0 0; padding: 17px 20px; border: 1px solid var(--line); border-radius: 10px; background: var(--paper-2); color: var(--muted); font-size: 13px; }
+    .context-table { width: 100%; border-collapse: collapse; }
+    .context-table th, .context-table td { padding: 12px 10px; border-bottom: 1px solid var(--line); text-align: left; vertical-align: top; font-size: 12px; }
+    .context-table th { color: var(--muted); font-size: 10px; text-transform: uppercase; letter-spacing: .06em; }
+    .context-table tr:last-child td { border-bottom: 0; }
+    .context-table td:first-child { width: 20%; color: var(--ink); font-weight: 600; }
+    .selection-grid { border-top: 1px solid var(--line); }
+    .selection-row { display: grid; grid-template-columns: 180px 1.1fr 1.5fr 1fr; gap: 24px; padding: 24px 0; border-bottom: 1px solid var(--line); align-items: start; }
+    .selection-row > div { min-width: 0; }
+    .selection-row .mechanism { color: var(--orientation); font-size: 10px; font-weight: 600; text-transform: uppercase; letter-spacing: .06em; }
+    .selection-row h3 { margin: 7px 0 0; font-size: 20px; }
+    .selection-row b { display: block; margin-bottom: 5px; font-size: 12px; }
+    .selection-row p { margin: 0; color: var(--muted); font-size: 12px; }
+    .selection-flow { color: var(--ink) !important; font-family: ui-monospace,SFMono-Regular,Menlo,monospace; font-size: 11px !important; line-height: 1.7; }
+    .mix-list { margin: 0; padding-left: 20px; }
+    .mix-list li { margin: 8px 0; }
+    .perspective-grid { display: grid; grid-template-columns: repeat(3,minmax(0,1fr)); gap: 26px; }
+    .perspective { padding-top: 16px; border-top: 2px solid var(--line); }
+    .perspective:nth-child(1) { border-color: var(--orientation); }
+    .perspective:nth-child(2) { border-color: var(--attention-edge); }
+    .perspective:nth-child(3) { border-color: var(--danger); }
+    .perspective h3 { margin: 0 0 9px; font-size: 19px; }
+    .perspective ul { margin: 0; padding-left: 18px; color: var(--muted); font-size: 12px; }
+    .perspective li { margin: 6px 0; }
+    .collaboration-flow { display: grid; grid-template-columns: repeat(5,minmax(0,1fr)); gap: 8px; margin-top: 30px; }
+    .collaboration-step { min-height: 112px; padding: 15px; border: 1px solid var(--line); background: var(--paper-2); position: relative; }
+    .collaboration-step:not(:last-child)::after { content: "→"; position: absolute; right: -9px; top: 42%; z-index: 2; color: var(--muted); }
+    .collaboration-step b { display: block; margin-bottom: 6px; font-size: 12px; }
+    .collaboration-step span { color: var(--muted); font-size: 11px; }
+    .triage-line { margin-top: 12px; padding: 14px 16px; border-left: 3px solid var(--attention-edge); background: var(--attention-soft); color: var(--muted); font-size: 12px; }
+    .triage-line strong { color: var(--ink); }
+    .question-grid { display: grid; grid-template-columns: repeat(4,minmax(0,1fr)); gap: 24px; }
+    .question-grid article { padding-top: 17px; border-top: 2px solid var(--line); }
+    .question-grid article:nth-child(2) { border-color: var(--orientation); }
+    .question-grid article:nth-child(3) { border-color: var(--attention-edge); }
+    .question-grid article:nth-child(4) { border-color: var(--danger); }
+    .question-grid span { color: var(--orientation); font-size: 10px; font-weight: 600; text-transform: uppercase; letter-spacing: .06em; }
+    .question-grid h3 { margin: 12px 0 7px; font-size: 18px; }
+    .question-grid p { margin: 0; color: var(--muted); font-size: 12px; }
+    .question-grid code { display: block; margin-top: 14px; color: var(--attention); font-size: 11px; font-family: ui-monospace,SFMono-Regular,Menlo,monospace; }
+    .evidence-map { display: grid; grid-template-columns: repeat(2,minmax(0,1fr)); gap: 12px; }
+    .evidence-node { min-height: 152px; padding: 20px; border: 1px solid var(--line); border-radius: 8px; background: var(--glass); }
+    .evidence-node.measure { border-top: 3px solid var(--orientation); }
+    .evidence-node.compare { border-top: 3px solid var(--attention-edge); }
+    .evidence-node.observe { border-top: 3px solid var(--danger); }
+    .evidence-node span { color: var(--orientation); font-size: 10px; font-weight: 600; text-transform: uppercase; letter-spacing: .06em; }
+    .evidence-node h3 { margin: 12px 0 7px; font-size: 20px; }
+    .evidence-node p { margin: 0; color: var(--muted); font-size: 12px; }
+    .cross-cut { grid-column: 1/-1; padding: 15px 18px; border: 1px dashed var(--line-strong); color: var(--muted); font-size: 12px; }
+    .cross-cut strong { color: var(--ink); }
+    .relationship-note { margin-top: 18px; display: grid; grid-template-columns: 1fr auto 1fr auto 1fr; align-items: center; gap: 10px; color: var(--muted); font-size: 11px; text-align: center; }
+    .relationship-note b { min-height: 52px; display: grid; place-items: center; padding: 10px; border: 1px solid var(--line); background: var(--paper-2); color: var(--ink); font-size: 12px; }
+    .system-loop { display: grid; grid-template-columns: 150px minmax(0,1fr); border: 1px solid var(--line); border-radius: 8px; overflow: hidden; }
+    .loop-label, .loop-body { padding: 18px 20px; border-bottom: 1px solid var(--line); }
+    .loop-label { color: var(--orientation); background: var(--comparison); font-size: 11px; font-weight: 600; text-transform: uppercase; letter-spacing: .06em; }
+    .loop-body { display: grid; grid-template-columns: repeat(2,minmax(0,1fr)); gap: 18px; }
+    .loop-body.single { grid-template-columns: 1fr; }
+    .loop-label:last-of-type, .loop-body:last-child { border-bottom: 0; }
+    .loop-part b { display: block; margin-bottom: 4px; font-size: 13px; }
+    .loop-part span { color: var(--muted); font-size: 11px; }
+    .feedback-loop { padding: 14px 18px; border: 1px solid var(--attention-edge); border-top: 0; background: var(--attention-soft); color: var(--attention); font-size: 12px; font-weight: 600; text-align: center; }
+    .baseline-flow { display: grid; grid-template-columns: repeat(5,minmax(0,1fr)); gap: 8px; margin-bottom: 24px; }
+    .baseline-flow div { min-height: 92px; padding: 14px; border-top: 2px solid var(--line); background: var(--paper-2); position: relative; }
+    .baseline-flow div:not(:last-child)::after { content: "→"; position: absolute; right: -9px; top: 38%; z-index: 2; color: var(--muted); }
+    .baseline-flow b { display: block; margin-bottom: 5px; font-size: 12px; }
+    .baseline-flow span { color: var(--muted); font-size: 11px; }
+    .production-loop { display: grid; grid-template-columns: 1fr auto 1fr; gap: 18px; align-items: stretch; }
+    .production-side { padding: 20px; border-top: 2px solid var(--orientation); background: var(--paper-2); }
+    .production-side:last-child { border-color: var(--attention-edge); }
+    .production-side h3 { margin: 0 0 8px; font-size: 18px; }
+    .production-side p { margin: 0; color: var(--muted); font-size: 12px; }
+    .production-arrow { align-self: center; color: var(--muted); font-size: 20px; }
+    .pipeline { display: flex; align-items: stretch; gap: 8px; margin-top: 24px; }
+    .stage { flex: 1; min-width: 0; padding: 16px; border: 1px solid var(--line); border-radius: 8px; background: var(--paper-2); position: relative; }
+    .stage:not(:last-child)::after { content: "→"; position: absolute; right: -9px; top: 42%; z-index: 2; color: var(--muted); }
+    .stage b { display: block; font-size: 12px; }
+    .stage span { display: block; margin-top: 5px; color: var(--muted); font-size: 11px; }
+    .stage code { display: block; margin-top: 11px; color: var(--orientation); font-size: 10px; }
+    .eval-anatomy { display: grid; grid-template-columns: repeat(4,minmax(0,1fr)); gap: 24px; }
+    .eval-anatomy article { padding-top: 16px; border-top: 1px solid var(--line); }
+    .eval-anatomy span { color: var(--orientation); font-size: 10px; font-weight: 600; text-transform: uppercase; letter-spacing: .06em; }
+    .eval-anatomy h3 { margin: 11px 0 7px; font-size: 17px; }
+    .eval-anatomy p { margin: 0; color: var(--muted); font-size: 12px; }
+    .baseline { display: grid; grid-template-columns: repeat(3,minmax(0,1fr)); border: 1px solid var(--line); border-radius: 8px; overflow: hidden; }
+    .baseline article { min-height: 228px; padding: 22px; border-right: 1px solid var(--line); background: var(--glass); }
+    .baseline article:last-child { border-right: 0; }
+    .baseline .hard { background: var(--orientation-soft); }
+    .baseline .product { background: var(--attention-soft); }
+    .baseline span { color: var(--muted); font-size: 10px; text-transform: uppercase; letter-spacing: .06em; }
+    .baseline h3 { margin: 34px 0 8px; font-size: 23px; }
+    .baseline p { color: var(--muted); font-size: 12px; }
+    .baseline ul { margin: 15px 0 0; padding-left: 18px; font-size: 12px; }
+    .release-gate { display: grid; grid-template-columns: 180px repeat(4,1fr); margin-top: 13px; border: 1px solid var(--line); border-radius: 8px; overflow: hidden; }
+    .release-gate strong, .release-gate span { padding: 15px; border-right: 1px solid var(--line); }
+    .release-gate span:last-child { border-right: 0; }
+    .release-gate strong { background: var(--attention-soft); color: var(--attention); }
+    .release-gate span { color: var(--muted); font-size: 11px; }
+    .build-sequence { display: grid; grid-template-columns: repeat(4,minmax(0,1fr)); gap: 0 30px; counter-reset: phase; }
+    .phase { counter-increment: phase; min-height: 190px; padding: 18px 0 22px 18px; border-left: 1px solid var(--line); }
+    .phase::before { content: "0" counter(phase); color: var(--orientation); font-size: 10px; font-weight: 600; }
+    .phase h3 { margin: 38px 0 7px; font-size: 16px; }
+    .phase p { margin: 0; color: var(--muted); font-size: 12px; }
+    .phase b { display: block; margin-top: 12px; font-size: 11px; }
+    .share-table { width: 100%; border-collapse: collapse; border: 1px solid var(--line); border-radius: 8px; overflow: hidden; }
+    .share-table th, .share-table td { padding: 14px 15px; border-bottom: 1px solid var(--line); text-align: left; vertical-align: top; font-size: 12px; }
+    .share-table th { color: var(--muted); background: var(--comparison); font-size: 10px; text-transform: uppercase; letter-spacing: .06em; }
+    .share-table tr:last-child td { border-bottom: 0; }
+    .share-table td:first-child { font-weight: 600; }
+    .share-table code { color: var(--orientation); font-size: 11px; }
+    .package-chain { display: flex; align-items: center; justify-content: space-between; gap: 10px; margin-top: 20px; padding: 17px 19px; border: 1px solid var(--line); border-radius: 8px; background: var(--paper-2); }
+    .package-chain b { font-size: 12px; }
+    .package-chain i { color: var(--muted); font-style: normal; }
+    details { margin-top: 22px; border-top: 1px solid var(--line); border-bottom: 1px solid var(--line); }
+    summary { padding: 18px 44px 18px 10px; cursor: pointer; position: relative; font-size: 14px; font-weight: 600; }
+    summary::after { content: "+"; position: absolute; right: 12px; top: 12px; color: var(--orientation); font-size: 22px; font-weight: 400; }
+    details[open] { background: var(--glass); border-left: 2px solid var(--orientation); }
+    details[open] summary::after { transform: rotate(45deg); }
+    .details-body { padding: 0 20px 22px; color: var(--muted); }
+    .details-body ul { margin-bottom: 0; }
+    .footer { margin-top: 60px; padding: 26px 0 10px; border-top: 1px solid var(--line); display: flex; justify-content: space-between; gap: 24px; color: var(--muted); font-size: 11px; }
+    .footer strong { color: var(--ink); }
+    @media (max-width: 1180px) {
+      .question-grid, .eval-anatomy, .build-sequence { grid-template-columns: repeat(2,minmax(0,1fr)); }
+      .selection-row { grid-template-columns: 150px 1fr 1.4fr; }
+      .selection-row > div:last-child { grid-column: 2/-1; }
+    }
+    @media (max-width: 900px) {
+      .page-shell { display: block; }
+      .toc { position: static; width: auto; height: auto; padding: 20px 24px; border-right: 0; border-bottom: 1px solid var(--line); }
+      .toc a { display: inline-block; }
+      .pipeline { display: grid; grid-template-columns: repeat(3,1fr); }
+      .library-nav span:not(.active) { display: none; }
+      .collaboration-flow, .baseline-flow { grid-template-columns: repeat(3,1fr); }
+      .collaboration-step:nth-child(3)::after, .baseline-flow div:nth-child(3)::after { display: none; }
+      .stage:nth-child(3)::after { display: none; }
+      .release-gate { grid-template-columns: 1fr 1fr; }
+      .release-gate strong { grid-column: 1/-1; }
+    }
+    @media (max-width: 680px) {
+      .nav-shell { padding: 12px 20px; }
+      .nav-shell { gap: 10px; }
+      .library-nav { gap: 8px; }
+      .library-nav .active { display: none; }
+      .source-link { display: none; }
+      .content { padding: 0 24px 70px; }
+      .hero { padding: 40px 0 32px; }
+      .hero h1 { font-size: 40px; }
+      .hero-deck { font-size: 17px; }
+      .section { padding-top: 40px; }
+      .question-grid, .eval-anatomy, .baseline, .build-sequence, .evidence-map { grid-template-columns: 1fr; }
+      .selection-row, .perspective-grid, .collaboration-flow, .baseline-flow, .production-loop { grid-template-columns: 1fr; }
+      .selection-row > div:last-child { grid-column: auto; }
+      .collaboration-step:not(:last-child)::after, .baseline-flow div:not(:last-child)::after { content: "↓"; right: 50%; top: auto; bottom: -17px; }
+      .production-arrow { text-align: center; transform: rotate(90deg); }
+      .baseline article { border-right: 0; border-bottom: 1px solid var(--line); }
+      .baseline article:last-child { border-bottom: 0; }
+      .package-chain { flex-direction: column; align-items: stretch; }
+      .relationship-note { grid-template-columns: 1fr; }
+      .relationship-note i { transform: rotate(90deg); }
+      .system-loop { grid-template-columns: 1fr; }
+      .loop-label { border-bottom: 0; }
+      .loop-body { grid-template-columns: 1fr; }
+      .pipeline { grid-template-columns: 1fr 1fr; }
+      .stage:nth-child(2n)::after { display: none; }
+      .stage:nth-child(3)::after { display: block; }
+      .release-gate { grid-template-columns: 1fr; }
+      .release-gate strong { grid-column: auto; }
+      .release-gate strong, .release-gate span { border-right: 0; border-bottom: 1px solid var(--line); }
+      .release-gate span:last-child { border-bottom: 0; }
+      .share-table { display: block; overflow-x: auto; white-space: normal; }
+      .footer { flex-direction: column; }
+    }
+  </style>
+</head>
+<body>
+  <header class="site-header"><div class="nav-shell"><a class="wordmark" href="#top">Product Practice Library</a><nav class="library-nav" aria-label="Library sections"><span>Product Research</span><span>Product Framing</span><span>UX Rethinking</span><span class="active">Testing &amp; Eval</span><span>Delivery &amp; Learning</span></nav><div class="header-actions"><a class="header-action source-link" href="https://github.com/CD3-github/product-practice-library" target="_blank" rel="noreferrer">GitHub</a><button class="header-action" id="language-toggle" type="button" aria-label="切换到简体中文">简中</button><button class="header-action" id="theme-toggle" type="button" aria-label="Switch to dark mode">Dark</button></div></div></header>
+  <div class="page-shell" id="top">
+    <aside class="toc" aria-label="On this page"><div class="toc-label">Testing &amp; Eval</div><a href="#choose">Choose evidence</a><a href="#collaboration">Human + agent</a><a href="#system">System anatomy</a><a href="#matrix">Eval matrix</a><a href="#baseline">Benchmark design</a><a href="#production">Production loop</a><a href="#sequence">Build sequence</a><a href="#share">What to share</a></aside>
+    <main class="content">
+      <section class="hero"><div class="eyebrow">Evidence to decision</div><h1>Testing &amp; Evaluation System</h1><p class="hero-deck">Choose the evidence that matches the decision, automate the analysis, and send people only the judgments that require them.</p><div class="hero-meta"><span class="meta-chip">Deterministic + probabilistic</span><span class="meta-chip">Stage + E2E</span><span class="meta-chip">Offline + online</span></div><div class="scope-thesis"><strong>Every feature needs an evidence strategy.</strong> Tests, evals, benchmarks, production monitoring, experiments, and human review can be combined in different proportions.</div></section>
+
+      <section class="section" id="choose"><div class="kicker">Choose evidence</div><div class="section-head"><h2>Start with the decision you need to make</h2><p class="section-intro">Select the smallest trustworthy combination. Set the unit where uncertainty exists: function, stage, output, task, session, workflow, feature, release, or cohort.</p></div><div class="selection-grid"><article class="selection-row"><div><span class="mechanism">Deterministic tests</span><h3>Does behavior meet explicit contracts?</h3></div><div><b>Use for</b><p>Schema, state, calculation, permission, side effect, recovery, and exact performance limits.</p></div><div><b>How it works</b><p class="selection-flow">known input → exact assertion → localized pass / fail</p></div><div><b>Decision output</b><p>Correctness gate and first failing boundary.</p></div></article><article class="selection-row"><div><span class="mechanism">Evals</span><h3>How well does the system perform?</h3></div><div><b>Use for</b><p>Quality, usefulness, grounding, task success, safety, cost, latency, reliability, or any defined criterion.</p></div><div><b>How it works</b><p class="selection-flow">cases × criteria → code + heuristic + model + human graders → scorecard</p></div><div><b>Decision output</b><p>Strengths, weaknesses, uncertainty, and thresholds.</p></div></article><article class="selection-row"><div><span class="mechanism">Benchmark</span><h3>Which alternative performs better?</h3></div><div><b>Use for</b><p>Versions, models, prompts, workflows, products, or the user's current alternative.</p></div><div><b>How it works</b><p class="selection-flow">baseline research → fair arms → shared tests + evals + operating measures → delta</p></div><div><b>Decision output</b><p>Comparative value and trade-offs.</p></div></article><article class="selection-row"><div><span class="mechanism">Production monitoring + online evals</span><h3>What happens with real use?</h3></div><div><b>Use for</b><p>Live quality, drift, incidents, acceptance, edits, adoption, and unexpected behavior. Add experiments for causal impact.</p></div><div><b>How it works</b><p class="selection-flow">production traces → sampled metrics / graders / feedback → alerts + new cases</p></div><div><b>Decision output</b><p>Operational response, iteration, or experimentally supported impact.</p></div></article></div><details><summary>How to combine tests and evals without forcing a false choice</summary><div class="details-body"><ul class="mix-list"><li><strong>Test-heavy:</strong> deterministic product behavior with exact contracts and limited judgment.</li><li><strong>Eval-led:</strong> open-ended AI behavior measured by a mix of exact metrics, code graders, model judges, and human review.</li><li><strong>One shared harness:</strong> valid when it preserves result type, provenance, and failure semantics; separate infrastructure is not required merely for taxonomy.</li><li><strong>Cross-cutting measures:</strong> cost, latency, reliability, retries, and human effort can appear in tests, evals, benchmarks, and production monitoring.</li></ul></div></details></section>
+
+      <section class="section" id="collaboration"><div class="kicker">Human + agent collaboration</div><div class="section-head"><h2>The agent analyzes the run; people make the consequential decisions</h2><p class="section-intro">The same evidence is translated into three decision perspectives. These are not prescribed job titles; one person may cover several.</p></div><div class="perspective-grid"><article class="perspective"><h3>Product</h3><ul><li>What result did we get?</li><li>Which user or product goal does it represent?</li><li>What decision does it support?</li><li>What is the next product lever?</li></ul></article><article class="perspective"><h3>Engineering</h3><ul><li>Is the result valid and reproducible?</li><li>Where did behavior first diverge?</li><li>Is the defect in product, data, harness, grader, or environment?</li><li>What should be diagnosed or repaired?</li></ul></article><article class="perspective"><h3>Quality &amp; operations</h3><ul><li>Does it reflect real domain and workflow conditions?</li><li>What is unsafe, costly, unsupported, or ambiguous?</li><li>What needs human acceptance or adjudication?</li><li>Is the system operationally ready?</li></ul></article></div><div class="collaboration-flow" aria-label="Agent and human evaluation workflow"><div class="collaboration-step"><b>1 · Automated run</b><span>Authorized tests, evals, benchmark arms, and operational measures.</span></div><div class="collaboration-step"><b>2 · Agent analysis</b><span>Validate the ruler, localize failure, cluster patterns, assess uncertainty.</span></div><div class="collaboration-step"><b>3 · Triage</b><span>No action · agent follow-up · human review · blocked/unverified.</span></div><div class="collaboration-step"><b>4 · Human decision</b><span>Review only prioritized evidence and sampled passes where risk warrants it.</span></div><div class="collaboration-step"><b>5 · Feedback</b><span>Confirmed findings become labels, cases, rubric changes, or regression checks.</span></div></div><div class="triage-line"><strong>Escalate:</strong> hard-cap or high-risk cases, borderline thresholds, grader disagreement, novel failure clusters, protected regressions, suspicious passes, and product/domain decisions automation cannot legitimately make.</div></section>
+
+      <section class="section" id="system"><div class="kicker">System anatomy</div><div class="section-head"><h2>The seven parts form an evidence loop</h2><p class="section-intro">Definition determines what matters; execution produces artifacts; measurement interprets them; records make the run reproducible; analysis and decisions update the next round.</p></div><div class="system-loop"><div class="loop-label">Define</div><div class="loop-body"><div class="loop-part"><b>01 · Eval contract</b><span>Decision, unit, criteria, gates, thresholds, and consequence.</span></div><div class="loop-part"><b>02 · Scenario registry</b><span>Versioned cases, partitions, risks, and coverage.</span></div></div><div class="loop-label">Execute</div><div class="loop-body"><div class="loop-part"><b>03 · Stage contracts</b><span>Stable inputs, outputs, provenance, and frozen handoffs.</span></div><div class="loop-part"><b>04 · Runners</b><span>Deterministic, replay, benchmark, gated-live, and online paths.</span></div></div><div class="loop-label">Measure</div><div class="loop-body single"><div class="loop-part"><b>05 · Graders</b><span>Assertions, metrics, rules, model judges, and human judgments selected per criterion.</span></div></div><div class="loop-label">Record</div><div class="loop-body single"><div class="loop-part"><b>06 · Run manifest</b><span>Versions, environment, context, artifacts, traces, cost, latency, and failures.</span></div></div><div class="loop-label">Decide</div><div class="loop-body single"><div class="loop-part"><b>07 · Analysis, escalations &amp; decisions</b><span>Agent diagnosis, prioritized human review, accountable decision, and next lever.</span></div></div></div><div class="feedback-loop">Decision → revise the contract, cases, implementation, or release state → run again</div><div class="pipeline" aria-label="Feature pipeline and capture points"><div class="stage"><b>Trigger</b><span>User intent + authority</span><code>capture input</code></div><div class="stage"><b>Context</b><span>Retrieval + provenance</span><code>freeze handoff</code></div><div class="stage"><b>Plan</b><span>Routing + decisions</span><code>stage measure</code></div><div class="stage"><b>Generate</b><span>Model + tools</span><code>raw artifact</code></div><div class="stage"><b>Validate</b><span>Schema + guardrails</span><code>hard gates</code></div><div class="stage"><b>Deliver</b><span>Persist + read-back</span><code>real E2E</code></div></div></section>
+
+      <section class="section" id="matrix"><div class="kicker">Eval matrix</div><div class="section-head"><h2>Cases define where to measure; criteria and graders define what and how</h2><p class="section-intro">An eval can combine deterministic, operational, semantic, model-judged, and human-judged evidence. Keeping cases, criteria, and graders separate makes each reusable and auditable.</p></div><div class="eval-anatomy"><article><span>Scenario axes</span><h3>Meaningful variation</h3><p>User/domain, goal, input richness, lifecycle, risk, authority, context, tool/provider state, language, and scale.</p></article><article><span>Partitions</span><h3>Prevent overfitting</h3><p>Development, regression, judge calibration, and held-out sets have different jobs and must not be silently reused.</p></article><article><span>Criteria</span><h3>Define performance first</h3><p>Exact invariants, quality dimensions, operating limits, anchors, thresholds, hard caps, and protected strengths.</p></article><article><span>Grader validity</span><h3>Test the ruler</h3><p>Use the simplest valid grader; verify context, blinding, human agreement, error modes, versioning, and adjudication.</p></article></div><details><summary>What the model judge must prove before it can become a gate</summary><div class="details-body"><ul><li>It receives enough producer context to distinguish grounded details from fabrication.</li><li>Its scale has concrete anchors and requires evidence-based reasons.</li><li>It is compared with qualified human ratings across weak, borderline, strong, and hard-cap cases.</li><li>Agreement, rank correlation, dimension errors, and hard-cap false positives/negatives are understood.</li><li>Its model, prompt, rubric, context packet, and parser are versioned and revalidated after material change.</li></ul></div></details></section>
+
+      <section class="section" id="baseline"><div class="kicker">Benchmark design</div><div class="section-head"><h2>Research the baseline before running the benchmark</h2><p class="section-intro">A baseline is the comparator. A benchmark is the controlled procedure that applies shared measures to baseline and candidate arms.</p></div><div class="baseline-flow" aria-label="Baseline research to benchmark decision"><div><b>Observe alternatives</b><span>What would the user actually do today?</span></div><div><b>Research the baseline</b><span>Capability, inputs, context, effort, cost, and current version.</span></div><div><b>Freeze fair arms</b><span>Same task, approved context, deliverable, and accounting rules.</span></div><div><b>Apply shared measures</b><span>Tests, eval dimensions, repeats, cost, latency, and human effort.</span></div><div><b>Compare</b><span>Delta, variance, protected regressions, and trade-offs.</span></div></div><div class="baseline"><article><span>Arm A · Natural alternative</span><h3>Minimal input</h3><p>What a user would naturally do without the product.</p><ul><li>Manual process or general tool</li><li>Natural preparation effort</li><li>Sets the floor</li></ul></article><article class="hard"><span>Arm B · Hard baseline</span><h3>Context parity</h3><p>The alternative gets the same approved source context but none of the specialized workflow.</p><ul><li>Separates context value</li><li>Same deliverable requirement</li><li>Strongest relevant alternative</li></ul></article><article class="product"><span>Arm C · Product</span><h3>Full feature path</h3><p>The real product through its production-equivalent workflow.</p><ul><li>Orchestration + validation</li><li>Real user effort</li><li>Must justify complexity</li></ul></article></div><div class="release-gate"><strong>Decision gate</strong><span>Hard caps pass</span><span>C beats B by a meaningful delta</span><span>No critical dimension regresses</span><span>Cost and effort remain acceptable</span></div></section>
+
+      <section class="section" id="production"><div class="kicker">Production evidence</div><div class="section-head"><h2>Close the offline–online loop</h2><p class="section-intro">Current AI engineering practice usually distinguishes offline evals from online evals and production monitoring. Use experiments when the decision requires causal impact rather than observation.</p></div><div class="production-loop"><article class="production-side"><h3>Offline eval</h3><p>Curated or historical cases before release. Compare versions, catch regressions, calibrate graders, and reproduce failures safely.</p></article><i class="production-arrow">⇄</i><article class="production-side"><h3>Online eval + production monitoring</h3><p>Sample live traces, track reliability and quality, detect drift and incidents, then turn confirmed failures into new offline cases and regression checks.</p></article></div><details><summary>When monitoring is not enough</summary><div class="details-body"><p>Observed adoption, conversion, or business movement may correlate with a release without being caused by it. Use a controlled experiment or another defensible causal design when the decision requires attribution.</p></div></details></section>
+
+      <section class="section" id="sequence"><div class="kicker">Agent-handable workflow</div><div class="section-head"><h2>Risk-first, then scale</h2><p class="section-intro">Do not build a large harness before proving that the decision, cases, context, and highest-risk measurement can support a real decision.</p></div><div class="build-sequence"><article class="phase"><h3>Verify current truth</h3><p>Map outcome, pipeline, contracts, existing evidence, runtime, and authorization.</p><b>Evidence ledger</b></article><article class="phase"><h3>Select the evidence mix</h3><p>Choose units, tests, evals, comparison, production signals, and decision consequences.</p><b>Approved contract</b></article><article class="phase"><h3>Test the ruler</h3><p>Validate grader context, human agreement, data availability, and baseline fairness.</p><b>Go / no-go</b></article><article class="phase"><h3>Build the harness</h3><p>Add stage contracts, runners, graders, replay, and one narrow real-composition path.</p><b>Repeatable execution</b></article><article class="phase"><h3>Automate analysis</h3><p>Localize failure, cluster patterns, protect dimensions, and quantify uncertainty.</p><b>Decision views</b></article><article class="phase"><h3>Route human judgment</h3><p>Escalate only cases where product, domain, risk, or acceptance judgment matters.</p><b>Review queue</b></article><article class="phase"><h3>Establish value</h3><p>Research baselines, run fair arms, and compare total effort, quality, cost, and latency.</p><b>Value delta</b></article><article class="phase"><h3>Close the loop</h3><p>Run online evals and monitoring; feed failures and decisions back into offline evidence.</p><b>Governed learning</b></article></div></section>
+
+      <section class="section" id="share"><div class="kicker">Sharing and handoff</div><div class="section-head"><h2>Do not send every file at once</h2><p class="section-intro">Share the smallest packet needed for the current decision. The visual guide teaches the mental model; the Markdown method is canonical; prompts authorize distinct agent stages.</p></div><table class="share-table"><thead><tr><th>Moment</th><th>Share</th><th>With whom</th><th>Purpose</th></tr></thead><tbody><tr><td>Align the team</td><td><code>testing-evaluation-system.html</code></td><td>Product, engineering, and relevant quality or operations participants</td><td>Build a shared decision model and vocabulary.</td></tr><tr><td>Start repo review</td><td><code>README.md</code> + <code>00-testing-evaluation-system.md</code> + <code>01-design-or-audit.prompt.md</code> + repo context</td><td>Engineer or coding agent</td><td>Produce an evidence-based proposal without changing code.</td></tr><tr><td>Implement approval</td><td>Approved proposal + <code>02-implement-approved-system.prompt.md</code></td><td>Coding agent</td><td>Build one bounded structural slice.</td></tr><tr><td>Run a real round</td><td>Existing harness + round inputs + <code>03-run-eval-round.prompt.md</code></td><td>Agent plus accountable decision participants</td><td>Run, analyze, triage, escalate, and record one decision.</td></tr></tbody></table><div class="package-chain"><b>Human explainer</b><i>→</i><b>Canonical method</b><i>→</i><b>Read-only design prompt</b><i>→ approval →</i><b>Implementation prompt</b><i>→</i><b>Round prompt</b></div><div class="note">The coding agent normally does not need the visual guide. Give it the canonical method and the prompt for the current stage—not every future-stage instruction.</div><details><summary>Industry validation behind this structure</summary><div class="details-body"><ul><li><a href="https://developers.openai.com/api/docs/guides/evaluation-best-practices">OpenAI evaluation best practices</a>: mixed evaluators, continuous eval, automation, and human calibration.</li><li><a href="https://www.anthropic.com/engineering/demystifying-evals-for-ai-agents">Anthropic agent eval guidance</a>: code/model/human graders, harnesses, transcript review, production monitoring, and product participation.</li><li><a href="https://docs.langchain.com/langsmith/evaluation">LangSmith evaluation</a>: offline evals, online evals over production traces, and the feedback loop into datasets.</li><li><a href="https://docs.cloud.google.com/gemini-enterprise-agent-platform/models/eval-python-sdk/view-evaluation">Google Cloud evaluation</a>: pointwise, pairwise, computation-based metrics, and candidate-versus-baseline results.</li></ul></div></details></section>
+
+      <footer class="footer"><span><strong>Testing &amp; Evaluation System</strong></span><span>Every result keeps its evidence boundary.</span></footer>
+    </main>
+  </div>
+  <script>
+    const zh = {
+      'Product Research': '产品研究', 'Product Framing': '产品定义', 'UX Rethinking': 'UX 重构', 'Testing & Eval': '测试与 Eval', 'Delivery & Learning': '交付与学习',
+      'On this page': '本页目录', 'Choose evidence': '选择证据', 'Human + agent': '人与 Agent', 'System anatomy': '系统结构', 'Eval matrix': 'Eval 矩阵', 'Benchmark design': 'Benchmark 设计', 'Production loop': '生产环境闭环', 'Build sequence': '建设顺序', 'What to share': '如何分享',
+      'Evidence to decision': '从证据到决策', 'Testing & Evaluation System': '测试与 Evaluation 系统',
+      'Choose the evidence that matches the decision, automate the analysis, and send people only the judgments that require them.': '选择与决策相匹配的证据，自动完成结果分析，只把真正需要人判断的部分交给人。',
+      'Deterministic + probabilistic': '确定性 + 概率性', 'Stage + E2E': '分环节 + E2E', 'Offline + online': '离线 + 在线',
+      'Every feature needs an evidence strategy.': '每个功能都需要一套证据策略。', 'Tests, evals, benchmarks, production monitoring, experiments, and human review can be combined in different proportions.': '测试、eval、benchmark、生产监控、实验与人工审核可以按不同目的自由组合。',
+      'Start with the decision you need to make': '从需要做出的决策开始', 'Select the smallest trustworthy combination. Set the unit where uncertainty exists: function, stage, output, task, session, workflow, feature, release, or cohort.': '选择最小但可信的证据组合。在哪里存在不确定性，就在哪里设定评估单元：函数、环节、输出、任务、会话、工作流、功能、版本或用户群。',
+      'Deterministic tests': '确定性测试', 'Does behavior meet explicit contracts?': '行为是否满足明确 contract？', 'Use for': '适用于', 'Schema, state, calculation, permission, side effect, recovery, and exact performance limits.': 'Schema、状态、计算、权限、副作用、恢复，以及明确的性能上限。', 'How it works': '运行方式', 'known input → exact assertion → localized pass / fail': '已知输入 → 精确断言 → 定位通过 / 失败', 'Decision output': '决策产出', 'Correctness gate and first failing boundary.': '正确性门槛与第一个失败边界。',
+      'Evals': 'Evals', 'How well does the system perform?': '系统表现有多好？', 'Quality, usefulness, grounding, task success, safety, cost, latency, reliability, or any defined criterion.': '质量、实用性、依据性、任务成功、安全、成本、延迟、可靠性，或其他已定义标准。', 'cases × criteria → code + heuristic + model + human graders → scorecard': '案例 × 标准 → 代码 + 启发式 + 模型 + 人工 grader → 评分卡', 'Strengths, weaknesses, uncertainty, and thresholds.': '优势、弱点、不确定性与阈值。',
+      'Benchmark': 'Benchmark', 'Which alternative performs better?': '哪个方案表现更好？', "Versions, models, prompts, workflows, products, or the user's current alternative.": '版本、模型、prompt、工作流、产品，或用户当前采用的替代方案。', 'baseline research → fair arms → shared tests + evals + operating measures → delta': 'baseline 调研 → 公平对照组 → 共享测试 + eval + 运行指标 → 差值', 'Comparative value and trade-offs.': '相对价值与取舍。',
+      'Production monitoring + online evals': '生产监控 + 在线 eval', 'What happens with real use?': '真实使用中会发生什么？', 'Live quality, drift, incidents, acceptance, edits, adoption, and unexpected behavior. Add experiments for causal impact.': '线上质量、漂移、事故、接受度、编辑、采用情况和意外行为。需要判断因果影响时加入实验。', 'production traces → sampled metrics / graders / feedback → alerts + new cases': '生产 trace → 抽样指标 / grader / 反馈 → 告警 + 新案例', 'Operational response, iteration, or experimentally supported impact.': '运营响应、迭代，或有实验支持的影响判断。',
+      'How to combine tests and evals without forcing a false choice': '如何组合测试与 eval，而不制造非此即彼的选择', 'Test-heavy:': '以测试为主：', 'deterministic product behavior with exact contracts and limited judgment.': '适合 contract 明确、判断空间有限的确定性产品行为。', 'Eval-led:': '以 eval 为主：', 'open-ended AI behavior measured by a mix of exact metrics, code graders, model judges, and human review.': '适合开放式 AI 行为，组合精确指标、代码 grader、模型 judge 与人工审核。', 'One shared harness:': '共享一个 harness：', 'valid when it preserves result type, provenance, and failure semantics; separate infrastructure is not required merely for taxonomy.': '只要能保留结果类型、来源和失败语义，就可以共用；不必仅为分类而拆成两套基础设施。', 'Cross-cutting measures:': '跨维度指标：', 'cost, latency, reliability, retries, and human effort can appear in tests, evals, benchmarks, and production monitoring.': '成本、延迟、可靠性、重试和人工投入，都可以出现在测试、eval、benchmark 与生产监控中。',
+      'Human + agent collaboration': '人与 Agent 协作', 'The agent analyzes the run; people make the consequential decisions': 'Agent 分析运行结果；人负责有后果的决策', 'The same evidence is translated into three decision perspectives. These are not prescribed job titles; one person may cover several.': '同一份证据被整理成三种决策视角。这些不是固定职位；一个人可以同时覆盖多个视角。',
+      'Product': '产品', 'What result did we get?': '我们得到了什么结果？', 'Which user or product goal does it represent?': '它代表哪个用户或产品目标？', 'What decision does it support?': '它支持什么决策？', 'What is the next product lever?': '下一步应该调整哪个产品杠杆？',
+      'Engineering': '工程', 'Is the result valid and reproducible?': '结果是否有效且可复现？', 'Where did behavior first diverge?': '行为最早从哪里开始偏离？', 'Is the defect in product, data, harness, grader, or environment?': '问题出在产品、数据、harness、grader 还是环境？', 'What should be diagnosed or repaired?': '应该诊断或修复什么？',
+      'Quality & operations': '质量与运营', 'Does it reflect real domain and workflow conditions?': '是否反映真实领域与工作流条件？', 'What is unsafe, costly, unsupported, or ambiguous?': '哪些部分不安全、成本过高、缺乏支持或含义不清？', 'What needs human acceptance or adjudication?': '哪些部分需要人工验收或裁决？', 'Is the system operationally ready?': '系统是否具备运营条件？',
+      '1 · Automated run': '1 · 自动运行', 'Authorized tests, evals, benchmark arms, and operational measures.': '执行已获授权的测试、eval、benchmark 对照组和运行指标。', '2 · Agent analysis': '2 · Agent 分析', 'Validate the ruler, localize failure, cluster patterns, assess uncertainty.': '验证衡量工具、定位失败、聚类模式并评估不确定性。', '3 · Triage': '3 · 分流', 'No action · agent follow-up · human review · blocked/unverified.': '无需处理 · Agent 跟进 · 人工审核 · 阻塞/未验证。', '4 · Human decision': '4 · 人工决策', 'Review only prioritized evidence and sampled passes where risk warrants it.': '只审核优先级较高的证据；在风险需要时抽查通过项。', '5 · Feedback': '5 · 反馈', 'Confirmed findings become labels, cases, rubric changes, or regression checks.': '确认后的发现转化为标签、案例、rubric 更新或回归检查。', 'Escalate:': '需要升级：', 'hard-cap or high-risk cases, borderline thresholds, grader disagreement, novel failure clusters, protected regressions, suspicious passes, and product/domain decisions automation cannot legitimately make.': '触及硬上限或高风险的案例、临界阈值、grader 分歧、新型失败簇、受保护指标回退、可疑的通过项，以及自动化无权做出的产品或领域决策。',
+      'The seven parts form an evidence loop': '七个部分组成证据闭环', 'Definition determines what matters; execution produces artifacts; measurement interprets them; records make the run reproducible; analysis and decisions update the next round.': '定义决定什么重要；执行产生 artifact；衡量解释结果；记录使运行可复现；分析与决策再更新下一轮。',
+      'Define': '定义', '01 · Eval contract': '01 · Eval contract', 'Decision, unit, criteria, gates, thresholds, and consequence.': '决策、单元、标准、门槛、阈值与后果。', '02 · Scenario registry': '02 · 场景注册表', 'Versioned cases, partitions, risks, and coverage.': '版本化案例、数据分区、风险与覆盖范围。', 'Execute': '执行', '03 · Stage contracts': '03 · 环节 contract', 'Stable inputs, outputs, provenance, and frozen handoffs.': '稳定的输入、输出、来源与冻结的交接点。', '04 · Runners': '04 · Runner', 'Deterministic, replay, benchmark, gated-live, and online paths.': '确定性、回放、benchmark、受控线上与在线路径。', 'Measure': '衡量', '05 · Graders': '05 · Grader', 'Assertions, metrics, rules, model judges, and human judgments selected per criterion.': '针对每项标准选择断言、指标、规则、模型 judge 与人工判断。', 'Record': '记录', '06 · Run manifest': '06 · 运行清单', 'Versions, environment, context, artifacts, traces, cost, latency, and failures.': '版本、环境、上下文、artifact、trace、成本、延迟与失败。', 'Decide': '决策', '07 · Analysis, escalations & decisions': '07 · 分析、升级与决策', 'Agent diagnosis, prioritized human review, accountable decision, and next lever.': 'Agent 诊断、按优先级人工审核、可追责决策与下一步杠杆。', 'Decision → revise the contract, cases, implementation, or release state → run again': '决策 → 更新 contract、案例、实现或发布状态 → 再次运行',
+      'Trigger': '触发', 'User intent + authority': '用户意图 + 权限', 'capture input': '捕获输入', 'Context': '上下文', 'Retrieval + provenance': '检索 + 来源', 'freeze handoff': '冻结交接', 'Plan': '规划', 'Routing + decisions': '路由 + 决策', 'stage measure': '分环节衡量', 'Generate': '生成', 'Model + tools': '模型 + 工具', 'raw artifact': '原始 artifact', 'Validate': '验证', 'Schema + guardrails': 'Schema + 护栏', 'hard gates': '硬门槛', 'Deliver': '交付', 'Persist + read-back': '持久化 + 回读', 'real E2E': '真实 E2E',
+      'Cases define where to measure; criteria and graders define what and how': '案例决定在哪里衡量；标准与 grader 决定衡量什么、怎么衡量', 'An eval can combine deterministic, operational, semantic, model-judged, and human-judged evidence. Keeping cases, criteria, and graders separate makes each reusable and auditable.': '一个 eval 可以组合确定性、运行性、语义性、模型判断与人工判断证据。把案例、标准和 grader 分开，才能分别复用与审计。', 'Scenario axes': '场景维度', 'Meaningful variation': '有意义的变化', 'User/domain, goal, input richness, lifecycle, risk, authority, context, tool/provider state, language, and scale.': '用户/领域、目标、输入丰富度、生命周期、风险、权限、上下文、工具/供应商状态、语言与规模。', 'Partitions': '数据分区', 'Prevent overfitting': '防止过拟合', 'Development, regression, judge calibration, and held-out sets have different jobs and must not be silently reused.': '开发集、回归集、judge 校准集与留出集各有用途，不得静默混用。', 'Criteria': '标准', 'Define performance first': '先定义表现', 'Exact invariants, quality dimensions, operating limits, anchors, thresholds, hard caps, and protected strengths.': '精确不变量、质量维度、运行限制、评分锚点、阈值、硬上限和需要保护的优势。', 'Grader validity': 'Grader 有效性', 'Test the ruler': '先验证尺子', 'Use the simplest valid grader; verify context, blinding, human agreement, error modes, versioning, and adjudication.': '使用最简单且有效的 grader；验证上下文、盲测、人工一致性、错误模式、版本与裁决机制。',
+      'What the model judge must prove before it can become a gate': '模型 judge 成为门槛前必须证明什么', 'It receives enough producer context to distinguish grounded details from fabrication.': '它能获得足够的生成上下文，从而区分有依据的细节与编造。', 'Its scale has concrete anchors and requires evidence-based reasons.': '评分尺度有具体锚点，并要求基于证据说明理由。', 'It is compared with qualified human ratings across weak, borderline, strong, and hard-cap cases.': '它需要与合格人工评分对照，覆盖弱、临界、强和触及硬上限的案例。', 'Agreement, rank correlation, dimension errors, and hard-cap false positives/negatives are understood.': '团队理解一致率、排序相关性、维度错误，以及硬上限的误报与漏报。', 'Its model, prompt, rubric, context packet, and parser are versioned and revalidated after material change.': '模型、prompt、rubric、上下文包与 parser 都有版本；发生实质变化后重新验证。',
+      'Research the baseline before running the benchmark': '运行 benchmark 前先研究 baseline', 'A baseline is the comparator. A benchmark is the controlled procedure that applies shared measures to baseline and candidate arms.': 'Baseline 是比较对象；benchmark 是把同一套衡量方式应用到 baseline 与候选方案的受控过程。', 'Observe alternatives': '观察替代方案', 'What would the user actually do today?': '用户今天实际会怎么做？', 'Research the baseline': '研究 baseline', 'Capability, inputs, context, effort, cost, and current version.': '能力、输入、上下文、投入、成本与当前版本。', 'Freeze fair arms': '冻结公平对照组', 'Same task, approved context, deliverable, and accounting rules.': '相同任务、已批准上下文、交付物与核算规则。', 'Apply shared measures': '应用共享衡量方式', 'Tests, eval dimensions, repeats, cost, latency, and human effort.': '测试、eval 维度、重复运行、成本、延迟与人工投入。', 'Compare': '比较', 'Delta, variance, protected regressions, and trade-offs.': '差值、方差、受保护指标回退与取舍。',
+      'Arm A · Natural alternative': '对照组 A · 自然替代方案', 'Minimal input': '最少输入', 'What a user would naturally do without the product.': '没有这个产品时，用户自然会采用的方式。', 'Manual process or general tool': '人工流程或通用工具', 'Natural preparation effort': '自然的准备成本', 'Sets the floor': '确定最低基线', 'Arm B · Hard baseline': '对照组 B · 强 baseline', 'Context parity': '上下文对等', 'The alternative gets the same approved source context but none of the specialized workflow.': '替代方案获得相同的已批准来源上下文，但不使用专门工作流。', 'Separates context value': '分离上下文本身的价值', 'Same deliverable requirement': '相同交付要求', 'Strongest relevant alternative': '最强的相关替代方案', 'Arm C · Product': '对照组 C · 产品', 'Full feature path': '完整功能路径', 'The real product through its production-equivalent workflow.': '真实产品通过与生产环境等价的工作流运行。', 'Orchestration + validation': '编排 + 验证', 'Real user effort': '真实用户投入', 'Must justify complexity': '必须证明复杂度值得', 'Decision gate': '决策门槛', 'Hard caps pass': '通过硬上限', 'C beats B by a meaningful delta': 'C 以有意义的差值胜过 B', 'No critical dimension regresses': '关键维度无回退', 'Cost and effort remain acceptable': '成本与投入可接受',
+      'Production evidence': '生产环境证据', 'Close the offline–online loop': '闭合离线—在线循环', 'Current AI engineering practice usually distinguishes offline evals from online evals and production monitoring. Use experiments when the decision requires causal impact rather than observation.': '当前 AI 工程实践通常区分离线 eval、在线 eval 与生产监控。当决策需要因果影响而非观察关系时，应使用实验。', 'Offline eval': '离线 eval', 'Curated or historical cases before release. Compare versions, catch regressions, calibrate graders, and reproduce failures safely.': '发布前使用精选或历史案例。比较版本、捕获回退、校准 grader，并安全地复现失败。', 'Online eval + production monitoring': '在线 eval + 生产监控', 'Sample live traces, track reliability and quality, detect drift and incidents, then turn confirmed failures into new offline cases and regression checks.': '抽样线上 trace，追踪可靠性与质量，发现漂移和事故，再把确认的失败转化为新的离线案例与回归检查。', 'When monitoring is not enough': '什么时候仅靠监控还不够', 'Observed adoption, conversion, or business movement may correlate with a release without being caused by it. Use a controlled experiment or another defensible causal design when the decision requires attribution.': '观察到的采用、转化或业务变化可能与发布相关，却并非由发布造成。当决策需要归因时，应使用受控实验或其他可靠的因果设计。',
+      'Agent-handable workflow': 'Agent 可执行工作流', 'Risk-first, then scale': '先处理风险，再扩大规模', 'Do not build a large harness before proving that the decision, cases, context, and highest-risk measurement can support a real decision.': '在证明决策、案例、上下文和最高风险衡量方式确实能支持真实决策之前，不要先建设庞大的 harness。', 'Verify current truth': '验证当前事实', 'Map outcome, pipeline, contracts, existing evidence, runtime, and authorization.': '梳理结果、pipeline、contract、现有证据、运行环境与授权。', 'Evidence ledger': '证据账本', 'Select the evidence mix': '选择证据组合', 'Choose units, tests, evals, comparison, production signals, and decision consequences.': '选择单元、测试、eval、比较方案、生产信号与决策后果。', 'Approved contract': '已批准 contract', 'Validate grader context, human agreement, data availability, and baseline fairness.': '验证 grader 上下文、人工一致性、数据可用性与 baseline 公平性。', 'Go / no-go': '继续 / 停止', 'Build the harness': '建设 harness', 'Add stage contracts, runners, graders, replay, and one narrow real-composition path.': '加入环节 contract、runner、grader、回放，以及一条窄而真实的组合路径。', 'Repeatable execution': '可重复执行', 'Automate analysis': '自动分析', 'Localize failure, cluster patterns, protect dimensions, and quantify uncertainty.': '定位失败、聚类模式、保护关键维度并量化不确定性。', 'Decision views': '决策视图', 'Route human judgment': '路由人工判断', 'Escalate only cases where product, domain, risk, or acceptance judgment matters.': '只升级确实需要产品、领域、风险或验收判断的案例。', 'Review queue': '审核队列', 'Establish value': '证明价值', 'Research baselines, run fair arms, and compare total effort, quality, cost, and latency.': '研究 baseline，运行公平对照组，比较总投入、质量、成本与延迟。', 'Value delta': '价值差值', 'Close the loop': '闭合循环', 'Run online evals and monitoring; feed failures and decisions back into offline evidence.': '运行在线 eval 与监控，把失败与决策反馈到离线证据中。', 'Governed learning': '受治理的学习',
+      'Sharing and handoff': '分享与交接', 'Do not send every file at once': '不要一次发送所有文件', 'Share the smallest packet needed for the current decision. The visual guide teaches the mental model; the Markdown method is canonical; prompts authorize distinct agent stages.': '只分享当前决策所需的最小文件包。视觉指南用于建立思维模型；Markdown 方法是 canonical source；不同 prompt 分别授权 Agent 的不同阶段。', 'Moment': '时机', 'Share': '分享内容', 'With whom': '分享对象', 'Purpose': '目的', 'Align the team': '团队对齐', 'Product, engineering, and relevant quality or operations participants': '产品、工程，以及相关质量或运营参与者', 'Build a shared decision model and vocabulary.': '建立共享的决策模型与词汇。', 'Start repo review': '开始仓库审查', 'Engineer or coding agent': '工程师或 coding agent', 'Produce an evidence-based proposal without changing code.': '在不修改代码的前提下产出基于证据的方案。', 'Implement approval': '批准实现', 'Coding agent': 'Coding agent', 'Build one bounded structural slice.': '建设一个范围明确的结构性切片。', 'Run a real round': '运行真实一轮', 'Agent plus accountable decision participants': 'Agent 与对决策负责的参与者', 'Run, analyze, triage, escalate, and record one decision.': '运行、分析、分流、升级并记录一次决策。', 'Approved proposal +': '已批准方案 +', 'Existing harness + round inputs +': '现有 harness + 本轮输入 +', 'Human explainer': '人类阅读指南', 'Canonical method': 'Canonical 方法', 'Read-only design prompt': '只读设计 prompt', 'approval': '批准', 'Implementation prompt': '实现 prompt', 'Round prompt': '单轮运行 prompt', 'The coding agent normally does not need the visual guide. Give it the canonical method and the prompt for the current stage—not every future-stage instruction.': 'Coding agent 通常不需要视觉指南。给它 canonical 方法与当前阶段的 prompt，而不是所有未来阶段的指令。', 'Industry validation behind this structure': '这一结构的行业依据', 'OpenAI evaluation best practices': 'OpenAI eval 最佳实践', ': mixed evaluators, continuous eval, automation, and human calibration.': '：混合 evaluator、持续 eval、自动化与人工校准。', 'Anthropic agent eval guidance': 'Anthropic Agent eval 指南', ': code/model/human graders, harnesses, transcript review, production monitoring, and product participation.': '：代码/模型/人工 grader、harness、记录审查、生产监控与产品参与。', 'LangSmith evaluation': 'LangSmith eval', ': offline evals, online evals over production traces, and the feedback loop into datasets.': '：离线 eval、基于生产 trace 的在线 eval，以及反馈回数据集的闭环。', 'Google Cloud evaluation': 'Google Cloud eval', ': pointwise, pairwise, computation-based metrics, and candidate-versus-baseline results.': '：逐点评估、成对评估、基于计算的指标，以及候选方案对 baseline 的结果。', 'Every result keeps its evidence boundary.': '每项结果都保留其证据边界。'
+    };
+
+    const englishText = new Map();
+    const walker = document.createTreeWalker(document.body, NodeFilter.SHOW_TEXT);
+    while (walker.nextNode()) {
+      const node = walker.currentNode;
+      const normalized = node.nodeValue.trim();
+      if (normalized && zh[normalized]) englishText.set(node, node.nodeValue);
+    }
+    const attributes = [
+      [document.querySelector('.library-nav'), 'aria-label', 'Library sections', '资料库栏目'],
+      [document.querySelector('.toc'), 'aria-label', 'On this page', '本页目录'],
+      [document.querySelector('.collaboration-flow'), 'aria-label', 'Agent and human evaluation workflow', 'Agent 与人工 eval 工作流'],
+      [document.querySelector('.pipeline'), 'aria-label', 'Feature pipeline and capture points', '功能 pipeline 与证据捕获点'],
+      [document.querySelector('.baseline-flow'), 'aria-label', 'Baseline research to benchmark decision', '从 baseline 调研到 benchmark 决策']
+    ];
+    const languageButton = document.getElementById('language-toggle');
+    const themeButton = document.getElementById('theme-toggle');
+    let language = localStorage.getItem('ppl-language') === 'zh-CN' ? 'zh-CN' : 'en';
+    function setLanguage(next) {
+      language = next;
+      englishText.forEach((original, node) => {
+        const raw = original.trim();
+        const leading = original.slice(0, original.indexOf(raw));
+        const trailing = original.slice(original.indexOf(raw) + raw.length);
+        node.nodeValue = language === 'zh-CN' ? `${leading}${zh[raw]}${trailing}` : original;
+      });
+      attributes.forEach(([element, name, en, cn]) => element && element.setAttribute(name, language === 'zh-CN' ? cn : en));
+      document.documentElement.lang = language;
+      document.title = language === 'zh-CN' ? '测试与 Evaluation 系统 · Product Practice Library' : 'Testing & Evaluation System · Product Practice Library';
+      languageButton.textContent = language === 'zh-CN' ? 'EN' : '简中';
+      languageButton.setAttribute('aria-label', language === 'zh-CN' ? 'Switch to English' : '切换到简体中文');
+      if (typeof theme !== 'undefined') updateThemeButton();
+      localStorage.setItem('ppl-language', language);
+    }
+    const savedTheme = localStorage.getItem('ppl-theme');
+    let theme = savedTheme || (matchMedia('(prefers-color-scheme: dark)').matches ? 'dark' : 'light');
+    function updateThemeButton() {
+      themeButton.textContent = language === 'zh-CN' ? (theme === 'dark' ? '浅色' : '深色') : (theme === 'dark' ? 'Light' : 'Dark');
+      themeButton.setAttribute('aria-label', language === 'zh-CN' ? (theme === 'dark' ? '切换到浅色模式' : '切换到深色模式') : (theme === 'dark' ? 'Switch to light mode' : 'Switch to dark mode'));
+    }
+    function setTheme(next) {
+      theme = next;
+      document.documentElement.dataset.theme = theme;
+      updateThemeButton();
+      localStorage.setItem('ppl-theme', theme);
+    }
+    languageButton.addEventListener('click', () => setLanguage(language === 'en' ? 'zh-CN' : 'en'));
+    themeButton.addEventListener('click', () => setTheme(theme === 'light' ? 'dark' : 'light'));
+    setLanguage(language);
+    setTheme(theme);
+
+    const tocLinks = Array.from(document.querySelectorAll('.toc a'));
+    const sections = tocLinks.map(link => document.querySelector(link.getAttribute('href'))).filter(Boolean);
+    const observer = new IntersectionObserver(entries => { entries.filter(entry => entry.isIntersecting).forEach(entry => { tocLinks.forEach(link => link.classList.toggle('active', link.getAttribute('href') === `#${entry.target.id}`)); }); }, { rootMargin: '-22% 0px -68% 0px' });
+    sections.forEach(section => observer.observe(section));
+  </script>
+</body>
+</html>
