@@ -72,6 +72,16 @@ Canonical files:
 - `prompts/testing-evaluation-system/03-run-eval-round.prompt.md`
 - `prompts/testing-evaluation-system/testing-evaluation-system.html`
 
+### Product Analytics & Experimentation
+
+Folder: `prompts/product-analytics-experimentation/`
+
+An emerging practice branch that separates product analytics (observed behavior and association) from controlled experimentation (causal product impact), while showing how both connect to tests, offline/online evals, benchmarks, production monitoring, and shared evidence infrastructure.
+
+This branch currently contains boundary guidance and a method map, not a complete agent workflow package. Start with:
+
+- `prompts/product-analytics-experimentation/README.md`
+
 ## Preserved initial prompts
 
 The following earlier prompt files remain available for history and specialized use. The Product & UX Rethinking package above is the canonical source for the two reusable prompt families.

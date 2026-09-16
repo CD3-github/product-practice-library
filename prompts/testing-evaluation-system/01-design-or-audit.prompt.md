@@ -52,6 +52,14 @@ Start from the decisions the team must make. For each decision specify:
 
 Do not force tests and evals into an either/or choice. An eval may combine exact metrics, code-based checks, heuristics, calibrated model judges, and human judgment. A shared harness is acceptable when result types, failure semantics, and provenance remain distinct.
 
+Organize the result into three layers rather than treating every term as a peer:
+
+- **Core measurement:** tests and evals.
+- **Decision extensions:** benchmarks, production validation, product analytics, online evals/monitoring, and controlled experiments when causality matters.
+- **System infrastructure:** contracts, cases, handoffs, runners, graders, manifests, gates, reports, and decision logs.
+
+Classify named techniques before recommending them. A golden set is a versioned case asset; an A/B test is a controlled experiment; red-team/blue-team work is adversarial assurance; robustness is a property tested across perturbations or shifts; shadow and canary are release patterns. Add only techniques that close a material evidence gap.
+
 ### 2. Map the real pipeline
 
 Trace actual execution from user input to final delivery/read-back. For every stage record:
@@ -74,6 +82,7 @@ Build a matrix covering:
 
 - unit, stage, contract, integration, E2E, failure, authority, migration, and smoke tests;
 - deterministic graders, programmatic metrics, model judges, human review, online outcomes;
+- product analytics events, identities, cohorts, funnels, exposure contracts, experiment assignments, and guardrail metrics where they exist;
 - scenario registry, fixtures, development/regression/calibration/held-out partitions;
 - internal baseline, external baseline, operational metrics, economic metrics;
 - run manifests, reports, round history, decisions, CI/scheduled/release execution.
@@ -93,6 +102,7 @@ Explicitly find:
 - judge scores used without human calibration or sufficient context;
 - tuning cases reused as the final benchmark;
 - business or ROI claims unsupported by online evidence.
+- observed analytics movement presented as causal without a defensible experiment or causal design.
 
 Every current-system finding must cite files and lines, or a reproducible runtime/CI trace.
 

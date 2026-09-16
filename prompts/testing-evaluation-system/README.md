@@ -32,6 +32,8 @@ The package is especially useful for:
 
 A deterministic feature may be test-heavy. An open-ended AI feature may be eval-led while still using deterministic graders for schemas, tool calls, cost, and latency. A benchmark applies shared measures to alternatives. Production monitoring and online evals detect real-world quality and drift; controlled experiments are needed when causal impact matters.
 
+Use three layers when explaining the system: tests and evals are core measurements; benchmarks and production validation extend those measurements into comparison and real-world decisions; contracts, cases, runners, graders, manifests, and gates form the infrastructure. Product analytics supplies observational production signals, while controlled experiments support causal product claims.
+
 For security, compliance, forecasting, or causal business-impact claims, this system is a foundation, not a substitute for domain-specific validation, red teaming, statistical analysis, or controlled experimentation.
 
 ## Naming recommendation
@@ -97,6 +99,7 @@ The HTML is the human-facing explainer and is optional for the coding agent. Sha
 - Use `ai-product-system-audit` for a broad review of an AI system, including harness, authority, contracts, modularity, and dead/unwired surfaces.
 - Use this package when the test, eval, benchmark, production-monitoring, analysis, escalation, and release-evidence system itself needs to be designed or repaired.
 - Use `project-document-system` when deciding the wider project documentation, ownership, contracts, and multi-agent collaboration model.
+- Use `product-analytics-experimentation` for the emerging practice boundary between observed product behavior, controlled causal experiments, and quality evidence. It currently provides guidance, not a complete agent workflow.
 
 ## Future skill boundary
 

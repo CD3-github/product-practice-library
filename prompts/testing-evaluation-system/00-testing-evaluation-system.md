@@ -1,6 +1,6 @@
 # Testing & Evaluation System
 
-Version 1.2 · reusable cross-project methodology
+Version 1.3 · reusable cross-project methodology
 
 Subtitle: **A composable evidence system for AI and conventional product work**
 
@@ -25,12 +25,36 @@ Every feature needs an **evidence strategy**. Tests, evals, benchmarks, producti
 
 Start from the decision that must be supported. Choose the smallest trustworthy combination, and set the unit at the level where the uncertainty exists: function, stage, output, task, session, workflow, feature, release, or cohort.
 
+### Three-layer system model
+
+The common terms do not belong to one MECE list. Use three layers:
+
+```text
+1. CORE MEASUREMENT
+   tests -> does behavior meet explicit requirements?
+   evals -> how well does the system perform against defined criteria?
+
+2. DECISION EXTENSIONS
+   benchmarks -> compare alternatives with shared measurements
+   production validation -> connect controlled evidence to real use
+      product analytics -> observed behavior and association
+      online evals/monitoring -> live quality, reliability, and drift
+      controlled experiments -> causal impact when the design permits
+
+3. SYSTEM INFRASTRUCTURE
+   contracts + cases + stage handoffs + runners + graders
+   manifests + gates + reports + decision logs
+```
+
+`Outcomes` are signals observed through production validation—not a complete method. They may become an eval dimension, benchmark metric, analytics measure, experiment outcome, or release gate once their definition and evidence boundary are explicit.
+
 | Decision need | Primary mechanism | It may include | Result |
 |---|---|---|---|
 | Does behavior meet explicit contracts? | Deterministic tests | Unit, contract, integration, E2E, authority, failure/recovery, exact cost or latency limits | Pass/fail and localized failures |
 | How well does the system perform against defined criteria? | Evals | Exact metrics, rules, heuristics, model judges, human grading, cost, latency, reliability | Per-case and aggregate scorecards with reasons and uncertainty |
 | Which alternative performs better under fair conditions? | Benchmark | Baseline research, frozen cases, context parity, repeated tests/evals, operational measures | Comparative deltas and trade-offs |
-| What happens with real users and real traffic? | Production monitoring and online evals; experiments when causal evidence is needed | Traces, sampled graders, feedback, edits, incidents, adoption, controlled experiments | Drift/failure detection, real-world relevance, or causal impact when experimentally identified |
+| What happens with real users and real traffic? | Production validation | Product analytics, traces, online evals, monitoring, feedback, edits, incidents, adoption | Observed quality, behavior, drift, and real-world relevance |
+| Did a specific intervention cause a meaningful change? | Controlled experiment, such as an A/B test | Randomized exposure, control/treatment variants, primary and guardrail metrics | Causal product impact within the experiment design |
 
 ### Tests and evals are a range and a combination
 
@@ -54,12 +78,31 @@ benchmark
 production monitoring + online evals
   -> detect real-world quality, drift, and unexpected cases
 
+product analytics
+  -> describe adoption, task behavior, cohorts, funnels, retention, and associations
+
 controlled experiments
   -> estimate causal product impact when traffic and design permit
 
 production failures and human findings
   -> become new offline cases, graders, and regression tests
 ```
+
+### Classify method names before adding them
+
+Many useful terms name a dataset, design pattern, risk lens, or release technique—not another peer layer:
+
+| Term | Classification | Use |
+|---|---|---|
+| Golden set | Curated, versioned case asset | Regression, judge calibration, and benchmark comparison |
+| A/B test | Controlled experiment design | Estimate causal impact of a product intervention |
+| A/A test | Experiment-infrastructure check | Validate assignment, exposure, and metric plumbing after setup or material change |
+| Red-team / blue-team exercise | Adversarial assurance practice | Discover abuse, safety, security, and defense-response failures |
+| Robustness test | Property-focused test/eval design | Measure behavior under perturbation, distribution shift, failures, or repeated trials |
+| Load or stress test | Operational test method | Establish capacity, latency, reliability, and degradation behavior |
+| Shadow or canary validation | Release/exposure pattern | Limit operational risk and compare real-distribution behavior |
+
+Add a method when it closes a material evidence gap. Do not add every named technique to every feature. If “red/blue testing” refers to a deployment strategy rather than adversarial security work, classify it under release engineering and define the term explicitly.
 
 A high-stakes medical, financial, legal, security, or compliance system also needs domain-specific validation and governance that this method does not replace.
 
@@ -669,6 +712,9 @@ Advancing a level requires evidence, not more files.
 - **Round:** one pre-specified measurement cycle ending in a decision.
 - **Online eval:** automated or sampled grading of production traces to monitor real-world quality and discover new cases.
 - **Production monitoring:** observation of live reliability, quality, safety, drift, cost, incidents, and user behavior.
+- **Product analytics:** observational measurement of real user behavior, segments, funnels, adoption, retention, and workflow outcomes; association is not automatically causation.
+- **Controlled experiment:** a pre-specified comparison with defensible assignment and exposure, used to estimate causal impact within the design's limits.
+- **Golden set:** curated, versioned reference cases used for regression, calibration, or comparison; it is an asset, not a separate evidence layer.
 - **Artifact manifest:** version and provenance record required to reconstruct a run.
 - **Total cost per usable outcome:** automated cost plus expected human preparation, review, correction, and failure cost.
 
@@ -682,3 +728,6 @@ This method aligns with current first-party guidance while remaining tool-agnost
 - [Anthropic: Demystifying evals for AI agents](https://www.anthropic.com/engineering/demystifying-evals-for-ai-agents): code-, model-, and human-based graders; end-to-end harnesses; transcript review; production monitoring; A/B testing; and product/domain participation in defining success.
 - [LangSmith evaluation](https://docs.langchain.com/langsmith/evaluation): the common distinction between offline evals and online evals over production traces, with production failures feeding back into datasets.
 - [Google Cloud generative AI evaluation](https://docs.cloud.google.com/gemini-enterprise-agent-platform/models/eval-python-sdk/view-evaluation): pointwise, pairwise, and computation-based metrics, including candidate-versus-baseline results.
+- [Amplitude Experiment overview](https://amplitude.com/docs/feature-experiment/overview): randomized product variants, exposure, metrics, and the distinction between observed movement and controlled causal evidence.
+- [Amplitude A/A testing](https://amplitude.com/docs/feature-experiment/aa-testing): selective validation of assignment, exposure, randomization, and metric instrumentation.
+- [NIST TEVV-Athlon](https://www.nist.gov/artificial-intelligence/ai-research/tevv-athlon-framework-evaluating-ai-systems): a broader test, evaluation, verification, and validation frame for system evidence.
