@@ -21,7 +21,7 @@ The method was generalized from a real multi-stage AI planning system. Project-s
 
 ## 1. Choose an evidence mix from the decision
 
-Every feature needs an **evidence strategy**. Tests, evals, benchmarks, production monitoring, experiments, and human review are composable building blocks—not an either/or choice and not a mandatory sequence.
+Every feature needs an **evidence strategy**. Combine tests, evals, benchmarks, production monitoring, experiments, and human review in the proportions and sequence that fit the decision, risk, and product maturity.
 
 Start from the decision that must be supported. Choose the smallest trustworthy combination, and set the unit at the level where the uncertainty exists: function, stage, output, task, session, workflow, feature, release, or cohort.
 
@@ -56,11 +56,11 @@ The common terms do not belong to one MECE list. Use three layers:
 | What happens with real users and real traffic? | Production validation | Product analytics, traces, online evals, monitoring, feedback, edits, incidents, adoption | Observed quality, behavior, drift, and real-world relevance |
 | Did a specific intervention cause a meaningful change? | Controlled experiment, such as an A/B test | Randomized exposure, control/treatment variants, primary and guardrail metrics | Causal product impact within the experiment design |
 
-### Tests and evals are a range and a combination
+### Compose tests and evals for the decision
 
-- A deterministic feature may rely mostly on tests.
-- An open-ended AI feature may be eval-led while still using deterministic checks for schemas, tool calls, safety gates, cost, and latency.
-- The same harness may run both. Preserve distinct result types and failure semantics; do not force separate infrastructure merely for taxonomy.
+- A deterministic feature may be test-led: start with exact assertions, then add evals for qualities such as clarity or usefulness that still require judgment.
+- An open-ended AI feature may be eval-led while retaining deterministic checks for schemas, tool calls, safety gates, cost, latency, and other hard constraints.
+- The same harness may run both when it preserves distinct result types, provenance, and failure semantics. Separate infrastructure when execution, ownership, or risk genuinely differs.
 - Use the simplest grader that validly measures the criterion: code before model judgment where code is sufficient, calibrated model judges where nuance is required, and human review for calibration, ambiguity, and high-risk decisions.
 
 ### Relationship among the mechanisms
@@ -94,15 +94,16 @@ Many useful terms name a dataset, design pattern, risk lens, or release techniqu
 
 | Term | Classification | Use |
 |---|---|---|
-| Golden set | Curated, versioned case asset | Regression, judge calibration, and benchmark comparison |
-| A/B test | Controlled experiment design | Estimate causal impact of a product intervention |
-| A/A test | Experiment-infrastructure check | Validate assignment, exposure, and metric plumbing after setup or material change |
+| Golden set | Curated, versioned case asset | Regression, judge calibration, stable comparison, and reusable high-risk cases |
+| A/B test | Randomized controlled experiment: A is usually the current experience; B contains the intended change | Estimate causal product impact when traffic, exposure logging, metrics, and guardrails are sufficient |
+| A/A test | The same experience assigned to both groups | Validate assignment, exposure, metric plumbing, and false-positive behavior before relying on an A/B result |
 | Red-team / blue-team exercise | Adversarial assurance practice | Discover abuse, safety, security, and defense-response failures |
 | Robustness test | Property-focused test/eval design | Measure behavior under perturbation, distribution shift, failures, or repeated trials |
 | Load or stress test | Operational test method | Establish capacity, latency, reliability, and degradation behavior |
-| Shadow or canary validation | Release/exposure pattern | Limit operational risk and compare real-distribution behavior |
+| Shadow validation | The new system runs on real traffic without affecting users or production decisions | Compare behavior on real input distributions before granting authority |
+| Canary validation | A small, controlled share of real requests uses the new version with monitoring and rollback ready | Validate real execution while limiting blast radius, then expand only while guardrails remain healthy |
 
-Add a method when it closes a material evidence gap. Do not add every named technique to every feature. If “red/blue testing” refers to a deployment strategy rather than adversarial security work, classify it under release engineering and define the term explicitly.
+Choose methods by the evidence gap and the consequence of being wrong. A feature may use several methods at different stages—for example, a golden set before release, shadow validation on real traffic, and a canary before broader rollout.
 
 A high-stakes medical, financial, legal, security, or compliance system also needs domain-specific validation and governance that this method does not replace.
 
@@ -391,11 +392,11 @@ These are complementary coverage levels, not a mandatory maturity sequence. Evid
 
 ## 8. Baseline research and comparative benchmarks
 
-Every score needs a relevant reference.
+Every comparison needs a credible reference. The baseline should represent what users would realistically do today, while the benchmark is the controlled procedure that gives every arm the same task, approved context, deliverable, and measures.
 
 ### Baseline research
 
-Before freezing comparison arms, investigate what users actually do today and record the alternative's current capability, version, inputs, context, preparation effort, output requirements, cost, and access constraints. A convenient but weak comparator can exaggerate product value.
+Before freezing comparison arms, investigate what users actually do today. Record the alternative's current capability and version, the inputs and context it receives, the preparation effort it requires, the expected output, cost, and access constraints. This prevents an unrealistically weak comparator from making the product look better than it is.
 
 ```text
 credible alternative research

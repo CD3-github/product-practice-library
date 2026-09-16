@@ -58,7 +58,7 @@ Organize the result into three layers rather than treating every term as a peer:
 - **Decision extensions:** benchmarks, production validation, product analytics, online evals/monitoring, and controlled experiments when causality matters.
 - **System infrastructure:** contracts, cases, handoffs, runners, graders, manifests, gates, reports, and decision logs.
 
-Classify named techniques before recommending them. A golden set is a versioned case asset; an A/B test is a controlled experiment; red-team/blue-team work is adversarial assurance; robustness is a property tested across perturbations or shifts; shadow and canary are release patterns. Add only techniques that close a material evidence gap.
+Classify named techniques before recommending them. A golden set is a versioned case asset; an A/B test is a randomized controlled experiment; an A/A test checks the experiment system; red-team/blue-team work is adversarial assurance; robustness is a property tested across perturbations or shifts. Shadow validation observes a new path on real traffic without giving it production authority; canary validation exposes a small controlled share with monitoring and rollback. Choose only the techniques that close a material evidence gap for the current decision and risk.
 
 ### 2. Map the real pipeline
 
