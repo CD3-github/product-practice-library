@@ -64,7 +64,7 @@
         button.focus();
       }
       if (copied) {
-        status.textContent = label('Copied. Add your task and project context before sending.', '已复制。补上任务与项目上下文后即可发送。');
+        status.textContent = label('Copied.', '已复制。');
       } else {
         panel.querySelector('details').open = true;
         const range = document.createRange();
