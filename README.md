@@ -1,8 +1,8 @@
 # Product Practice Library
 
-A reusable prompt collection for product analysis, product planning, UX reimagination, and AI-assisted development.
+A library of reusable practice modules for product analysis, product planning, UX reimagination, evidence design, and AI-assisted development. A module may contain an agent router, canonical method, executable workflows, references, or a visual index.
 
-This folder is intentionally a prompt library, not an installed Claude Code skill. Prompts can be copied into Claude Code, Codex, or another coding agent. The collection is structured so stable prompt families can later be packaged as a shared skill.
+These modules can be used from Claude Code, Codex, or another capable agent. A mature module can later gain a thin `SKILL.md` adapter for automatic discovery without duplicating its canonical method.
 
 ## Promoted shared skills
 
@@ -14,7 +14,7 @@ Use it to design or audit the minimum documentation system for a complex, multi-
 
 This method is maintained as a shared skill rather than a copyable prompt. The skill contains the generic `PROJECT-DOC-SYSTEM.md` methodology and the Pokémon collection `PROJECT-DOCS.md` as a clearly labeled worked example.
 
-## Prompt packages
+## Practice modules and prompt packages
 
 ### Context Update Discipline
 
@@ -66,6 +66,7 @@ A cross-project method and three-prompt workflow for composing tests, evals, ben
 
 Canonical files:
 
+- `prompts/testing-evaluation-system/README.md`
 - `prompts/testing-evaluation-system/00-testing-evaluation-system.md`
 - `prompts/testing-evaluation-system/01-design-or-audit.prompt.md`
 - `prompts/testing-evaluation-system/02-implement-approved-system.prompt.md`
@@ -76,11 +77,14 @@ Canonical files:
 
 Folder: `prompts/product-analytics-experimentation/`
 
-An emerging practice branch that separates product analytics (observed behavior and association) from controlled experimentation (causal product impact), while showing how both connect to tests, offline/online evals, benchmarks, production monitoring, and shared evidence infrastructure.
+An independent practice module for designing product measurement, analyzing adoption, funnels, retention, cohorts and friction, and designing or interpreting controlled experiments. It connects product behavior and causal impact to tests, offline/online evals, reliability, cost, and safety without mixing their claim boundaries.
 
-This branch currently contains boundary guidance and a method map, not a complete agent workflow package. Start with:
+Canonical files:
 
 - `prompts/product-analytics-experimentation/README.md`
+- `prompts/product-analytics-experimentation/00-product-analytics-experimentation.md`
+- `prompts/product-analytics-experimentation/01-product-evidence-workflow.prompt.md`
+- `prompts/product-analytics-experimentation/product-analytics-experimentation.html`
 
 ## Preserved initial prompts
 

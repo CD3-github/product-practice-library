@@ -4,18 +4,17 @@ Version 1.3 · reusable cross-project methodology
 
 Subtitle: **A composable evidence system for AI and conventional product work**
 
-## What this is
+## Purpose
 
-This is a project-agnostic method for deciding whether a system behaves correctly, performs well enough, improves on a credible alternative, and remains useful in production.
+Use this method to decide whether a product or AI system:
 
-It is intentionally usable by four readers:
+- meets explicit behavioral contracts;
+- performs well enough against defined quality criteria;
+- improves on a credible alternative under fair comparison;
+- remains reliable and useful on real traffic;
+- has enough evidence for the next product or release decision.
 
-- **Engineer:** what to instrument, automate, run, debug, and gate.
-- **Coding agent:** what evidence to inspect, which artifacts to create, where authorization stops, and how to verify completion.
-- **PM:** what result was produced, what it means, which decision it supports, and what still needs human judgment.
-- **Quality/operations specialist:** whether criteria reflect real domain and workflow conditions, and which risks require adjudication.
-
-The method was generalized from a real multi-stage AI planning system. Project-specific dimensions, thresholds, brands, models, and numbers are examples, not reusable defaults.
+Adapt dimensions, thresholds, models, and decision gates to the product. Preserve the evidence types and claim boundaries defined here.
 
 ---
 

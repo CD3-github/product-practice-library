@@ -50,13 +50,15 @@ Start from the decisions the team must make. For each decision specify:
 - operational measures such as latency, reliability, human effort, and cost;
 - the result format, threshold or interpretation rule, and decision consequence.
 
-Do not force tests and evals into an either/or choice. An eval may combine exact metrics, code-based checks, heuristics, calibrated model judges, and human judgment. A shared harness is acceptable when result types, failure semantics, and provenance remain distinct.
+Compose tests and evals in the proportions required by the decision. An eval may combine exact metrics, code-based checks, heuristics, calibrated model judges, and human judgment. A shared harness is acceptable when result types, failure semantics, and provenance remain distinct.
 
 Organize the result into three layers rather than treating every term as a peer:
 
 - **Core measurement:** tests and evals.
-- **Decision extensions:** benchmarks, production validation, product analytics, online evals/monitoring, and controlled experiments when causality matters.
+- **Decision extensions:** benchmarks and production validation through online evals, monitoring, shadow, or canary exposure.
 - **System infrastructure:** contracts, cases, handoffs, runners, graders, manifests, gates, reports, and decision logs.
+
+Treat product analytics and controlled experimentation as a sibling practice. Inspect their existing contracts and signals where they affect quality or release readiness; route deeper work on funnels, cohorts, retention, behavioral metrics, exposure design, or causal product impact to `../product-analytics-experimentation/README.md`.
 
 Classify named techniques before recommending them. A golden set is a versioned case asset; an A/B test is a randomized controlled experiment; an A/A test checks the experiment system; red-team/blue-team work is adversarial assurance; robustness is a property tested across perturbations or shifts. Shadow validation observes a new path on real traffic without giving it production authority; canary validation exposes a small controlled share with monitoring and rollback. Choose only the techniques that close a material evidence gap for the current decision and risk.
 
