@@ -2,6 +2,26 @@
 
 Agent entry point for designing, implementing, or operating a reusable product evidence system.
 
+## Copy to your coding agent
+
+```text
+Read https://product-practice-library.vercel.app/prompts/testing-evaluation-system/README.md and follow its links to load the workflow needed for this task.
+My task: [describe the problem to solve]
+Project context: [repository path, relevant material, or data]
+Select the appropriate workflow, work within the authorized scope, and return result analysis, evidence links, and decisions that need my judgment.
+```
+
+中文指令：
+
+```text
+读取 https://product-practice-library.vercel.app/prompts/testing-evaluation-system/README.md，并按其中链接读取当前任务需要的工作流。
+我的任务：[写下要解决的问题]
+项目上下文：[仓库路径、相关资料或数据]
+根据任务选择合适路径，在已授权范围内开展工作；返回结果分析、证据链接，以及需要我判断的事项。
+```
+
+[Practice folder](https://github.com/CD3-github/product-practice-library/tree/main/prompts/testing-evaluation-system) · [Visual guide](testing-evaluation-system.html)
+
 ## Start here
 
 Provide:
@@ -35,6 +55,7 @@ For a mixed request, select the smallest route that can support the immediate de
 5. Run and analyze all authorized automation before escalating targeted cases to people.
 6. Keep proposals, implementation evidence, live verification, and human acceptance separate.
 7. Use links to exact artifacts and files in the handoff.
+8. In human-facing explanations, start with the question, how the concepts connect, and one concrete example. Define unfamiliar terms at first use and place detailed implementation rules in linked references or expandable sections when supported.
 
 ## Source map
 

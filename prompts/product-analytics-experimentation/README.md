@@ -2,6 +2,26 @@
 
 Agent entry point for measuring product behavior, diagnosing friction, and estimating the causal impact of product changes.
 
+## Copy to your coding agent
+
+```text
+Read https://product-practice-library.vercel.app/prompts/product-analytics-experimentation/README.md and follow its links to load the workflow needed for this task.
+My task: [describe the problem to solve]
+Project context: [repository path, relevant material, or data]
+Select the appropriate workflow, work within the authorized scope, and return result analysis, evidence links, and decisions that need my judgment.
+```
+
+中文指令：
+
+```text
+读取 https://product-practice-library.vercel.app/prompts/product-analytics-experimentation/README.md，并按其中链接读取当前任务需要的工作流。
+我的任务：[写下要解决的问题]
+项目上下文：[仓库路径、相关资料或数据]
+根据任务选择合适路径，在已授权范围内开展工作；返回结果分析、证据链接，以及需要我判断的事项。
+```
+
+[Practice folder](https://github.com/CD3-github/product-practice-library/tree/main/prompts/product-analytics-experimentation) · [Visual guide](product-analytics-experimentation.html)
+
 ## Start here
 
 Provide:

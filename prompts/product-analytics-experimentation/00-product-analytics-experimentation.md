@@ -1,6 +1,6 @@
 # Product Analytics & Experimentation
 
-Version 0.2 · reusable cross-project method
+Version 0.3 · reusable cross-project method
 
 ## Purpose
 
@@ -78,7 +78,11 @@ Product analytics can show what changed, where, for whom, and what is associated
 
 ## 3. Build the measurement foundation
 
+The foundation connects **who is counted → what happened → how the result is calculated**. For example, identify each user consistently, record successful saves, then calculate the share of users who save a draft within seven days of starting it. A measurement contract records these definitions so code, queries, and reports use the same rules.
+
 ### Identity contract
+
+Identity determines whether two actions belong to the same person or account. One person using two devices should still count as one user when the metric is defined per user; a team-level metric may instead count a shared account or workspace.
 
 Define:
 
@@ -89,6 +93,8 @@ Define:
 - eligibility, employee/test traffic, bots, and deletion handling.
 
 ### Event contract
+
+An event records an action at a defined moment. A click on Save and a successful save represent different facts. Specify which fact the metric needs, then verify that the event is emitted at that point.
 
 Every decision-critical event should specify:
 
@@ -104,6 +110,8 @@ Every decision-critical event should specify:
 
 ### Metric contract
 
+A metric turns records into a number using a defined population, formula, and time window. If 40 of 100 users who started a draft save it within seven days, user completion is 40%. Counting save events instead of distinct users answers a different question.
+
 Record:
 
 - plain-language definition;
@@ -118,7 +126,21 @@ Record:
 
 A cohort is a reusable group sharing a property or behavior. Define its entry rule, observation window, whether membership is fixed or dynamic, and the entity being grouped. Avoid post-treatment cohorts when interpreting experiments because the treatment itself may change membership.
 
+Distinguish these terms:
+
+| Term | Meaning | Example |
+|---|---|---|
+| Cohort | People or accounts sharing a defined characteristic or behavior | Users who saved a draft last month |
+| Time cohort | A cohort defined by a shared starting period; “同期群” is clearest in this context | Users who signed up in the same week |
+| Experiment assignment | Assigning an eligible unit to a variant according to the experiment design | Randomly assign eligible new users to A or B |
+| Bucketing | A technical mechanism for repeatable assignment; stability depends on identifiers and configuration | A stable user identifier maps to the same group across visits |
+| Exposure | Reaching the defined point where the assigned variant can affect the experience | Opening the editor containing the changed button |
+
+A cohort may define experiment eligibility; eligible members can then be randomized into variants. Cohort membership and variant assignment have different purposes. In Chinese reader-facing explanations, prefer `Cohort（按共同条件定义的人群）` and `实验分组`; introduce `分桶（bucketing）` when explaining assignment mechanics.
+
 ### Exposure contract
+
+A user assigned to a new editor may never open it. Record assignment and exposure separately; choose the analysis population in advance. Exposure-conditioned analysis can be biased if the treatment changes who becomes exposed.
 
 For experiments and staged rollouts, record assignment and actual exposure separately:
 
@@ -131,7 +153,9 @@ For experiments and staged rollouts, record assignment and actual exposure separ
 - contamination and fallback behavior;
 - rollback and kill-switch state.
 
-## 4. Validate the ruler before interpretation
+## 4. Verify the records and calculations before interpreting change
+
+Missing success events can make completion appear to fall; duplicate events can inflate an event-count metric. Verify a few known user actions end to end and check that the same definition is used across periods and variants before attributing movement to the product.
 
 Check:
 
@@ -261,6 +285,8 @@ Maintain only the artifacts required by the current workflow:
 
 ## Primary references
 
+- [Amplitude cohort definitions](https://amplitude.com/docs/analytics/define-cohort): groups based on shared characteristics, behavior, and time windows.
+- [Amplitude consistent and sticky bucketing](https://amplitude.com/docs/feature-experiment/advanced-techniques/sticky-bucketing): assignment stability and configuration changes.
 - [Amplitude Analytics](https://amplitude.com/docs/analytics): adoption, funnels, retention, journeys, cohorts, and reusable behavioral analysis.
 - [Amplitude Experiment overview](https://amplitude.com/docs/feature-experiment/overview): hypotheses, variants, traffic allocation, exposure, metrics, and experiment analysis.
 - [OpenAI evaluation best practices](https://developers.openai.com/api/docs/guides/evaluation-best-practices): objectives, datasets, metrics, comparison, and continuous evaluation for AI quality.

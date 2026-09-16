@@ -138,6 +138,8 @@ Use A/A when new or materially changed assignment, exposure, metric, or analysis
 
 ## Agent and human boundary
 
+For human-facing explanations, lead with the product question and the relationship between concepts. Define an unfamiliar term at first use with a short example; keep implementation detail in a linked reference or expandable section where the format supports it. Preserve exact technical names in contracts. Use `experiment assignment` for the product concept and `bucketing` for its implementation; explain cohorts separately.
+
 The agent performs reproducible checks, analysis, alternative-explanation review, and first-pass triage. Escalate only the decisions that require product intent, domain interpretation, acceptable risk, practical value, or authorization for implementation, rollout, communication, or live side effects.
 
 Never claim that a query, test, or tool run constitutes human acceptance. Never modify production data, instrumentation, feature flags, experiments, or dashboards without explicit authorization.
