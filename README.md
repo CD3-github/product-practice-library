@@ -4,6 +4,19 @@ A library of reusable practice modules for product analysis, product planning, U
 
 These modules can be used from Claude Code, Codex, or another capable agent. A mature module can later gain a thin `SKILL.md` adapter for automatic discovery without duplicating its canonical method.
 
+## Visual practice guides
+
+| Practice | Visual guide | Agent workflow |
+|---|---|---|
+| Product Research · draft | [Open page](https://product-practice-library.vercel.app/prompts/product-research/product-research) | [Research entry](prompts/product-research/README.md) |
+| Product Framing · draft | [Open page](https://product-practice-library.vercel.app/prompts/product-ux-rethinking/product-framing) | [Planning entry](prompts/product-ux-rethinking/README.md) |
+| UX Rethinking · draft | [Open page](https://product-practice-library.vercel.app/prompts/product-ux-rethinking/ux-rethinking) | [MVP reimagination entry](prompts/product-ux-rethinking/README.md) |
+| Testing & Evaluation | [Open page](https://product-practice-library.vercel.app/prompts/testing-evaluation-system/testing-evaluation-system) | [Evidence entry](prompts/testing-evaluation-system/README.md) |
+| Product Analytics & Experimentation | [Open page](https://product-practice-library.vercel.app/prompts/product-analytics-experimentation/product-analytics-experimentation) | [Analytics entry](prompts/product-analytics-experimentation/README.md) |
+| Delivery & Learning · draft | [Open page](https://product-practice-library.vercel.app/prompts/delivery-learning/delivery-learning) | [Delivery entry](prompts/delivery-learning/README.md) |
+
+The four draft guides are reviewable first versions. Framing and UX reuse the existing bilingual workflows; research and delivery add draft routing/execution guidance. These modules are not installed skills.
+
 ## Promoted shared skills
 
 ### Project Document System
@@ -106,12 +119,7 @@ Language: English.
 
 ## How to use
 
-1. Read the general restructuring workflow in the preferred language.
-2. Choose the correct prompt family and language.
-3. Replace every `[placeholder]`.
-4. Add exact repo/worktree and source-document paths when implementation evidence matters.
-5. Keep the initial run read-only and proposal-only.
-6. Require exact proposal-ID approval before implementation.
+Copy the instruction at the top of the relevant visual guide, or give the agent its README link and your task. The agent inspects context, selects the workflow, and reads the required sources. Specify repository/source locations and allowed actions when needed. Proposals, implementation, live execution, and publishing retain separate approval boundaries.
 
 ## Library conventions
 

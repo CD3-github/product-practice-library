@@ -1,105 +1,54 @@
-# Product & UX Rethinking Prompt Pack
+# Product & UX Rethinking
 
-This package contains two different prompt families. They should not be merged into one generic “UX prompt,” because they start from different evidence and authorize different kinds of reasoning.
+Agent entry for two distinct workflows: planning a new feature and reimagining an existing implementation. Use the user's preferred language. Both routes share the general restructuring method and retain their specialized evidence requirements.
 
-Both prompt families use one shared restructuring workflow:
+[Product framing guide · draft](product-framing.html) · [UX rethinking guide · draft](ux-rethinking.html) · [GitHub repo](https://github.com/CD3-github/product-practice-library/tree/main/prompts/product-ux-rethinking)
 
-- `00-general-product-restructuring-workflow.zh-CN.md`
-- `00-general-product-restructuring-workflow.en.md`
+## Route automatically
 
-The shared workflow defines source-of-truth mapping, responsibility allocation, risk review, critical text flows, information disposition, scope splitting, artifact selection, structural-slice validation, and stage gates. The two specialized prompts then apply those standards to different starting conditions.
+Inspect the conversation, product maturity, evidence, and authorization before asking for missing inputs. Read the selected workflow and the matching-language shared method completely.
 
-## Choose the correct prompt
+| Intent / starting point | Required workflow | Return |
+|---|---|---|
+| The product model, responsibility, or MVP is not yet settled | New-feature planning: [简中](02-new-feature-product-planning.zh-CN.md) / [EN](02-new-feature-product-planning.en.md) | Evidence, distinct concepts, recommended model, lifecycle, MVP, proposal |
+| A real MVP or production implementation needs rethinking | Existing-MVP UX reimagination: [简中](01-existing-mvp-ux-reimagination.zh-CN.md) / [EN](01-existing-mvp-ux-reimagination.en.md) | Verified baseline, friction, structural directions, experience blueprint, migration slices |
+| Both the product model and an existing implementation need review | Plan the target model first, then audit migration with the MVP workflow | A coherent proposal with implementation evidence and safe migration |
 
-### 01 — Existing MVP UX reimagination
+Shared method: [简中](00-general-product-restructuring-workflow.zh-CN.md) / [EN](00-general-product-restructuring-workflow.en.md).
 
-Use when engineers have already implemented an MVP, prototype, or partial production feature and the current UI/flow has become implementation-led, dense, or difficult to use.
+Current code is required evidence for the MVP route. In new-feature planning, exploratory code is feasibility input; the user job and evidence define the product model. Missing access remains unverified.
 
-The agent must:
+## Authority and execution
 
-- inspect the real repository, routes, components, services, states, and contracts;
-- treat the current UI as evidence, not as the target model;
-- separate underlying capability from its current presentation;
-- identify where engineering structures leaked into the user experience;
-- propose materially different UX directions;
-- preserve output quality, data truth, permissions, and execution safety;
-- stop for approval before modifying code.
+1. Default to read-only analysis and proposal; create documents only in the authorized destination.
+2. Distinguish documented intent, implemented behavior, fixtures, live observations, proposals, and unknowns.
+3. Build the source map, user/system responsibility map, and truth/authority/readiness/recovery review before high-fidelity UI.
+4. Write the critical text flow and classify information as Keep, Rewrite, Progressive disclosure, Move, Remove, or Add.
+5. Compare meaningful product directions. Use mockups only when a structural choice remains.
+6. Split scope across V1/V2 and Product/Design versus Engineering. Identify dependencies that visual changes cannot solve.
+7. Return a proposal ID and the next bounded slice. Implement only after explicit approval of the proposal and slice.
+8. Validate friction, output quality, capability truth, and execution safety together.
 
-Files:
+## Copy instruction
 
-- `01-existing-mvp-ux-reimagination.zh-CN.md`
-- `01-existing-mvp-ux-reimagination.en.md`
+~~~text
+Read https://product-practice-library.vercel.app/prompts/product-ux-rethinking/README.md. Select the new-feature planning or existing-MVP reimagination route from my task and context. Read the required shared method and specialized prompt. Return an evidence-backed proposal and the next decision, staying within the authorized phase.
+~~~
 
-### 02 — New feature product planning
+~~~text
+读取 https://product-practice-library.vercel.app/prompts/product-ux-rethinking/README.md，根据任务与上下文选择新功能规划或已有 MVP 重新构想路径。完整读取所需通用方法与专项 prompt，在授权阶段内交付有证据的提案与下一项决定。
+~~~
 
-Use when a product feature is being planned from first principles, before its product model, user flow, system boundary, and MVP have been settled.
+## Supporting practices
 
-The agent must:
+- [Product Research](../product-research/README.md): unresolved user, alternative, or feasibility questions.
+- [AI Product System Audit](../ai-product-system-audit/README.md): harness, wiring, schema, contract, and removal risks.
+- [Testing & Eval](../testing-evaluation-system/README.md): evidence design and quality verification.
+- [Delivery & Learning](../delivery-learning/README.md): approved slice, release readiness, and handoff.
+- [Context Update Discipline](../context-update-discipline/README.md): clean canonical intent after feedback.
 
-- validate the problem before designing the solution;
-- define users, jobs, outcomes, authority, and non-goals;
-- explore genuinely different product concepts;
-- design the lifecycle, flows, states, permissions, and recovery model;
-- define AI and system responsibilities;
-- separate MVP from later capability;
-- produce an approval-ready product plan before implementation.
+## Choose useful artifacts
 
-Files:
+Use a core judgment for product responsibility, tables for comparisons, a text flow for experience, flowcharts for states/recovery, variations for unresolved structure, a checklist for work, and an evidence appendix for traceability. Select only artifacts that help the current decision.
 
-- `02-new-feature-product-planning.zh-CN.md`
-- `02-new-feature-product-planning.en.md`
-
-## Decision rule
-
-Use **01** when there is a real implementation whose behavior and constraints must be audited.
-
-Use **02** when the main question is still “what should this feature be?” rather than “how should this implemented feature be redesigned?”
-
-If a project is in between:
-
-1. Run **02** first to establish the intended product model.
-2. Run **01** second to compare that model with the existing MVP and design a safe migration.
-
-## Important distinction
-
-The two prompts share principles—user outcomes, evidence, progressive disclosure, authority, safety, and approval-first execution—but their baselines differ:
-
-| Prompt | Starting point | Primary question | Role of current code |
-|---|---|---|---|
-| Existing MVP UX reimagination | Real implementation | How should this experience be reconceived? | Required evidence and migration constraint |
-| New feature product planning | User/business problem | What should this feature become? | Optional feasibility input, not the product model |
-
-## Usage
-
-1. Read the shared workflow in the preferred language.
-2. Choose prompt 01 or prompt 02 using the decision rule above.
-3. Copy both the shared workflow and the selected specialized prompt into the agent session, or give the agent their exact paths.
-4. Replace every `[placeholder]`.
-5. Add exact document and repo paths when available.
-6. Keep the first run read-only and proposal-only.
-7. Approve the proposal ID and implementation slice explicitly before code changes.
-
-## Artifact selection
-
-Do not request every format by default:
-
-- use a core judgment article to explain why the product definition must change;
-- use tables for maturity, responsibility, options, evidence, risk, and V1/V2 boundaries;
-- use a critical text flow before UI to simulate what the user sees, what the system resolves, and what the user decides;
-- use a flowchart only for state, permission, branching, and recovery logic;
-- use mockup variations only when materially different information hierarchies or interaction models remain;
-- use a checklist for implementation tasks, engineering dependencies, validation, and ongoing risk;
-- use an evidence appendix for traceability across documents, code, contracts, real responses, and live verification.
-
-## Future skill conversion
-
-This folder is intentionally structured so it can later become a shared skill. A future `SKILL.md` should be a thin router:
-
-- route implemented MVP redesign requests to prompt 01;
-- route first-principles feature planning requests to prompt 02;
-- load the shared restructuring workflow before either specialized reference;
-- define evidence and memory requirements;
-- preserve read-only versus implementation authorization boundaries;
-- keep the bilingual prompt bodies as references rather than embedding them in the router.
-
-The eventual skill should be installed under the shared root `~/.agents/skills/`, not made tool-specific.
+A future skill adapter should route to these canonical files. The package is reusable guidance, not an installed skill.

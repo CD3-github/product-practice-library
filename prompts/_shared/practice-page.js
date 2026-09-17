@@ -8,6 +8,17 @@
   let theme = readSetting('ppl-theme') || (matchMedia('(prefers-color-scheme: dark)').matches ? 'dark' : 'light');
   const label = (en, zh) => language === 'zh-CN' ? zh : en;
 
+  function showCurrentLibraryPage() {
+    requestAnimationFrame(() => {
+      const nav = document.querySelector('.library-nav');
+      const active = nav?.querySelector('[aria-current="page"]');
+      if (!active || nav.scrollWidth <= nav.clientWidth) return;
+      const offset = active.getBoundingClientRect().left - nav.getBoundingClientRect().left;
+      nav.scrollLeft += offset - (nav.clientWidth - active.clientWidth) / 2;
+    });
+  }
+  window.addEventListener('resize', showCurrentLibraryPage);
+
   function updateThemeLabel() {
     themeButton.setAttribute('aria-label', theme === 'dark'
       ? label('Switch to light mode', '切换到浅色模式')
@@ -28,6 +39,7 @@
     document.querySelectorAll('.copy-status').forEach(element => { element.textContent = ''; });
     updateThemeLabel();
     saveSetting('ppl-language', language);
+    showCurrentLibraryPage();
   }
 
   function setTheme(next) {
