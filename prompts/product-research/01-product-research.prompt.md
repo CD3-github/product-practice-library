@@ -6,7 +6,15 @@ Draft 0.1 · Decision-focused research; cross-product and cross-repository.
 
 Turn uncertainty about users, alternatives, constraints, or feasibility into evidence that supports a concrete decision. Use the current conversation, supplied artifacts, accessible repository, and approved public sources. Recover the decision, population, task, timeframe, maturity, access, privacy, time/cost budget, and output destination before asking questions.
 
-Select `research-plan`, `source-research`, or `synthesis`. State the selected mode and the claim it can support. Default to read-only analysis and report; a request to plan research does not authorize contacting people, paid access, private-data upload, product changes, or publishing.
+Apply [the task contract](../_shared/task-contract.md). Select `research-plan`, `source-research`, or `synthesis` and complete its deliverable. Default to read-only analysis and report; planning does not authorize participant contact, paid access, private-data upload, product changes, or publishing.
+
+| Mode | Apply | Completion |
+|---|---|---|
+| `research-plan` | Frame questions, select methods, design sampling/tasks, and define interpretation and stopping rules | A usable research plan with draft session questions or source strategy, expected evidence, assumptions, and access/consent prerequisites |
+| `source-research` | Frame, collect authorized sources, synthesize, and recommend | Actual source-linked findings and their limits |
+| `synthesis` | Frame the decision, interpret supplied evidence, and recommend | Traceable themes, exceptions, competing explanations, and implications |
+
+For a plan, source inspection is bounded to what changes the method. Participant evidence and findings are future outputs, not entry requirements. For synthesis, missing raw material limits conclusions; analyze available evidence and ask only for the missing material needed for the requested conclusion. Sections below supply methods for the selected mode, not an obligatory collection sequence.
 
 ## 1. Frame the uncertainty
 
@@ -68,11 +76,19 @@ Use a stopping rule: stop when the decision-relevant questions have sufficient e
 
 ## Output contract
 
-1. Decision brief and recommendation.
-2. Findings table with evidence IDs, source links, confidence, and implications.
-3. Contradictions, sampling/access limits, and unverified claims.
-4. Selected research artifacts only: method/sample plan, task map, alternative comparison, or synthesis.
-5. Prioritized next questions and the actions requiring human judgment/authorization.
+For `research-plan`, return:
+
+1. Decision, prioritized questions, and what evidence would change the recommendation.
+2. Method and sample/source strategy: why each approach fits, inclusion/exclusion, segments, and bias risks.
+3. Draft interview/task guide or source-comparison rubric; analysis approach and stopping rules.
+4. Execution sequence, resource assumptions, consent/access prerequisites, and genuine current blockers.
+
+For `source-research` or `synthesis`, return:
+
+1. Decision brief and supported recommendation.
+2. Findings with evidence IDs, source links, confidence, implications, and conflicting cases.
+3. Sampling/access limits, unverified claims, and selected task maps or comparisons.
+4. Targeted next questions and actions requiring human judgment or authorization.
 
 Keep the main report short enough to review. Put source excerpts, detailed methods, and secondary comparisons in an appendix. Separate proposed work, performed work, and validated outcomes.
 

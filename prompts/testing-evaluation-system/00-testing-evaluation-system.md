@@ -16,6 +16,8 @@ Use this method to decide whether a product or AI system:
 
 Adapt dimensions, thresholds, models, and decision gates to the product. Preserve the evidence types and claim boundaries defined here.
 
+Apply [the task contract](../_shared/task-contract.md) for scope, evidence, authority and decision-ready writing. Read the sections needed for the current deliverable; the full method is a reference, not a mandatory execution sequence.
+
 ---
 
 ## 1. Choose an evidence mix from the decision
@@ -26,30 +28,30 @@ Start from the decision that must be supported. Choose the smallest trustworthy 
 
 ### Three-layer system model
 
-The common terms do not belong to one MECE list. Use three layers:
+Organize the system around measurement, decision-oriented study designs, and the infrastructure that makes both repeatable:
 
 ```text
 1. CORE MEASUREMENT
-   tests -> does behavior meet explicit requirements?
+   tests -> do directly checkable behaviors and constraints hold?
    evals -> how well does the system perform against defined criteria?
 
-2. DECISION EXTENSIONS
-   benchmarks -> compare alternatives with shared measurements
-   production validation -> connect controlled evidence to real use
+2. APPLY MEASUREMENTS
+   benchmarks -> compare alternatives -> choose a version, model, or workflow
+   production validation -> check real-use performance -> expand, repair, or roll back
       product analytics -> observed behavior and association
       online evals/monitoring -> live quality, reliability, and drift
-      controlled experiments -> causal impact when the design permits
+   controlled experiments -> estimate causal impact -> adopt, revise, or stop
 
 3. SYSTEM INFRASTRUCTURE
    contracts + cases + stage handoffs + runners + graders
    manifests + gates + reports + decision logs
 ```
 
-`Outcomes` are signals observed through production validation—not a complete method. They may become an eval dimension, benchmark metric, analytics measure, experiment outcome, or release gate once their definition and evidence boundary are explicit.
+`Outcomes` are observed results, such as task completion, edits or incidents. Define the signal and its evidence boundary before using it as an eval dimension, benchmark metric, analytics measure, experiment outcome or release gate.
 
 | Decision need | Primary mechanism | It may include | Result |
 |---|---|---|---|
-| Does behavior meet explicit contracts? | Deterministic tests | Unit, contract, integration, E2E, authority, failure/recovery, exact cost or latency limits | Pass/fail and localized failures |
+| Do directly checkable behaviors and constraints hold? | Assertion-based tests | Unit, contract, integration, E2E, authority, failure/recovery, defined cost or latency limits | Pass/fail and localized failures |
 | How well does the system perform against defined criteria? | Evals | Exact metrics, rules, heuristics, model judges, human grading, cost, latency, reliability | Per-case and aggregate scorecards with reasons and uncertainty |
 | Which alternative performs better under fair conditions? | Benchmark | Baseline research, frozen cases, context parity, repeated tests/evals, operational measures | Comparative deltas and trade-offs |
 | What happens with real users and real traffic? | Production validation | Product analytics, traces, online evals, monitoring, feedback, edits, incidents, adoption | Observed quality, behavior, drift, and real-world relevance |
@@ -57,10 +59,13 @@ The common terms do not belong to one MECE list. Use three layers:
 
 ### Compose tests and evals for the decision
 
-- A deterministic feature may be test-led: start with exact assertions, then add evals for qualities such as clarity or usefulness that still require judgment.
-- An open-ended AI feature may be eval-led while retaining deterministic checks for schemas, tool calls, safety gates, cost, latency, and other hard constraints.
-- The same harness may run both when it preserves distinct result types, provenance, and failure semantics. Separate infrastructure when execution, ownership, or risk genuinely differs.
-- Use the simplest grader that validly measures the criterion: code before model judgment where code is sufficient, calibrated model judges where nuance is required, and human review for calibration, ambiguity, and high-risk decisions.
+Tests and evals can use the same cases. Build the combination by choosing how to judge each requirement, then deciding whether repeated runs are needed to understand variability.
+
+- **Directly verifiable rules → code checks.** Check required fields, permissions, state changes or a defined limit against a known rule. A deterministic check gives the same verdict for the same recorded input and result, including results produced by an AI system.
+- **Contextual quality → explicit criteria and judgment.** Define what makes an answer grounded, useful or suitable for its intended user. Use qualified human review or a validated model judge where code alone cannot adequately assess that criterion.
+- **Variation affects the decision → repeated runs.** Apply the selected checks and graders across repeated trials; report success rates or score distributions with uncertainty. Repeat only where variability matters to the claim.
+
+Use the simplest trustworthy grader for each criterion. The same harness may run several mechanisms while preserving distinct results, provenance and failure semantics; separate infrastructure when execution, ownership or risk genuinely differs.
 
 ### Relationship among the mechanisms
 
@@ -89,7 +94,7 @@ production failures and human findings
 
 ### Classify method names before adding them
 
-Many useful terms name a dataset, design pattern, risk lens, or release technique—not another peer layer:
+Method names identify different resources and techniques. This classification helps select what each contributes to the evidence plan:
 
 | Term | Classification | Use |
 |---|---|---|
@@ -121,7 +126,7 @@ It creates the controlled evidence those later decisions need.
 
 Use **Testing & Evaluation System** for the main title and first definition. After that, use `eval`, `evals/`, and “eval matrix” consistently. `Eval` is a shared AI engineering and product concept this guide is intended to teach. Do not call this a complete “Product Quality System” unless it also owns user research, analytics, experimentation, incident learning, and business attribution.
 
-### Three decision perspectives, not fixed job titles
+### Decision perspectives
 
 - **Product:** What result did we get? What user or product goal does it represent? Which decision does it support, and what is the next product lever?
 - **Engineering:** Is the result technically valid and reproducible? Where did failure first diverge? Is the problem in the product, data, harness, grader, or environment?
@@ -218,7 +223,7 @@ Secrets and sensitive source data should be referenced or redacted, not copied i
 
 ---
 
-## 4. Testing suite: deterministic confidence
+## 4. Testing suite: required behavior and failure paths
 
 The test suite answers whether the system conforms to explicit contracts.
 
@@ -235,7 +240,7 @@ The test suite answers whether the system conforms to explicit contracts.
 
 ### Test pyramid rule
 
-Use many deterministic stage and contract tests, fewer integration tests, and a small set of high-value E2E paths. Stage tests localize failure. E2E tests prove that real composition works. Neither replaces the other.
+Choose stage and contract checks that localize likely failures, integration checks for consequential boundaries, and a small set of high-value E2E paths. Stage checks isolate behavior; E2E results provide evidence that the real composition works under the tested conditions. Balance coverage against the decision and risk rather than a fixed test count.
 
 ### Model and provider calls
 
@@ -260,7 +265,7 @@ Never let an unmarked paid or side-effecting live call enter the default CI path
 
 ## 5. Eval matrix: structured performance evidence
 
-An eval matrix is a versioned set of scenarios crossed with explicit criteria and graders. Criteria may be deterministic, operational, semantic, contextual, or human-judged. The matrix shows how performance changes across meaningful variation.
+An eval matrix is a versioned set of scenarios crossed with explicit criteria and graders. Criteria can cover correctness, constraint adherence, operational performance, semantic quality or user value; each maps to an appropriate judgment mechanism. The matrix shows how performance changes across meaningful variation.
 
 ### Scenario axes
 
@@ -269,6 +274,9 @@ Choose axes that can change behavior or risk. Common examples:
 - user segment, domain, vertical, geography, language, and locale;
 - business goal or user job;
 - input richness: complete, typical, sparse, noisy, conflicting, stale;
+- supported representations: input format, language and modality;
+- contextual complexity: active intents, relevant history, corrections and evidence ambiguity;
+- allowed customization: presentation or preference changes, their priority and protected requirements;
 - lifecycle state: first use, edit, retry, recovery, insufficient permission, historical data;
 - risk tier and allowed authority;
 - tool, retrieval, memory, or provider availability;
@@ -276,6 +284,8 @@ Choose axes that can change behavior or risk. Common examples:
 - expected scale, duration, or output size.
 
 Do not build a full Cartesian product by default. Use a balanced fractional matrix that isolates the most important effects while remaining affordable to repeat.
+
+Use [edge-case design](references/robustness-design.md) to turn selected variations into observable checks. Specify what should remain stable, change, require clarification or follow a safe fallback. Persistence and handoff coverage depend on actual mechanisms, not on the presence of those terms in a method catalog.
 
 ### Case-design rules
 
@@ -322,12 +332,19 @@ Use hard caps for disqualifying failures such as fabrication, impossible executi
 
 ## 6. Graders and judge validation
 
+To make a score useful for a decision, connect three choices:
+
+- **Criterion:** what behavior or quality needs to meet a standard.
+- **Judgment mechanism:** which code check, qualified reviewer or validated model can assess it.
+- **Result:** the pass/fail verdict, measured quantity, rating or preference, including its limits and uncertainty.
+
+Choose the mechanism for the criterion rather than the result format: both humans and models can produce numerical ratings or binary labels. Use [grader design](references/grader-design.md) when composition, calibration, bias or escalation needs further specification.
+
 Use the simplest trustworthy grader for each dimension:
 
-1. **Deterministic assertion:** exact values, schema, prohibited states, required fields.
-2. **Programmatic metric:** similarity, coverage, ranking metric, citation match, domain calculation.
-3. **Model judge:** semantic or contextual quality that cannot be reliably encoded.
-4. **Human review:** calibration, adjudication, high-risk decisions, and user-level judgment.
+1. **Code-based grading:** assertions for exact values, schema, prohibited states and required fields; computed metrics for defined quantities such as coverage, ranking, latency or domain calculations. Specify the reference, formula and limits of any proxy.
+2. **Human review:** direct domain or user-level judgment, calibration, adjudication and consequential trade-offs.
+3. **Model judge:** repeated semantic or contextual judgments under a defined rubric, with reliability checked against qualified human review.
 
 Production traces and outcomes can supply cases and signals, but they are not automatically graders. Convert them into an explicit metric, evaluator, human judgment, or experiment before using them as decision evidence.
 
@@ -359,13 +376,13 @@ Before a model judge controls a decision:
 
 ## 7. Staged and end-to-end eval
 
-A multi-stage system needs both local and composed evidence.
+A multi-stage system needs visibility into relevant stage behavior and evidence that the selected composition works. A bounded first round can use one real-path runner with captured intermediate artifacts. Independent runners, replay and dedicated reports are investments for stages that need repeated isolation, not prerequisites for every stage check. See [scope and stopping rules](references/bounded-round-design.md).
 
 ### Stage-level
 
 - Freeze the upstream artifact and assess one stage's output.
 - Use the same stage contract in production and eval.
-- Save stage outputs so a failure can be replayed without paying for upstream work.
+- Save relevant stage outputs for diagnosis; add replay where its benefit justifies the setup.
 - Attribute defects to the first stage where behavior diverges.
 - Distinguish an upstream-input defect from a current-stage defect.
 
@@ -391,7 +408,9 @@ These are complementary coverage levels, not a mandatory maturity sequence. Evid
 
 ## 8. Baseline research and comparative benchmarks
 
-Every comparison needs a credible reference. The baseline should represent what users would realistically do today, while the benchmark is the controlled procedure that gives every arm the same task, approved context, deliverable, and measures.
+Every comparison needs a credible reference for its decision. For product value, the baseline should represent what users would realistically do today; for a version change, the current system may be sufficient. A benchmark applies shared measures to comparable tasks under documented conditions. Natural-use comparisons can retain realistic input and effort differences; context-parity comparisons control information access.
+
+Use [comparative design](references/comparative-design.md) when specifying a benchmark: it distinguishes version comparisons, realistic alternatives, component ablation, and quality/cost trade-offs. Select the relevant design rather than requiring each type.
 
 ### Baseline research
 
@@ -411,13 +430,13 @@ Compare the system to its prior version using frozen cases, versions, and settin
 
 ### External baseline
 
-Compare against the best realistic alternative a user could access. A useful three-arm pattern is:
+Compare against a credible alternative a user could access, including general-purpose AI when it serves the same job. When separating context advantage from workflow value matters, consider this three-arm pattern:
 
 - **A — natural alternative:** the manual process or general tool with the minimal input a user would naturally provide.
 - **B — context-parity alternative:** the same general tool with all approved context available to the specialized system, but without the specialized workflow.
 - **C — specialized product:** the real feature through its production-equivalent path.
 
-The most honest product-value bar is usually **C beats B**, not merely C beats A. Beating A may prove context helps; beating B shows that the workflow, orchestration, validation, or interface adds value beyond context.
+A versus C addresses realistic replacement value. B versus C helps assess value beyond context access; neither isolates one internal component. Equal quality with less preparation or correction can be valuable. Choose the arms needed for the decision, and use a controlled ablation for component attribution.
 
 ### Fair-comparison rules
 
@@ -469,7 +488,9 @@ For planning, add volume, provider-price, reviewer-time, and failure-rate sensit
 
 ## 10. Reporting: one evidence package, several lenses
 
-Every result should preserve separate panels:
+Open a substantial report with a decision overview using [the delivery contract](README.md#decision-ready-deliverables): recommendation, supporting result or design rationale, scope and units, material uncertainty, and next action. The panels below substantiate that overview; they are not all equally important to the first reading. Put the complete evidence in the body, with links from decision-changing claims. Plans describe how evidence will support a decision; measured reports describe what the collected evidence actually supports.
+
+Preserve separate panels for the evidence actually selected and collected. Include a missing panel as a limitation only when its absence changes the decision:
 
 1. **Correctness panel:** deterministic pass/fail, contract failures, safety gates.
 2. **Quality scorecard:** every dimension, reason, hard cap, segment, and variance.
@@ -529,52 +550,52 @@ Do not rewrite old rounds to match current understanding. Append a correction or
 
 ## 12. Agent-handable setup workflow
 
-A coding agent setting this up in a new project should proceed in approval-bounded phases.
+Select the requested route in [README](README.md) and apply [the task contract](../_shared/task-contract.md). The phases below describe an implementation lifecycle, not prerequisites to every task. A design specifies concrete contracts, cases, criteria, architecture, and future verification; an audit substantiates current-state claims; implementation and runs require their respective authorization. Apply only the components selected for this evidence strategy.
 
-### Phase 0 — verify current truth
+### Phase 0 — establish relevant context
 
-- Read repository instructions, product intent, code paths, schemas, tests, evals, runtime configuration, and existing reports.
+- For a design, use supplied intent, examples, and constraints; inspect sources only where they change the proposal. For an audit or implementation, inspect relevant repository instructions, code, contracts, and existing evidence.
 - Record branch/commit, dirty state, available environments, paid-call boundaries, and inaccessible evidence.
 - Label claims as verified, implemented, proposed, or unverified.
 
 ### Phase 1 — define the decision contract
 
 - Name the decision, user outcome, and unit of evidence.
+- Bound the version or acceptance scope, define sufficient-evidence and resource stopping rules, and identify consequential deferrals with triggers. Separate setup, automated runtime and human-review effort; use [bounded-round design](references/bounded-round-design.md).
 - Select the smallest trustworthy mix of tests, evals, benchmark comparison, production monitoring/online evals, experiments, and human review.
 - Define criteria, hard caps, operational metrics, thresholds, accountable participants, and decision consequences.
 - Identify the highest-risk measurement assumption, often judge validity, data availability, or context parity.
 
 ### Phase 2 — map the pipeline and scenario registry
 
-- Draw the real stages and contracts.
+- Map proposed stages/contracts for design, and inspected stages/contracts for audit or implementation. Label the distinction.
 - Identify stable injection and capture points.
-- Build the smallest representative case matrix with development, regression, calibration, and held-out partitions.
+- Build the smallest representative case matrix; separate tuning, regression, calibration and held-out usage where those purposes apply.
 
-### Phase 3 — build deterministic confidence first
+### Phase 3 — verify selected required behaviors
 
-- Add unit/stage/contract tests and one narrow E2E.
+- Implement selected unit/stage/contract checks; add narrow E2E evidence where composition affects the decision.
 - Add failure, authority, and read-back checks where relevant.
 - Keep the default path free of paid network calls and irreversible side effects.
 
 ### Phase 4 — build quality eval
 
-- Implement deterministic graders first.
-- Add model judges only for genuinely semantic dimensions.
+- Map each quality criterion to its primary grader; use code where it validly measures the criterion.
+- Use direct human review for a bounded judged-quality sample where practical; add calibrated model judges when volume or repetition warrants them.
 - Human-calibrate judges before using them as gates.
-- Persist complete run manifests and stage artifacts.
+- Preserve enough applicable versions and artifacts to reconstruct the selected measurements, using existing records where suitable.
 
 ### Phase 5 — establish baselines and economics
 
 - Research the user's credible alternatives and the conditions required for a fair comparison.
-- Record the internal baseline.
-- Build a fair external alternative, including context parity.
+- Select an internal baseline, external alternative or other comparison according to the decision; add context parity when separating information access from workflow value matters.
 - Run the benchmark with shared tests, evals, and operational measures.
 - Measure total cost and effort to a usable result.
 
 ### Phase 6 — run one structural slice
 
 - Execute one scenario from entry to final result.
-- Prove stage isolation, real composition, grading, artifact persistence, automated analysis, human escalation, report generation, and decision logging.
+- Verify the selected measurement path and its analysis/reporting. Include stage isolation, composition, replay, grading, and human escalation where the decision requires them.
 - Only then scale the matrix or automate release gates.
 
 ### Phase 7 — operationalize
@@ -643,11 +664,14 @@ Advancing a level requires evidence, not more files.
 
 ## 15. Reusable checklist
 
+Select items for the current version, decision and evidence mix. This is a coverage reference, not a requirement to build every component before the first round. Deferred material risks need a rationale and trigger; absent optional infrastructure is not itself a defect.
+
 ### Decision contract
 
 - [ ] The user outcome and unit under eval are explicit.
 - [ ] The evidence mix follows the decision; tests and evals are not forced into false either/or categories.
 - [ ] Every gate names an owner and a decision consequence.
+- [ ] Acceptance scope, sufficient-evidence stopping point, resource limits and consequential deferrals are explicit.
 
 ### Tests
 
@@ -668,7 +692,7 @@ Advancing a level requires evidence, not more files.
 ### Baselines and economics
 
 - [ ] Baseline research identifies the user's credible alternatives before comparison arms are frozen.
-- [ ] Internal and external baselines are both defined.
+- [ ] Selected comparison arms answer the decision; internal and external baselines are included only where relevant.
 - [ ] The external comparison includes context parity where relevant.
 - [ ] Inputs, versions, deliverables, and effort accounting are fair.
 - [ ] Total cost per usable outcome is reported separately from quality.
@@ -689,7 +713,7 @@ Advancing a level requires evidence, not more files.
 
 ## Glossary
 
-- **Test:** deterministic check against an explicit expected result or invariant.
+- **Test:** a check of behavior or a property; in this guide, primarily an assertion against an expected value, state, or invariant. Software testing also includes exploratory and statistical approaches.
 - **Eval:** structured measurement against defined criteria; it may combine deterministic metrics, code-based graders, model judges, and human judgment.
 - **Eval contract:** the decision question, rubric, thresholds, baselines, owners, and consequences governing an eval.
 - **Operational metric:** objective cost, time, reliability, throughput, or completeness measurement.

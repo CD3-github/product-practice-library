@@ -4,6 +4,8 @@ Version 0.3 · reusable cross-project method
 
 ## Purpose
 
+Apply [the task contract](../_shared/task-contract.md) for scope, evidence, authority and decision-ready writing. Select the methods needed for the current question; use the linked workflow for the requested deliverable.
+
 Use this practice to turn product behavior into decisions:
 
 - define trustworthy product signals;

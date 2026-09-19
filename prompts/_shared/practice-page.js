@@ -5,8 +5,28 @@
   const readSetting = key => { try { return localStorage.getItem(key); } catch { return null; } };
   const saveSetting = (key, value) => { try { localStorage.setItem(key, value); } catch {} };
   let language = readSetting('ppl-language') === 'zh-CN' ? 'zh-CN' : 'en';
+  const searchLanguage = new URLSearchParams(location.hash.split('?')[1] || '').get('searchLang');
+  if (searchLanguage === 'en' || searchLanguage === 'zh-CN') language = searchLanguage;
   let theme = readSetting('ppl-theme') || (matchMedia('(prefers-color-scheme: dark)').matches ? 'dark' : 'light');
   const label = (en, zh) => language === 'zh-CN' ? zh : en;
+
+  // Local drafts must route agents to the files being previewed, not a deployed
+  // revision. Derive the path at runtime so personal paths stay out of the site.
+  if (window.location.protocol === 'file:') {
+    document.querySelectorAll('.agent-instruction[data-entry]').forEach(element => {
+      const entry = new URL(element.dataset.entry, window.location.href);
+      const localPath = '`' + decodeURIComponent(entry.pathname) + '`';
+      for (const key of ['en', 'zh']) {
+        const localReference = key === 'zh'
+          ? localPath + '（工作流及相对引用从此本地副本读取）'
+          : localPath + ' (resolve linked workflows and references within this local checkout)';
+        element.dataset[key] = element.dataset[key].replace(
+          /https:\/\/product-practice-library\.vercel\.app\/prompts\/[^\s，。]+\/README\.md/,
+          localReference,
+        );
+      }
+    });
+  }
 
   function showCurrentLibraryPage() {
     requestAnimationFrame(() => {
@@ -40,6 +60,7 @@
     updateThemeLabel();
     saveSetting('ppl-language', language);
     showCurrentLibraryPage();
+    document.dispatchEvent(new Event('ppl:languagechange'));
   }
 
   function setTheme(next) {
@@ -88,6 +109,26 @@
       }
     });
   });
+
+  // Method links can target a closed disclosure, including older saved anchors.
+  function revealFragment() {
+    if (location.hash.includes('?search=')) return; // Search owns its reveal and focus.
+    let id;
+    try { id = decodeURIComponent(location.hash.slice(1).split('?')[0]); } catch { return; }
+    const target = document.getElementById(id);
+    if (!target) return;
+    let opened = false;
+    for (let node = target; node; node = node.parentElement) {
+      if (node.tagName === 'DETAILS' && !node.open) { node.open = true; opened = true; }
+    }
+    if (opened) requestAnimationFrame(() => target.scrollIntoView({block:'start'}));
+  }
+  window.addEventListener('hashchange', revealFragment);
+  document.addEventListener('click', event => {
+    const anchor = event.target.closest('a[href^="#"]');
+    if (anchor && anchor.getAttribute('href') === location.hash) revealFragment();
+  });
+  requestAnimationFrame(revealFragment);
 
   const links = [...document.querySelectorAll('.toc a[href^="#"]')];
   const sections = links.map(link => document.querySelector(link.getAttribute('href'))).filter(Boolean);

@@ -2,6 +2,8 @@
 
 Use this workflow to design product measurement, analyze behavior, design an experiment, or interpret experiment results. Select exactly one primary mode for the current run while preserving links to adjacent evidence.
 
+Apply [the task contract](../_shared/task-contract.md). Design modes deliver proposed contracts and plans from available context; actual data is required for measured conclusions. Bound source inspection to the requested deliverable. Mark unknown baseline rates, traffic, schemas, and permissions as design assumptions or execution prerequisites where a useful plan can still be completed.
+
 ## Inputs
 
 Start from the available context:
@@ -19,14 +21,15 @@ Inspect available sources before asking for missing information. Mark unavailabl
 
 Choose the mode that matches the requested decision:
 
-- `measurement-design`: define or audit product measurement.
+- `measurement-design`: propose product measurement contracts and validation.
+- `measurement-audit`: assess existing instrumentation and data validity.
 - `behavior-analysis`: understand adoption, activation, funnels, retention, cohorts, journeys, or friction.
 - `experiment-design`: decide whether and how to run a controlled experiment.
 - `experiment-analysis`: validate and interpret a completed or running experiment.
 
 If the request mixes modes, identify the immediate decision and complete the smallest coherent mode first. State the next route rather than silently expanding scope.
 
-## Shared preflight
+## Evidence preflight for audits and results analysis
 
 Before interpreting results:
 
@@ -38,6 +41,8 @@ Before interpreting results:
 6. Record queries, parameters, data windows, versions, and artifacts required to reproduce the result.
 7. Separate observed fact, interpretation, hypothesis, and causal claim.
 
+In design modes, specify these checks as the future validation plan. Verify supplied facts only where needed to choose the design; complete the plan with labeled parameters when data or implementation does not yet exist.
+
 Route model/output quality, deterministic correctness, graders, golden sets, or release-quality gates to the sibling Testing & Evaluation practice. Join the evidence only at the product decision.
 
 ## Mode: `measurement-design`
@@ -45,9 +50,9 @@ Route model/output quality, deterministic correctness, graders, golden sets, or 
 ### Work
 
 1. Map each product decision to the behavior or outcome that can inform it.
-2. Inventory existing identity, event, metric, cohort, exposure, dashboard, and query definitions.
-3. Trace the real emitting and transformation paths in code or data systems when available.
-4. Classify every required signal as present and valid, present with caveat, missing, unused, duplicated, or unverified.
+2. Reuse supplied identity, event, metric, cohort, exposure, dashboard, and query definitions where applicable.
+3. Specify producers, consumers, transformation boundaries, and intended validation points. Inspect actual paths only when compatibility changes the design.
+4. Label reused verified definitions, proposed definitions, and unverified dependencies separately.
 5. Propose the minimum contracts and instrumentation needed for one end-to-end decision slice.
 6. Define validation checks, ownership, versioning, privacy handling, and retirement rules.
 7. Keep implementation proposal-only unless the user explicitly authorizes changes.
@@ -55,10 +60,27 @@ Route model/output quality, deterministic correctness, graders, golden sets, or 
 ### Return
 
 - decision-to-measurement map;
-- verified current-state inventory with source links or file/line evidence;
-- identity, event, metric, cohort, and exposure contract gaps;
+- proposed identity, event, metric, cohort, and exposure contracts, including representative event payloads and counting rules;
+- reuse decisions and supporting sources where inspected;
 - minimum implementation slice and validation plan;
-- risks, open questions, and exact approval needed next.
+- assumptions, execution prerequisites, and questions that genuinely block this design.
+
+## Mode: `measurement-audit`
+
+### Work
+
+1. Scope the decisions and existing signals to inspect; run the evidence preflight only within authorization.
+2. Trace relevant emitters, transformations, identity joins, metric definitions, reports, and consumers.
+3. Check lifecycle coverage, duplication, ordering, exclusions, privacy/deletion, versioning, and unused signals.
+4. Classify evidence as present and valid, present with caveat, missing in inspected scope, unused, duplicated, or unverified.
+5. Separate documented intent, code behavior, queried data, and observed runtime evidence. Bound conclusions when access is missing.
+
+### Return
+
+- Scoped current-state map and evidence limitations.
+- Strengths and actionable findings with exact source locations, consequences, and minimum remedies.
+- Checks performed and results; unperformed checks and remaining uncertainty.
+- Recommended repair or design follow-up. Produce a full redesign only if requested.
 
 ## Mode: `behavior-analysis`
 
@@ -88,9 +110,11 @@ Do not convert association into causation. Label exploratory slices and post-hoc
 
 First decide whether a controlled experiment is appropriate. Check traffic, assignment control, exposure observability, interference, ethical and privacy constraints, implementation cost, reversibility, decision value, and whether a simpler analysis can answer the question.
 
+If inputs are unknown, give a conditional feasibility recommendation. Specify the baseline rate/variance, traffic, effect size, and allocation parameters needed for power and duration calculations; provide justified illustrative scenarios if useful. A numeric sample-size promise requires those inputs, but the rest of the experiment design can be completed. A launch requires resolved safety, consent, assignment, and exposure conditions.
+
 ### Work
 
-Pre-register:
+Draft the following pre-registration for approval before launch:
 
 - problem, hypothesis, and intended mechanism;
 - eligibility, assignment unit, analysis unit, and exclusion timing;

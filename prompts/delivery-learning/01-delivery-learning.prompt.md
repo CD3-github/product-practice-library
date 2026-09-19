@@ -4,9 +4,11 @@ Draft 0.1 · From an approved direction to a verifiable change and a useful feed
 
 ## Start and select mode
 
-Recover the user outcome, approved proposal/version, exact repository/worktree, allowed files and systems, maturity, environment, cost/side-effect boundaries, and output destination from context. Inspect repository instructions, dirty state, contracts, tests/evals, and runtime evidence before judging readiness.
+Apply [the task contract](../_shared/task-contract.md). Recover the user outcome, agreed direction, and authority from context. For implementation or readiness claims, inspect relevant repository instructions, current interfaces, worktree state, tests/evals, and environment evidence. For a slice plan, use available documents and bounded feasibility inspection; mark unknown file locations, versions, and runtime conditions as integration prerequisites.
 
 Select `slice-plan`, `approved-slice`, `readiness-review`, or `learning-review`. If implementation is requested without a stable scope, first propose a bounded slice. Changes to permissions, public contracts, persistent data, deployment, or external communication require specific authority. Preserve unrelated user changes.
+
+Apply sections by mode: `slice-plan` defines outcome, contracts, acceptance and future rollout/recovery; `approved-slice` implements and verifies the authorized change; `readiness-review` evaluates current release evidence without deploying; `learning-review` interprets existing delivery and outcome evidence. A plan does not require changed files, completed runs, or a release-ready artifact.
 
 ## 1. Establish the decision and delivery baseline
 
@@ -16,7 +18,7 @@ Keep three independent statuses:
 - Delivery: not started / implemented locally / integrated / deployed.
 - Verification: unverified / checked in a stated environment / observed in production / accepted by the accountable user.
 
-Record the actual commit, environment, evidence, and remaining limitations. A deployment notification proves deployment, not user acceptance or output quality.
+For current-state claims, record the actual commit, environment, evidence, and limitations. For future work, mark versions, interfaces, and acceptance checks as proposed. A deployment notification proves deployment, not user acceptance or output quality.
 
 Identify the assumption whose failure would invalidate substantial work: capability, data access, contract compatibility, authority, quality, or acceptable operating cost. Define a bounded early check and the decision that follows failure. Paid calls and production writes remain gated.
 
@@ -77,9 +79,15 @@ For each important signal, separate observation, explanation, alternative explan
 
 Close with a decision to keep, iterate, expand, pause, or retire. Record evidence and limits, including when no conclusion is yet supported.
 
-## Durable handoff
+## Deliverable by mode
 
-Return one navigable handoff, linking rather than duplicating existing sources:
+For `slice-plan`, return the actual plan: user outcome, concrete behavior and interfaces, dependency order, representative acceptance cases, proposed verification commands where known, rollout/recovery design, assumptions, and execution prerequisites. Keep likely file locations labeled proposed; provide a bounded next slice rather than a plan to investigate how to plan it.
+
+For `readiness-review`, return verified readiness by criterion, evidence gaps, minimum remedies, and a bounded release recommendation. An inaccessible environment limits the readiness claim; finish the independent checks. For `learning-review`, return evidence-linked observations, alternative explanations, proposed actions, and the decision they support.
+
+## Implementation handoff
+
+For `approved-slice`, return one navigable handoff, linking rather than duplicating existing sources:
 
 1. User outcome, approved scope, and decision/delivery/verification status.
 2. Commit, environment, changed files, and contract impact.

@@ -5,26 +5,26 @@ Agent entry point for measuring product behavior, diagnosing friction, and estim
 ## Copy to your coding agent
 
 ```text
-Read https://product-practice-library.vercel.app/prompts/product-analytics-experimentation/README.md and follow its links to load the workflow needed for this task.
-My task: [describe the problem to solve]
+Read https://product-practice-library.vercel.app/prompts/product-analytics-experimentation/README.md. Identify this turn's deliverable from our conversation, load only the relevant workflow, and complete it.
+Choose source-inspection depth to fit the task. Separate facts, design assumptions, and unverified items. Complete what available context supports; list later implementation or run requirements as execution prerequisites. Ask only about gaps that block this deliverable. Keep all actions within this turn's authorization.
+Project: [describe the project or problem to solve]
 Project context: [repository path, relevant material, or data]
-Select the appropriate workflow, work within the authorized scope, and return result analysis, evidence links, and decisions that need my judgment.
 ```
 
 中文指令：
 
 ```text
-读取 https://product-practice-library.vercel.app/prompts/product-analytics-experimentation/README.md，并按其中链接读取当前任务需要的工作流。
-我的任务：[写下要解决的问题]
+读取 https://product-practice-library.vercel.app/prompts/product-analytics-experimentation/README.md，结合当前对话识别本轮交付物，按需加载工作流并直接完成。
+按任务选择必要的资料检查深度，区分事实、设计假设与待验证项。先完成已有信息支持的部分，将后续实施或运行条件列为执行前提；只询问阻止本轮交付的问题。所有操作遵守本轮授权。
+本轮项目：[填写项目或要解决的问题]
 项目上下文：[仓库路径、相关资料或数据]
-根据任务选择合适路径，在已授权范围内开展工作；返回结果分析、证据链接，以及需要我判断的事项。
 ```
 
 [Practice folder](https://github.com/CD3-github/product-practice-library/tree/main/prompts/product-analytics-experimentation) · [Visual guide](product-analytics-experimentation.html)
 
 ## Start here
 
-Provide:
+Recover relevant context; these are optional inputs according to the task:
 
 - the product decision or question;
 - the user/account unit and relevant lifecycle stage;
@@ -32,13 +32,14 @@ Provide:
 - current event, identity, metric, cohort, and exposure definitions;
 - privacy, access, runtime, and mutation boundaries.
 
-Inspect available context before asking for missing inputs. Select one mode and keep its claim boundary explicit.
+Apply [the task contract](../_shared/task-contract.md). Select by requested deliverable, then choose evidence depth and permitted actions. Designs use available context and explicit assumptions; current-state audits and result interpretation require corresponding evidence. Complete supported work and distinguish later execution prerequisites from current blockers.
 
 ## Route by intent
 
 | User intent | Mode | Required output |
 |---|---|---|
-| Define or audit product measurement | `measurement-design` | Question map, event/identity/metric contracts, validation gaps, and implementation proposal |
+| Define product measurement | `measurement-design` | Question map, proposed event/identity/metric contracts, and validation plan |
+| Audit existing product measurement | `measurement-audit` | Evidence-linked instrumentation/data findings, coverage limits, and remedies |
 | Understand adoption, funnels, retention, cohorts, or friction | `behavior-analysis` | Reproducible analysis, segments, uncertainty, likely explanations, and next investigation |
 | Decide whether and how to run an experiment | `experiment-design` | Hypothesis, eligibility, unit, variants, metrics, power assumptions, guardrails, and decision rule |
 | Interpret an experiment that has already run | `experiment-analysis` | Validity checks, effect estimates, uncertainty, segment policy, guardrails, and bounded decision |

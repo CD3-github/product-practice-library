@@ -1,0 +1,19 @@
+/* Reading groups use spacing; table rules retain their structural role. */
+.section .guide-cards { row-gap:32px; }
+.section .guide-cards article { border:0; padding:0; }
+.section .reference-links { border:0; padding:0; margin-top:24px; }
+.section details,.section details[open] { border:0; background:transparent; margin-top:24px; }
+.section .guide-flow { border:0; border-radius:0; margin:0 0 36px; padding:0; }
+.section .note { border:0; }
+#sequence .reference-links { margin-top:16px; }
+#sequence .practice-disclosure { margin-top:16px; }
+#collaboration { scroll-margin-top:144px; }
+#collaboration .details-body h4 { margin:24px 0 10px; font-size:15px; line-height:1.6; }
+.content .quick-start details { border:0; }
+#design > h3 { margin: 36px 0 14px; font-size: 21px; line-height: 1.4; }
+#design .practice-table-wrap + p { margin-top: 20px; }
+#design [id] { scroll-margin-top: 144px; }
+
+/* Testing-specific composition; primitives are in practice-guide.css. */
+.hero { border-bottom:0; }
+#sequence .phase-cards { display:grid; grid-template-columns:minmax(0,1fr); gap:32px; }

@@ -32,11 +32,9 @@ This is not a visual-polish exercise and not a one-to-one redesign of the existi
 
 ### Shared workflow requirement
 
-Apply `00-general-product-restructuring-workflow.en.md` in full before executing the MVP-specific phases below.
+Read [the task contract](../_shared/task-contract.md) and `00-general-product-restructuring-workflow.en.md`; apply guidance relevant to this deliverable alongside the phases below. Ground current-state claims in inspected implementation. With partial access, bound the assessment and still propose the target experience, labeling compatibility and migration assumptions.
 
-If that file is unavailable, at minimum follow this common sequence: build the source-of-truth map → reassign system/user responsibility → audit truth, authority, measurement, readiness, error/recovery, and provenance → write the critical text flow → classify information as Keep, Rewrite, Progressive disclosure, Move, Remove, or Add → split V1/V2 × Product/Design/Engineering → create same-scenario mockup variations only for genuine structural disagreement → implement and validate one end-to-end structural slice.
-
-The shared workflow defines common evidence and stage-gate standards. This prompt additionally requires the real repository and runtime contracts as the baseline, plus a migration path from the current implementation to the target experience.
+Use available sources and unknowns to define system/user responsibility, truth/authority/readiness/recovery, the text flow, information disposition, V1/V2 scope, and a proposed slice with acceptance criteria. Compare structural alternatives where useful. Bound discovery to what changes this proposal; actual implementation and checks follow this turn’s authorization.
 
 ### Primary objective
 
@@ -288,9 +286,7 @@ Prefer a complete vertical slice over a broad codebase rewrite.
 
 Generate a proposal ID such as `UX-MVP-R1`.
 
-End with:
-
-“No code was modified in this run. I will begin implementation only after you explicitly reply `APPROVE UX-MVP-R1` and name the implementation slice.”
+Close with actual actions performed, remaining proposals, and the next scope requiring authorization. A proposal reference is useful; approval does not require a fixed phrase.
 
 ### Prohibited behavior
 
@@ -301,7 +297,7 @@ End with:
 - Do not use visual polish to hide state, content, contract, data-truth, or authority problems.
 - Do not invent APIs, production status, user research, or measurement evidence.
 - Do not skip safety, readiness, or approval merely to remove a step.
-- Do not return abstract principles without concrete code and behavior evidence.
+- Ground current-behavior findings in inspected evidence; make proposed flows, copy, states, and contracts concrete even with incomplete implementation access.
 
 ---
 

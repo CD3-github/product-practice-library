@@ -8,6 +8,8 @@ This is not a routine code-style review, and it must not assume that the current
 
 ## Context I will provide
 
+Apply [the task contract](../_shared/task-contract.md). This route audits an existing system. Test/eval planning uses [evidence design](../testing-evaluation-system/01-design-evidence-system.prompt.md). An audit-plan request delivers scope, methods, evidence requirements, and acceptance criteria without conducting the audit. Bound actual audits to accessible, authorized sources; missing code or runtime evidence limits current-state claims, not explicitly proposed designs.
+
 - Product or feature: `[name and short description]`
 - User outcome: `[what the user needs to accomplish]`
 - Repository or worktree: `[absolute path / URL]`
@@ -25,11 +27,11 @@ Do not guess unknown details. First inspect the repository, configuration, tests
 
 ## Core operating principles
 
-1. **Verify before judging.** Read repository instructions, documents, code, schemas, configuration, tests, fixtures, migrations, and telemetry. When safe and practical, run tests, a minimal runtime, and critical paths.
+1. **Verify before judging.** Inspect the sources needed for the audit: repository instructions, documents, code, schemas, configuration, tests, fixtures, migrations, or telemetry. Execute checks only when authorized and safe; honor planning-only and no-run limits.
 2. **Keep truth states separate.** `Documented`, `Configured`, `Implemented`, `Registered`, `Wired`, `Reachable`, `Executed`, `Measured`, and `Proposed` are not interchangeable.
 3. **Do not invent findings or praise indiscriminately.** Say what is good when evidence shows that it is good. Label missing evidence `Unverified`. A review that cannot identify anything done well is not rigorous; it is uncalibrated.
 4. **Do not anchor on the current layout, prompt, pipeline, or class names.** Start with the user outcome, system responsibility, risk, and quality bar, then decide what should remain.
-5. **Separate probabilistic quality from deterministic correctness.** Passing tests does not prove that generated output is good. A high eval score does not prove that permissions, contracts, retries, and side effects are correct.
+5. **Preserve required behavior and quality evidence.** Choose code checks, human review or model judgment for each criterion. Keep mandatory constraints visible alongside graded quality; neither an aggregate score nor a schema pass establishes all aspects of system quality.
 6. **Treat shutdown and deletion as first-class architecture requirements.** Modularity is not a file count. A capability should be independently replaceable, disableable, replayable, verifiable, and removable.
 7. **Inspect before asking.** Ask only questions that cannot be answered from code, configuration, documentation, runtime state, or traces, and whose answers would materially change product responsibility, safety, audit conclusions, or evaluation design.
 8. **Default the first pass to read-only.** Do not perform broad rewrites, delete public contracts, migrate persistent data, or change production behavior until I approve a specific proposal.
@@ -316,7 +318,7 @@ Give every dimension its own metric, rubric, threshold, sample, owner, and relea
 
 ## 8. Review the testing suite
 
-The testing suite primarily answers: **Given a defined input and deterministic contract, does the system behave correctly?**
+The testing suite primarily answers: **Under the selected inputs and conditions, does the system meet its required behavior, constraints and failure-handling rules?**
 
 Inventory and safely run applicable:
 
@@ -334,7 +336,7 @@ Check whether:
 
 - Critical paths are over-mocked and skip the most failure-prone contracts.
 - Fixtures represent real shapes, missing fields, dirty data, long inputs, and cross-tenant cases.
-- Tests are deterministic, independent, and repeatable; flaky tests are not normalized as background noise.
+- Checks use explicit oracles and independent, reproducible setup. When live behavior varies, distinguish genuine product variation from test instability and define repeats or tolerance appropriate to the claim.
 - Model calls are split into deterministic stubs/recorded replays and explicitly gated live tests.
 - Tests cover the real registration and composition path, not only helpers and happy paths.
 - Disabled capabilities, fallback, rollback, and read-back are tested.
@@ -346,11 +348,11 @@ Provide a testing pyramid/map, commands actually run, results, reasons for anyth
 
 ## 9. Review the eval matrix
 
-The eval matrix primarily answers: **When output is probabilistic, semantic, and context-dependent, is quality good enough across the necessary scenarios and dimensions?**
+The eval matrix connects **scenarios → criteria → graders → results and decisions**. Use it to see whether the selected rules, quality dimensions and operational measures are adequately covered.
 
-It does not replace the testing suite. Tests are better for deterministic contracts and behavior; evals are better for relevance, usefulness, factuality, style, judgment, tool choice, and overall outcome quality.
+Executable tests can supply results to this matrix. For each criterion, use a code check, qualified human or validated model judge according to what can reliably assess it. Specify repeated trials when variation affects the decision.
 
-An eval matrix should include:
+Select relevant fields for the current scope and maturity:
 
 - A stable `scenario_id` and clear scenario description.
 - User/use case, vertical/domain, locale, and language.
@@ -360,12 +362,12 @@ An eval matrix should include:
 - Prompt, model, provider, tool, retrieval, and configuration versions.
 - Expected behavior and boundaries that must not be crossed.
 - Quality dimensions, rubric, threshold, and failure taxonomy.
-- Grader type: deterministic assertion, programmatic check, calibrated model judge, human review, or online outcome.
+- Grader: code assertion/computed metric, qualified human review or validated model judge. Online outcomes supply data; specify the measurement or interpretation applied to them.
 - Repeats, variance, and confidence interval where applicable.
 - Latency, cost, and token/tool use.
 - Artifacts, trace, stage outputs, and provenance.
 
-The matrix must cover genuinely different mechanisms and risks, not one scenario with renamed nouns. Explicitly inspect:
+Cover materially different mechanisms and risks. Use [robustness design](../testing-evaluation-system/references/robustness-design.md) for relevant variation and [grader design](../testing-evaluation-system/references/grader-design.md) when scoring reliability needs investigation. Select the applicable checks below; defer the rest with a trigger when consequential:
 
 - Whether sparse context avoids unsupported specificity without collapsing into empty safe prose.
 - Conflicting context, stale memory, retrieval misses, tool failures, schema drift, and partial success.
@@ -379,12 +381,12 @@ The matrix must cover genuinely different mechanisms and risks, not one scenario
 
 ## 10. Support both E2E and stage-level testing and evaluation
 
-Determine whether the architecture supports the following. Propose the smallest changes for anything missing:
+Start with the critical stages on the real path and reuse available intermediate artifacts. Assess the capabilities below where needed for the current decision. Add independent replay only when it materially improves diagnosis, iteration or risk coverage; a missing general-purpose runner is not automatically a V1 blocker.
 
-1. Every stage has a stable, versioned input/output contract.
+1. Critical stage boundaries have clear input/output contracts with applicable versions.
 2. One scenario carries the same `scenario_id` and `trace_id` through the full pipeline.
-3. A pipeline runner can start or stop at any stage and inject a frozen upstream artifact.
-4. Every stage output can be persisted as a replayable, comparable artifact with provenance.
+3. Stages selected for isolation can accept a frozen upstream artifact through an existing entry point or a justified small adapter.
+4. Relevant stage outputs can be captured or referenced with enough provenance to compare results and locate failures.
 5. Stage evals can assess retrieval, planning, tool choice, drafting, validation, or delivery without invoking the entire system.
 6. E2E evals still use the real composition path so independently passing stages cannot hide composition failures.
 7. Deterministic contract checks run before entering the next stage; semantic graders do not perform schema validation.
@@ -392,28 +394,26 @@ Determine whether the architecture supports the following. Propose the smallest 
 9. Baseline, candidate, ablation, and regression comparisons are retained rather than overwritten.
 10. A failure can be traced to the first diverging stage and distinguished as an upstream-input defect or current-stage defect.
 
-Recommended eval ladder:
+Recommended bounded loop:
 
-`pure deterministic tests → stage contract tests → stage quality evals → adjacent integration tests → replayed E2E → gated live E2E → human/online outcome validation`
+`selected stage checks + real-composition evidence → locate the first divergence → rerun affected cases after an authorized repair → decide within the agreed acceptance scope`
 
-State which layers exist, which are only proposed, and which were not run because of cost, environment, or authorization.
+State which capabilities exist, which are proposed and which were not run because of cost, environment or authorization. Keep release safety requirements; defer broader coverage and infrastructure according to risk and the next decision.
 
 ---
 
 ## 11. Explain the testing-suite versus eval-matrix boundary
 
-Keep a comparison table specific to the audited system that covers at least:
+When this distinction informs the audit, adapt the following roles to the actual system. A shared harness can support both assets:
 
 | Dimension | Testing Suite | Eval Matrix |
 |---|---|---|
-| Core question | Does the system run correctly against its contract? | Is probabilistic or semantic output good enough? |
-| Typical assertion | Exact value, state, schema, or side effect | Rubric, ranking, judgment, or task success |
-| Stability | Should be deterministic where possible | May require repeats and variance analysis |
-| Data | Fixtures, edge cases, integration environments | Scenario corpus, goldens, and human labels |
-| Grader | Test assertion or programmatic oracle | Programmatic grader, model judge, human, or online metric |
-| Failure localization | Function, module, contract, or path | Scenario, dimension, stage, or configuration |
-| Release role | Correctness, safety, and compatibility gate | Quality regression and go/no-go evidence |
-| Does not prove | That users find the result good | That schemas, permissions, and side effects are correct |
+| Primary role | Executable checks of required behavior and failure paths | Map selected cases to criteria, graders and decision thresholds |
+| Evidence | Assertions, measurements and execution artifacts | Linked results across rules, quality and operational dimensions |
+| Judgment | Explicit oracle, calculation or a referenced grader | Code, human or model mechanisms selected per criterion |
+| Variation | Repeats or tolerance when execution varies | Aggregate and compare repeated evidence where claims require it |
+| Localization | Function, module, contract or execution path | Scenario, dimension, stage or configuration |
+| Decision support | Evidence for specified requirements and regressions | Coverage, trade-offs and sufficient evidence for the scoped decision |
 
 The two systems should share scenario IDs, version metadata, and artifacts, but never one ambiguously defined “pass rate.”
 

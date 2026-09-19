@@ -32,11 +32,9 @@
 
 ### 共享工作流要求
 
-先完整应用同目录的 `00-general-product-restructuring-workflow.zh-CN.md`，再执行下面针对新功能规划的 phases。
+读取[任务约定](../_shared/task-contract.md)与同目录的 `00-general-product-restructuring-workflow.zh-CN.md`，结合下述 phases 应用与本轮交付物相关的部分。本轮直接交付产品方案。证据不足时明确假设并设计验证方法，代码仅作为可选的可行性参考。
 
-如果该文件无法访问，至少执行这条共同主线：建立 source-of-truth map → 重新分配 system/user responsibility → 审查 truth、authority、measurement、readiness、error/recovery 与 provenance → 写关键文字 flow → 按 Keep、Rewrite、Progressive disclosure、Move、Remove、Add 设计信息 → 拆分 V1/V2 × Product/Design/Engineering → 仅在存在真正结构分歧时制作同场景 mockup variations → 定义并验证一条 end-to-end structural slice。
-
-共享工作流定义的是共同 evidence 与 stage-gate 标准；本 prompt 额外要求先验证 problem 和 product model。零散代码、API 或 prototype 只作为 feasibility evidence，不成为产品 baseline。
+用已有来源与未知项定义系统／用户责任、真实性与权限、就绪和恢复、关键文字 flow、信息取舍、V1/V2 范围，以及建议 slice 和验收标准。必要时比较结构性方案。资料检查以能改变本轮方案为界；实际实施和运行检查遵守本轮授权。
 
 ### 首要目标
 
@@ -320,9 +318,7 @@ Understand → Propose → Confirm → Execute → Verify → Learn
 
 生成 proposal ID，例如 `FEATURE-PLAN-R1`。
 
-最后明确写：
-
-“本轮未修改产品代码。只有在你明确回复 `APPROVE FEATURE-PLAN-R1` 并指定下一阶段后，我才进入 UX mockup、technical design 或 implementation。”
+结尾说明本轮实际执行的动作、仍为提案的内容，以及下一步需要授权的范围。Proposal ID 用于追溯，无需固定批准口令。
 
 ### 禁止事项
 

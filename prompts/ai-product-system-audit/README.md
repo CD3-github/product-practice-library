@@ -2,7 +2,7 @@
 
 这是一个与具体产品、功能和仓库无关的双语审查 prompt，用于审查已经存在的 AI 产品、agent workflow、generation pipeline 或 orchestration harness。
 
-它关注的不是单次 PR 的代码风格，也不是只评估最终文案好不好，而是回答一组更根本的问题：系统现在到底有什么、哪些只写了但没有接入、每个环节是否能独立验证、删除一种策略或能力是否会留下残骸、schema 与 contract 是否足以支持长期迭代，以及 deterministic testing 和 probabilistic evaluation 是否共同覆盖了系统质量。
+它审查 AI 产品的完整运行路径：哪些能力真正接入了、每个关键环节如何验证、移除策略是否能清理干净、schema 与 contract 是否支持迭代，以及如何组合测试 test 与评估 eval。每项标准选择适合的代码检查、人工评审或模型评分，分别保留必要约束与输出质量的证据。
 
 ## 何时使用
 
@@ -29,7 +29,7 @@
 
 1. 填写 prompt 开头的最少背景；未知项保留为 `unknown`。
 2. 第一次运行使用 `read-only audit + proposal`，不要直接授权大改。
-3. 要求 agent 运行可以安全执行的测试、最小 runtime 和 trace 验证。
+3. 按本轮授权选择证据深度：只读审查可基于代码与已有 trace；运行测试或最小 runtime 需在授权范围内。只需规划时，直接交付检查方案和未来执行前提。
 4. 先审阅 capability lifecycle matrix、removal drill 和 test/eval design。
 5. 若决定实施，只批准一个有明确 proposal ID 的 structural slice。
 

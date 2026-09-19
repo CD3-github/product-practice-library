@@ -6,7 +6,7 @@ Agent entry for two distinct workflows: planning a new feature and reimagining a
 
 ## Route automatically
 
-Inspect the conversation, product maturity, evidence, and authorization before asking for missing inputs. Read the selected workflow and the matching-language shared method completely.
+Apply [the task contract](../_shared/task-contract.md). Infer the deliverable, maturity, required evidence, and authorization from context. Read the selected workflow and matching-language shared method; apply only phases relevant to this deliverable. Shared implementation guidance specifies future acceptance for a proposal, not permission to execute it.
 
 | Intent / starting point | Required workflow | Return |
 |---|---|---|
@@ -16,7 +16,7 @@ Inspect the conversation, product maturity, evidence, and authorization before a
 
 Shared method: [简中](00-general-product-restructuring-workflow.zh-CN.md) / [EN](00-general-product-restructuring-workflow.en.md).
 
-Current code is required evidence for the MVP route. In new-feature planning, exploratory code is feasibility input; the user job and evidence define the product model. Missing access remains unverified.
+Current-code claims in the MVP route require current-code evidence. If access is partial, bound the current-state assessment and still propose a target experience from supplied materials; mark compatibility and migration assumptions. In new-feature planning, code is optional feasibility input. The source map may contain documents, observations, explicit assumptions, and unknowns; it does not require a complete implementation inventory.
 
 ## Authority and execution
 
@@ -26,17 +26,23 @@ Current code is required evidence for the MVP route. In new-feature planning, ex
 4. Write the critical text flow and classify information as Keep, Rewrite, Progressive disclosure, Move, Remove, or Add.
 5. Compare meaningful product directions. Use mockups only when a structural choice remains.
 6. Split scope across V1/V2 and Product/Design versus Engineering. Identify dependencies that visual changes cannot solve.
-7. Return a proposal ID and the next bounded slice. Implement only after explicit approval of the proposal and slice.
+7. Return the requested proposal and a bounded next slice. Use a stable proposal reference where useful; implement only when the scope is explicitly authorized, without requiring a literal approval phrase.
 8. Validate friction, output quality, capability truth, and execution safety together.
 
 ## Copy instruction
 
 ~~~text
-Read https://product-practice-library.vercel.app/prompts/product-ux-rethinking/README.md. Select the new-feature planning or existing-MVP reimagination route from my task and context. Read the required shared method and specialized prompt. Return an evidence-backed proposal and the next decision, staying within the authorized phase.
+Read https://product-practice-library.vercel.app/prompts/product-ux-rethinking/README.md. Identify this turn's deliverable from our conversation, load only the relevant workflow, and complete it.
+Choose source-inspection depth to fit the task. Separate facts, design assumptions, and unverified items. Complete what available context supports; list later implementation or run requirements as execution prerequisites. Ask only about gaps that block this deliverable. Keep all actions within this turn's authorization.
+Project: [describe the project or problem to solve]
+Project context: [repository path, relevant material, or data]
 ~~~
 
 ~~~text
-读取 https://product-practice-library.vercel.app/prompts/product-ux-rethinking/README.md，根据任务与上下文选择新功能规划或已有 MVP 重新构想路径。完整读取所需通用方法与专项 prompt，在授权阶段内交付有证据的提案与下一项决定。
+读取 https://product-practice-library.vercel.app/prompts/product-ux-rethinking/README.md，结合当前对话识别本轮交付物，按需加载工作流并直接完成。
+按任务选择必要的资料检查深度，区分事实、设计假设与待验证项。先完成已有信息支持的部分，将后续实施或运行条件列为执行前提；只询问阻止本轮交付的问题。所有操作遵守本轮授权。
+本轮项目：[填写项目或要解决的问题]
+项目上下文：[仓库路径、相关资料或数据]
 ~~~
 
 ## Supporting practices

@@ -8,6 +8,8 @@
 
 ## 我会提供的背景
 
+遵循[任务约定](../_shared/task-contract.md)。本工作流审查实际系统；只要测试或 eval 规划时，使用[方案设计](../testing-evaluation-system/01-design-evidence-system.prompt.md)。只要求审查计划时，交付范围、方法、证据需求和验收标准，不执行审查。实际审查以授权内可访问的来源为界；缺少代码或运行证据会限制现状声明，但不阻止交付明确标为提案的设计。
+
 - 产品或功能：`[名称与简述]`
 - 用户希望获得的结果：`[用户 outcome]`
 - 仓库或 worktree：`[绝对路径 / URL]`
@@ -25,11 +27,11 @@
 
 ## 核心工作原则
 
-1. **先验证，再判断。** 阅读 repo instructions、文档、代码、schema、config、tests、fixtures、migrations 和 telemetry；在安全可行时运行测试、最小 runtime 与关键路径。
+1. **先验证，再判断。** 检查本轮审查需要的来源，包括 repo instructions、文档、代码、schema、config、tests、fixtures、migrations 或 telemetry。仅在获授权且安全可行时执行检查；遵守只规划和不运行的限制。
 2. **分开记录不同层次的真相。** `Documented`、`Configured`、`Implemented`、`Registered`、`Wired`、`Reachable`、`Executed`、`Measured` 和 `Proposed` 不能互相替代。
 3. **不要编造发现，也不要一味夸奖。** 有证据说明做得好就明确说好；没有证据就写 `Unverified`。一份什么都挑不出对的评审不是严格，而是没有校准。
 4. **不要被当前 layout、prompt、pipeline 或类名锚定。** 先从用户 outcome、系统责任、风险和质量标准判断，再决定现有结构哪些应该保留。
-5. **把 probabilistic quality 与 deterministic correctness 分开。** 测试通过不等于生成质量好；eval 分数高也不等于权限、contract、重试和副作用正确。
+5. **分别保留必要行为与输出质量的证据。** 按每项标准选择代码检查、人工评审或模型判断。必要约束与质量评分分别呈现；总分或 schema 通过，只能支持实际被检查的方面。
 6. **把关闭和删除能力视为一等架构要求。** 模块化不仅是代码拆成多个文件，而是能力能够被独立替换、关闭、回放、验证和移除。
 7. **先查后问。** 只询问代码、配置、文档、运行环境和已有 trace 无法回答，并且答案会改变产品责任、安全边界、审查结论或 eval 设计的问题。
 8. **首次审查默认只读。** 在我明确批准 proposal 之前，不实施大规模重写、删除公开 contract、迁移持久化数据或改变生产行为。
@@ -316,7 +318,7 @@ provenance / trace reference
 
 ## 8. 审查 Testing Suite
 
-Testing suite 主要回答：**在给定输入和确定 contract 下，系统是否按预期运行？**
+Testing suite 主要回答：**在选定输入和条件下，系统是否满足必要行为、约束与失败处理规则？**
 
 盘点并运行可安全执行的：
 
@@ -334,7 +336,7 @@ Testing suite 主要回答：**在给定输入和确定 contract 下，系统是
 
 - 关键路径是否被 over-mock；mock 是否跳过了最容易出错的 contract。
 - fixtures 是否代表真实数据形态、缺失值、脏数据、长输入和跨 tenant 情况。
-- 测试是否 deterministic、独立、可重复；flaky test 是否被长期忽略。
+- 检查是否有明确的预期判据与独立、可复现的准备过程。真实行为存在变化时，区分产品波动与测试不稳定，并按结论需要设定重复次数或容差。
 - model call 是否分成 deterministic stub/recorded replay 与明确 gated 的 live test。
 - 是否只测 happy path 或 helper，却没有测真实 registration/composition。
 - disabled capability、fallback、rollback 与 read-back 是否有测试。
@@ -346,11 +348,11 @@ Testing suite 主要回答：**在给定输入和确定 contract 下，系统是
 
 ## 9. 审查 Eval Matrix
 
-Eval matrix 主要回答：**当输出存在概率性、语义性和情境差异时，质量是否在足够多的场景和维度上达到标准？**
+评估矩阵 eval matrix 连接 **场景 → 标准 → 评分方式 → 结果与决定**，帮助检查选定的规则、质量维度和运行指标是否得到充分覆盖。
 
-它不替代 testing suite。测试更适合确定性 contract 与 behavior；eval 更适合 relevance、usefulness、factuality、style、judgment、tool choice 和整体 outcome quality。
+可执行测试的结果可以进入这个矩阵。每项标准按可靠性选择代码检查、合格的人工评审或经过验证的模型评分；如果输出波动影响决定，再设计重复运行。
 
-建立或审查 eval matrix 时，至少包含：
+根据当前范围与成熟度选择相关字段：
 
 - `scenario_id` 与清晰场景说明。
 - user/use case、vertical/domain、locale/language。
@@ -360,12 +362,12 @@ Eval matrix 主要回答：**当输出存在概率性、语义性和情境差异
 - prompt/model/provider/tool/retrieval/config 版本。
 - expected behavior 与禁止越过的边界。
 - quality dimensions、rubric、threshold 与 failure taxonomy。
-- grader：deterministic assertion、programmatic check、calibrated model judge、human review 或 online outcome。
+- 评分方式 grader：代码断言或计算指标、合格的人工评审、经过验证的模型评分。真实使用结果 outcome 提供数据，需要明确如何衡量或解读它。
 - repeats、variance、confidence interval（适用时）。
 - latency、cost 与 token/tool usage。
 - artifacts、trace、stage outputs 与 provenance。
 
-矩阵必须覆盖真正不同的 mechanism 和风险，而不是只把同一案例换名词。特别检查：
+覆盖实质不同的机制与风险。相关变化可按需读取[鲁棒性设计](../testing-evaluation-system/references/robustness-design.md)，评分可靠性可按需读取[评分方式设计](../testing-evaluation-system/references/grader-design.md)。从下列检查中选择本轮相关项；重要但延后的部分说明触发条件：
 
 - sparse context 能否避免 unsupported specificity，而不是只产出空洞安全话术。
 - conflicting context、stale memory、retrieval miss、tool failure、schema drift 与 partial success。
@@ -379,12 +381,12 @@ Eval matrix 主要回答：**当输出存在概率性、语义性和情境差异
 
 ## 10. 同时支持 E2E 与分阶段测试/评估
 
-判断系统是否具备以下架构；缺少时提出最小改造：
+先识别真实路径中的关键环节，并复用现有中间产物。按本轮决定需要审查以下能力；只有独立重放能明显改善定位、迭代或风险覆盖时才增加它。缺少通用 runner 不自动成为 V1 的阻塞。
 
-1. 所有 stage 有稳定、版本化的 input/output contract。
+1. 关键环节边界有明确的输入输出 contract，并记录适用版本。
 2. 一个 scenario 使用同一 `scenario_id` 和 `trace_id` 贯穿全链路。
-3. pipeline runner 可以从任意 stage 开始、在任意 stage 停止，并注入冻结的 upstream artifact。
-4. 每个 stage output 可以保存为可重放、可比较、带 provenance 的 artifact。
+3. 选定需要独立验证的环节，可通过现有入口或有明确用途的小型适配器注入冻结的上游产物。
+4. 相关环节产物能被保存或引用，并保留足以比较结果和定位失败的来源信息。
 5. stage eval 可以单独判断 retrieval、planning、tool choice、draft、validation 或 delivery，而不必每次调用完整系统。
 6. E2E eval 仍使用真实 composition path，防止分阶段都通过但组合失败。
 7. deterministic contract checks 在进入下一 stage 前执行；semantic graders 不承担 schema validation。
@@ -392,28 +394,26 @@ Eval matrix 主要回答：**当输出存在概率性、语义性和情境差异
 9. 支持 baseline、candidate、ablation 与 regression comparison，而不是覆盖旧结果。
 10. 失败可回溯到首个偏离的 stage，并区分 upstream input defect 与 current-stage defect。
 
-推荐的 eval ladder：
+推荐的小闭环：
 
-`pure deterministic tests → stage contract tests → stage quality evals → adjacent integration tests → replayed E2E → gated live E2E → human/online outcome validation`
+`选定环节检查 + 真实组合路径的证据 → 定位最早出错的环节 → 授权修复后重跑受影响案例 → 按约定验收范围做决定`
 
-明确指出哪些层已存在、哪些只是 proposal、哪些因成本或权限没有运行。
+明确哪些能力已存在、哪些只是方案、哪些因成本、环境或权限没有运行。保留上线安全底线，其余覆盖与基础设施按风险和下一步决定安排。
 
 ---
 
 ## 11. Testing Suite 与 Eval Matrix 的区别
 
-请在报告中保留一张针对当前系统的比较表，至少说明：
+当这个区别影响本轮判断时，按当前系统调整下表。两类材料可以共用执行框架：
 
 | 维度 | Testing Suite | Eval Matrix |
 |---|---|---|
-| 核心问题 | 系统是否按 contract 正确运行？ | 概率性/语义性输出是否足够好？ |
-| 典型断言 | exact value、state、schema、side effect | rubric、ranking、judgment、task success |
-| 稳定性 | 应尽量 deterministic | 可能需要重复运行与方差 |
-| 数据 | fixtures、edge cases、integration env | scenario corpus、goldens、human labels |
-| Grader | test assertion/programmatic oracle | programmatic、model judge、human、online metric |
-| 失败定位 | function/module/contract/path | scenario/dimension/stage/config |
-| Release role | correctness、safety、compatibility gate | quality、regression、go/no-go evidence |
-| 不能证明 | 用户是否觉得结果好 | schema、权限和副作用一定正确 |
+| 主要作用 | 执行必要行为与失败路径的检查 | 把案例对应到标准、评分方式和决策阈值 |
+| 证据 | 断言、测量值与执行产物 | 关联规则、质量与运行维度的结果 |
+| 判断方式 | 明确的预期判据、计算或引用的评分方式 | 按标准选择代码、人工或模型 |
+| 波动处理 | 执行有变化时安排重复运行或容差 | 结论需要时汇总和比较重复证据 |
+| 失败定位 | 函数、模块、contract 或执行路径 | 场景、维度、环节或配置 |
+| 支持决定 | 指定要求是否满足、有无回退 | 覆盖是否足够、如何取舍、证据是否支持本轮决定 |
 
 两者应共享 scenario IDs、version metadata 和 artifacts，但不能共用一个含义模糊的“pass rate”。
 

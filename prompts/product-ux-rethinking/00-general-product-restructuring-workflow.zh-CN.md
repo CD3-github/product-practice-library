@@ -14,13 +14,15 @@
 
 接着审查 truth、authority、measurement、readiness、error/recovery 和 provenance 风险；用关键文字 flow 模拟完整体验，把现有信息分类为 Keep、Rewrite、Progressive disclosure、Move、Remove 和 Add；再按 V1/V2、Product/Design 与 Engineering 拆分范围。
 
-只有当信息架构仍存在真正不同的方向时，才使用同一场景和数据制作并排 mockup variations。最后实现一条端到端 structural slice，并同时验证用户 friction、output quality、能力真实性和执行安全。
+只有当信息架构仍存在真正不同的方向时，才使用同一场景和数据制作并排 mockup variations。提出一条端到端 structural slice 及验收标准；获得实施授权后再实现，并同时验证用户 friction、output quality、能力真实性和执行安全。
 
 不要把当前 layout、component tree、API shape 或数据库状态当作目标产品模型。它们是 evidence 和 migration constraint，不是必须保留的用户体验。
 
 ---
 
 ## 完整工作流
+
+遵循[任务约定](../_shared/task-contract.md)，按本轮交付物选择阶段。这套方法覆盖产品生命周期；规划交付目标体验与未来验证设计，只有获授权后才实施或运行检查。已有文档、观察、明确假设与未知项构成的来源地图，即可支持标为提案的产品判断。
 
 ### Stage 0 — 明确任务、成熟度与权限
 
@@ -163,7 +165,7 @@
 
 ## 阶段 gates
 
-- 没有 source-of-truth map，不进入产品判断。
+- 产品判断基于已有来源地图，区分证据、假设与未知项。现状能力声明需要实现证据；提出产品概念不要求先完成实现验证。
 - 没有 responsibility map，不设计 controls。
 - truth、authority、readiness 和 recovery 未定义，不称为 safe MVP。
 - 关键文字 flow 未通过，不画高保真 UI。
@@ -186,4 +188,4 @@
 9. structural slice 与 validation plan；
 10. evidence appendix、open questions 和 proposal ID。
 
-在获得明确 proposal-ID 与 implementation-slice approval 前，停留在 read-only proposal 阶段。
+保持提案模式，除非用户明确授权具体实施范围。Proposal ID 用于追溯；自然语言批准已明确的范围即可。

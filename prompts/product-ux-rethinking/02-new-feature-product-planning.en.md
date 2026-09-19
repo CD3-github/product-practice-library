@@ -32,11 +32,9 @@ Do not begin from a predetermined solution or existing layout. Do not assume an 
 
 ### Shared workflow requirement
 
-Apply `00-general-product-restructuring-workflow.en.md` in full before executing the new-feature phases below.
+Read [the task contract](../_shared/task-contract.md) and `00-general-product-restructuring-workflow.en.md`; apply guidance relevant to this deliverable alongside the phases below. Deliver the product proposal now. Weak evidence calls for explicit hypotheses and validation design; code is optional feasibility input.
 
-If that file is unavailable, at minimum follow this common sequence: build the source-of-truth map → reassign system/user responsibility → audit truth, authority, measurement, readiness, error/recovery, and provenance → write the critical text flow → classify proposed information as Keep, Rewrite, Progressive disclosure, Move, Remove, or Add → split V1/V2 × Product/Design/Engineering → create same-scenario mockup variations only for genuine structural disagreement → define and validate one end-to-end structural slice.
-
-The shared workflow defines common evidence and stage-gate standards. This prompt additionally requires problem and product-model validation first. Any partial code, API, or prototype is feasibility evidence, not the product baseline.
+Use available sources and unknowns to define system/user responsibility, truth/authority/readiness/recovery, the text flow, information disposition, V1/V2 scope, and a proposed slice with acceptance criteria. Compare structural alternatives where useful. Bound discovery to what changes this proposal; actual implementation and checks follow this turn’s authorization.
 
 ### Primary objective
 
@@ -320,9 +318,7 @@ If the output target is a Lark document, create a well-structured document with 
 
 Generate a proposal ID such as `FEATURE-PLAN-R1`.
 
-End with:
-
-“No product code was modified in this run. I will proceed to UX mockups, technical design, or implementation only after you explicitly reply `APPROVE FEATURE-PLAN-R1` and name the next phase.”
+Close with actual actions performed, remaining proposals, and the next scope requiring authorization. A proposal reference is useful; approval does not require a fixed phrase.
 
 ### Prohibited behavior
 

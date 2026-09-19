@@ -64,7 +64,7 @@ Canonical files:
 
 Folder: `prompts/ai-product-system-audit/`
 
-A feature- and repository-agnostic bilingual prompt for auditing an existing AI product, agent workflow, generation pipeline, or orchestration harness. It verifies the real end-to-end path; identifies documented-but-unwired, unreachable, redundant, and unmeasured capabilities; tests modularity through removal drills; separates schema and contract layers; and redesigns deterministic testing and probabilistic evals so both stage-level and E2E quality can be improved safely.
+A feature- and repository-agnostic bilingual prompt for auditing an existing AI product, agent workflow, generation pipeline, or orchestration harness. It verifies the real end-to-end path; identifies documented-but-unwired, unreachable, redundant, and unmeasured capabilities; tests modularity through removal drills; separates schema and contract layers; and combines tests and evals with appropriate code, human or model graders so stage-level and E2E quality can be improved safely.
 
 Canonical files:
 
@@ -75,13 +75,14 @@ Canonical files:
 
 Folder: `prompts/testing-evaluation-system/`
 
-A cross-project method and three-prompt workflow for composing tests, evals, benchmarks, production monitoring, and human review around a concrete decision. It supports stage and real-composition evidence, baseline research and fair comparison, automated result analysis, prioritized human escalation, and Product, Engineering, and Quality & Operations views over the same artifacts.
+A cross-project method with independently selectable design, audit, implementation, and run workflows for composing tests, evals, benchmarks, production monitoring, and human review around a concrete decision. It supports stage and real-composition evidence, baseline research and fair comparison, automated result analysis, prioritized human escalation, and Product, Engineering, and Quality & Operations views over the same artifacts.
 
 Canonical files:
 
 - `prompts/testing-evaluation-system/README.md`
 - `prompts/testing-evaluation-system/00-testing-evaluation-system.md`
-- `prompts/testing-evaluation-system/01-design-or-audit.prompt.md`
+- `prompts/testing-evaluation-system/01-design-evidence-system.prompt.md`
+- `prompts/testing-evaluation-system/01-audit-existing-system.prompt.md`
 - `prompts/testing-evaluation-system/02-implement-approved-system.prompt.md`
 - `prompts/testing-evaluation-system/03-run-eval-round.prompt.md`
 - `prompts/testing-evaluation-system/testing-evaluation-system.html`
@@ -121,7 +122,21 @@ Language: English.
 
 Copy the instruction at the top of the relevant visual guide, or give the agent its README link and your task. The agent inspects context, selects the workflow, and reads the required sources. Specify repository/source locations and allowed actions when needed. Proposals, implementation, live execution, and publishing retain separate approval boundaries.
 
+The shared [task contract](prompts/_shared/task-contract.md) separates deliverables, evidence depth, and permissions. Designs return concrete proposals; audits substantiate current-state claims; execution follows its own authorization. [Routing cases](validation/routing-cases.md) define behavioral acceptance. Check bilingual copy consistency with `node scripts/sync-copy-instructions.mjs`.
+
 ## Library conventions
+
+### Reading hierarchy and shared styles
+
+The [task contract](prompts/_shared/task-contract.md#decision-ready-writing) defines context-first, decision-ready writing across workflows. In the guides, `prompts/_shared/practice-shell.css` supplies layout and theme tokens; `practice-guide.css` supplies reusable reading components, including always-visible disclosure backgrounds. Page-specific layouts live in external CSS beside their HTML. Keep presentation rules out of agent workflow instructions.
+
+### Header search
+
+The six HTML guides share bilingual, section-level full-text search, including collapsed content. The index contains published guide text only; it does not index repository files or send queries to a service. Result links select the matching language, reveal matching disclosures, and highlight the destination. Local `file://` previews work offline.
+
+After changing guide content, update the generated index using the patch from `python3 scripts/build-search-index.py --patch`. Check freshness with `python3 scripts/build-search-index.py` and exercise the UI with `node scripts/check-library-search.cjs` (Playwright required; `PLAYWRIGHT_CHANNEL=chrome` selects installed Chrome). The page list lives in the index builder. Search UI/styles are maintained in `prompts/_shared/library-search.js` and `library-search.css`.
+
+### Module conventions
 
 - One prompt family per folder when it has multiple languages or variants.
 - Use numbered filenames so the index remains stable.

@@ -14,13 +14,15 @@ When facing an engineer-first, functionally complex, information-overloaded prod
 
 Next audit truth, authority, measurement, readiness, error/recovery, and provenance risks. Simulate the complete experience with a critical text flow. Classify existing information as Keep, Rewrite, Progressive disclosure, Move, Remove, or Add. Split scope across V1/V2 and Product/Design versus Engineering.
 
-Create side-by-side mockup variations only when genuinely different information architectures or interaction models remain. Use the same scenario and data for every variation. Finally, implement one end-to-end structural slice and validate user friction, output quality, capability truth, and execution safety together.
+Create side-by-side mockup variations only when genuinely different information architectures or interaction models remain. Use the same scenario and data for every variation. Propose an end-to-end structural slice and acceptance criteria; when authorized, implement it and validate user friction, output quality, capability truth, and execution safety together.
 
 Do not treat the current layout, component tree, API shape, or database states as the target product model. They are evidence and migration constraints, not a user-experience mandate.
 
 ---
 
 ## Complete workflow
+
+Apply [the task contract](../_shared/task-contract.md). Select stages for the requested deliverable. Proposals specify the target experience and future validation; implementation and runtime checks occur only within authorization. A source map of available documents, observations, assumptions, and unknowns can ground a provisional design.
 
 ### Stage 0 — Establish the task, maturity, and authority
 
@@ -163,7 +165,7 @@ Do not produce every format merely to appear complete. Choose the smallest artif
 
 ## Stage gates
 
-- No source-of-truth map: do not enter product judgment.
+- Ground judgment in available sources, assumptions, and unknowns. Implementation claims require implementation evidence; proposed concepts do not require completed implementation verification.
 - No responsibility map: do not design controls.
 - Undefined truth, authority, readiness, or recovery: do not call it a safe MVP.
 - Unresolved critical text flow: do not draw high-fidelity UI.
@@ -186,4 +188,4 @@ Select and label the relevant artifacts:
 9. structural slice and validation plan;
 10. evidence appendix, open questions, and proposal ID.
 
-Remain in read-only proposal mode until the exact proposal ID and implementation slice are approved.
+Remain in proposal mode unless the user authorizes a clear implementation scope. Proposal IDs support traceability; natural-language approval of the identified scope is sufficient.

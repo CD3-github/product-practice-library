@@ -32,11 +32,9 @@
 
 ### 共享工作流要求
 
-先完整应用同目录的 `00-general-product-restructuring-workflow.zh-CN.md`，再执行下面针对已有 MVP 的 phases。
+读取[任务约定](../_shared/task-contract.md)与同目录的 `00-general-product-restructuring-workflow.zh-CN.md`，结合下述 phases 应用与本轮交付物相关的部分。现状声明需要已检查的实现证据；访问不完整时限定审查结论，同时交付目标体验，标明兼容与迁移假设。
 
-如果该文件无法访问，至少执行这条共同主线：建立 source-of-truth map → 重新分配 system/user responsibility → 审查 truth、authority、measurement、readiness、error/recovery 与 provenance → 写关键文字 flow → 按 Keep、Rewrite、Progressive disclosure、Move、Remove、Add 审查信息 → 拆分 V1/V2 × Product/Design/Engineering → 仅在存在真正结构分歧时制作同场景 mockup variations → 实现并验证一条 end-to-end structural slice。
-
-共享工作流定义的是共同 evidence 与 stage-gate 标准；本 prompt 额外要求以真实 repo 和 runtime contract 为 baseline，并提供从当前实现迁移到目标体验的路径。
+用已有来源与未知项定义系统／用户责任、真实性与权限、就绪和恢复、关键文字 flow、信息取舍、V1/V2 范围，以及建议 slice 和验收标准。必要时比较结构性方案。资料检查以能改变本轮方案为界；实际实施和运行检查遵守本轮授权。
 
 ### 首要目标
 
@@ -286,9 +284,7 @@
 
 生成 proposal ID，例如 `UX-MVP-R1`。
 
-最后明确写：
-
-“本轮未修改代码。只有在你明确回复 `APPROVE UX-MVP-R1` 并指定 implementation slice 后，我才开始实现。”
+结尾说明本轮实际执行的动作、仍为提案的内容，以及下一步需要授权的范围。Proposal ID 用于追溯，无需固定批准口令。
 
 ### 禁止事项
 
@@ -299,7 +295,7 @@
 - 不要用 visual polish 掩盖 state、content、contract、data truth 或 authority 问题。
 - 不要虚构 API、production status、user research 或 measurement evidence。
 - 不要为了少一步而跳过 safety/readiness/approval。
-- 不要只给抽象原则；引用具体代码和行为证据。
+- 现状行为判断引用已检查的证据；即使实现访问不完整，也要给出具体的拟议 flow、文案、状态和 contract。
 
 ---
 

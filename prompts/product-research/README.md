@@ -6,7 +6,7 @@ Draft 0.1 · Agent entry for decision-focused discovery, source research, and ev
 
 ## Start
 
-Inspect the conversation and supplied material to identify the decision, users, uncertainty, sources, and authorization. Ask only for missing information that materially changes the work. Use the user's preferred language.
+Apply [the task contract](../_shared/task-contract.md). Recover the decision, users, uncertainty, sources, and authorization from context. For a research plan, deliver the method and sample strategy using explicit assumptions; completed research or participant access is not a prerequisite. For findings, cite actual evidence and its limits. Use the user's preferred language.
 
 Read [the research workflow](01-product-research.prompt.md) completely. Select the applicable mode; load adjacent modules only when the immediate decision requires them.
 
@@ -26,9 +26,15 @@ Default to read-only research and a report. Draft a plan for participant work un
 ## Copy instruction
 
 ```text
-Read https://product-practice-library.vercel.app/prompts/product-research/README.md and load the workflow for my task. Use the conversation and available sources to identify the decision and evidence gaps. Research within the authorized scope; return source-linked findings, limitations, and the next decision. Ask only for missing information that materially changes the work.
+Read https://product-practice-library.vercel.app/prompts/product-research/README.md. Identify this turn's deliverable from our conversation, load only the relevant workflow, and complete it.
+Choose source-inspection depth to fit the task. Separate facts, design assumptions, and unverified items. Complete what available context supports; list later implementation or run requirements as execution prerequisites. Ask only about gaps that block this deliverable. Keep all actions within this turn's authorization.
+Project: [describe the project or problem to solve]
+Project context: [repository path, relevant material, or data]
 ```
 
 ```text
-读取 https://product-practice-library.vercel.app/prompts/product-research/README.md，并选择当前任务需要的工作流。先结合对话与已有资料，明确决策和证据缺口；在已授权范围内开展研究，返回带来源的发现、局限和下一步判断。只询问会实质改变工作的缺失信息。
+读取 https://product-practice-library.vercel.app/prompts/product-research/README.md，结合当前对话识别本轮交付物，按需加载工作流并直接完成。
+按任务选择必要的资料检查深度，区分事实、设计假设与待验证项。先完成已有信息支持的部分，将后续实施或运行条件列为执行前提；只询问阻止本轮交付的问题。所有操作遵守本轮授权。
+本轮项目：[填写项目或要解决的问题]
+项目上下文：[仓库路径、相关资料或数据]
 ```

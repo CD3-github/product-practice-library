@@ -2,6 +2,8 @@
 
 ## Authorization boundary
 
+Apply [the task contract](../_shared/task-contract.md). Use this workflow only for requested implementation. Recover the agreed scope from conversation or a referenced proposal; a literal proposal ID is optional when the authorized change is already clear. A plan-only request routes to [design](01-design-evidence-system.prompt.md).
+
 Implement only the approved proposal and structural slice below:
 
 - Approved proposal ID: `[ID]`
@@ -25,6 +27,8 @@ If the repository no longer matches the approved baseline, stop and report the d
 
 ## Implementation requirements
 
+Apply the requirements below to components in the approved slice. Use method references only to clarify those components; they are not an instruction to add a benchmark, judge, replay system, or rollout mechanism outside the agreed scope.
+
 ### 1. Preserve separation of concerns
 
 - Deterministic tests and judged evals may share a harness, but result types, failure semantics, graders, and report panels must remain explicit.
@@ -33,17 +37,17 @@ If the repository no longer matches the approved baseline, stop and report the d
 - Scenario data is separate from graders and runner orchestration.
 - Generated reports do not become hand-maintained sources of truth.
 
-### 2. Make stages independently testable
+### 2. Observe relevant stages and isolate when needed
 
-- Give each included stage an explicit, versionable input/output contract.
-- Support a frozen upstream artifact as input.
-- Persist or reference output with `scenario_id`, `run_id`, and trace/provenance.
-- Validate deterministic invariants before semantic grading.
-- Preserve enough evidence to distinguish upstream-input and current-stage defects.
+- Use the actual stage contracts; capture or reference intermediate inputs/outputs needed for failure attribution.
+- Add independent replay or a stage runner only where the approved design justifies it. Several stage checks may share the real-path runner and report.
+- Preserve case/run identity and enough provenance to distinguish upstream-input and current-stage defects.
+- Validate deterministic invariants before semantic grading where they are prerequisites.
+- Keep missing product capabilities separate from measurement setup; implement product repairs only within their approved scope.
 
-### 3. Build the artifact manifest
+### 3. Record reproducible evidence
 
-Record all applicable versions and settings:
+Record applicable versions and settings in existing logs or a compact manifest; a new manifest service or schema is not required:
 
 - code/build;
 - scenario and fixture;
@@ -63,6 +67,7 @@ Separate deterministic stub, recorded replay, gated live, and production paths. 
 
 ### 5. Implement only approved graders
 
+- Map each selected criterion to its primary grader, result format and applicable validation status. Use [grader design](references/grader-design.md) only to clarify the approved scope.
 - Prefer deterministic or programmatic graders where valid.
 - Model judges must use structured output and runtime validation.
 - A model judge that is not human-calibrated must be labeled provisional and cannot become a release gate.
@@ -70,14 +75,14 @@ Separate deterministic stub, recorded replay, gated live, and production paths. 
 
 ### 6. Produce one real structural slice
 
-The slice must demonstrate:
+Implement the evidence mix selected in the approved design. Select applicable items below; a test-only or eval-only slice need not add unrelated infrastructure:
 
 - a deterministic stage/contract test;
 - a stage-level quality eval;
 - a real-composition E2E or replayed E2E;
 - a reconstructable artifact;
 - separated correctness, quality, comparison, and operational evidence;
-- automatic analysis that clusters failures and distinguishes product signal from measurement defects;
+- agent analysis that groups failures and distinguishes product signal from measurement defects; persistent automation only when warranted;
 - a prioritized human-review queue with explicit escalation reasons and requested decisions;
 - a report or decision entry tied to the approved question.
 
@@ -91,7 +96,7 @@ The slice must demonstrate:
 ### 8. Implement agent analysis and human escalation
 
 - Analyze all authorized results before asking for human review.
-- Produce separate Product, Engineering, and Quality & Operations interpretations from the same evidence.
+- Address the relevant product, engineering and quality/operations decisions in one concise analysis; split views only when useful to different readers.
 - Classify results as `No human action`, `Agent follow-up`, `Human review requested`, or `Blocked / unverified`.
 - Escalate hard-cap/high-risk cases, borderline thresholds, grader disagreement, novel clusters, protected regressions, suspicious passes, and decisions requiring product/domain judgment.
 - For every escalated item include the artifact, relevant context, criterion, agent assessment, uncertainty, and exact decision requested.
@@ -116,6 +121,7 @@ Do not claim unrun checks passed. Distinguish implementation success, test evide
 
 ## Required handoff
 
+0. **Decision overview:** use [Decision-ready deliverables](README.md#decision-ready-deliverables). Summarize what changed, what the checks establish within the implemented scope, remaining decision-critical uncertainty, and the recommended next action. A successful implementation is not automatically product acceptance. For a short chat-only handoff, put the overview first without creating a separate document solely for this structure.
 1. Outcome first: what the approved slice now proves.
 2. Files changed and the responsibility of each.
 3. Commands run and exact results.
