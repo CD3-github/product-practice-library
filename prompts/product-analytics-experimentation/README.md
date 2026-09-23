@@ -6,6 +6,7 @@ Agent entry point for measuring product behavior, diagnosing friction, and estim
 
 ```text
 Read https://product-practice-library.vercel.app/prompts/product-analytics-experimentation/README.md. Identify this turn's deliverable from our conversation, load only the relevant workflow, and complete it.
+Follow the user's current language and established preferences.
 Choose source-inspection depth to fit the task. Separate facts, design assumptions, and unverified items. Complete what available context supports; list later implementation or run requirements as execution prerequisites. Ask only about gaps that block this deliverable. Keep all actions within this turn's authorization.
 Project: [describe the project or problem to solve]
 Project context: [repository path, relevant material, or data]
@@ -15,6 +16,7 @@ Project context: [repository path, relevant material, or data]
 
 ```text
 读取 https://product-practice-library.vercel.app/prompts/product-analytics-experimentation/README.md，结合当前对话识别本轮交付物，按需加载工作流并直接完成。
+跟随用户当前的语言与既有偏好。
 按任务选择必要的资料检查深度，区分事实、设计假设与待验证项。先完成已有信息支持的部分，将后续实施或运行条件列为执行前提；只询问阻止本轮交付的问题。所有操作遵守本轮授权。
 本轮项目：[填写项目或要解决的问题]
 项目上下文：[仓库路径、相关资料或数据]

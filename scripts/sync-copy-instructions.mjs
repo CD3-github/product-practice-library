@@ -13,17 +13,25 @@ function instruction(module, zh, page) {
   const url = base + module + '/README.md';
   const delivery = module === 'testing-evaluation-system'
     ? (zh
-      ? '在交付文档开头写决策总览：先给建议，独立理由用短 bullet；说明本轮测什么、具体怎么检查、什么结果支持什么决定，以及何时收尾、哪些留待后续。保留关键不确定性与下一步；技术细节放正文，规划时分项估算工作量。\n'
-      : 'Open the deliverable with a decision overview: recommendation, short bullets for independent reasons, the scope of this round, concrete checks, results needed for the decision, when to wrap up, and consequential deferrals. Include key uncertainty and next action; keep technical detail in the body and estimate effort by component when planning.\n')
+      ? '在交付文档开头写简短的决策总览：建议下一步做什么、关键理由，以及会改变建议的不确定性或待选事项；用具体行为说明主要检查或比较。完整验证方案、验收与停止规则、分项工作量放正文。\n'
+      : 'Open the deliverable with a brief decision overview: the recommended next action, the reasons that matter, and any uncertainty or choice that changes it. Describe the main check or comparison concretely. Put the full verification plan, acceptance/stopping rules and workload estimates in the body.\n')
     : '';
   const focus = page === 'product-framing'
     ? (zh ? '以新功能规划为起点，结合当前任务确认路径。' : 'Start from new-feature planning and confirm the route from my current task. ')
     : page === 'ux-rethinking'
       ? (zh ? '以已有 MVP 的 UX 重新构想为起点，结合当前任务确认路径。' : 'Start from existing-MVP UX reimagination and confirm the route from my current task. ')
       : '';
+  const researchRoutes = module === 'product-research'
+    ? (zh
+      ? '可选路径：research-plan 规划研究；source-research 调查来源与替代方案；system-probing 通过真实交互建立产品行为模型；synthesis 归纳已有证据。只选择当前决策需要的路径，可以明确组合，但不要把所有方式当作必经步骤。\n'
+      : 'Available routes: research-plan for a concrete research design; source-research for sources and alternatives; system-probing for a behavioral product model built through realistic interaction; synthesis for supplied evidence. Select only the route or explicit combination needed for the current decision; these are not mandatory stages.\n')
+    : '';
+  const languagePreference = zh
+    ? '跟随用户当前的语言与既有偏好。\n'
+    : "Follow the user's current language and established preferences.\n";
   return zh
-    ? `读取 ${url}，结合当前对话识别本轮交付物，按需加载工作流并直接完成。${focus}\n按任务选择必要的资料检查深度，区分事实、设计假设与待验证项。先完成已有信息支持的部分，将后续实施或运行条件列为执行前提；只询问阻止本轮交付的问题。所有操作遵守本轮授权。\n${delivery}本轮项目：[填写项目或要解决的问题]\n项目上下文：[仓库路径、相关资料或数据]`
-    : `Read ${url}. Identify this turn's deliverable from our conversation, load only the relevant workflow, and complete it. ${focus}\nChoose source-inspection depth to fit the task. Separate facts, design assumptions, and unverified items. Complete what available context supports; list later implementation or run requirements as execution prerequisites. Ask only about gaps that block this deliverable. Keep all actions within this turn's authorization.\n${delivery}Project: [describe the project or problem to solve]\nProject context: [repository path, relevant material, or data]`.replace(/ +\n/g, '\n');
+    ? `读取 ${url}，结合当前对话识别本轮交付物，按需加载工作流并直接完成。${focus}\n${languagePreference}${researchRoutes}按任务选择必要的资料检查深度，区分事实、设计假设与待验证项。先完成已有信息支持的部分，将后续实施或运行条件列为执行前提；只询问阻止本轮交付的问题。所有操作遵守本轮授权。\n${delivery}本轮项目：[填写项目或要解决的问题]\n项目上下文：[仓库路径、相关资料或数据]`
+    : `Read ${url}. Identify this turn's deliverable from our conversation, load only the relevant workflow, and complete it. ${focus}\n${languagePreference}${researchRoutes}Choose source-inspection depth to fit the task. Separate facts, design assumptions, and unverified items. Complete what available context supports; list later implementation or run requirements as execution prerequisites. Ask only about gaps that block this deliverable. Keep all actions within this turn's authorization.\n${delivery}Project: [describe the project or problem to solve]\nProject context: [repository path, relevant material, or data]`.replace(/ +\n/g, '\n');
 }
 const escapeHTML = s => s.replaceAll('&', '&amp;').replaceAll('"', '&quot;').replaceAll('<', '&lt;').replaceAll('>', '&gt;');
 const updates = [];

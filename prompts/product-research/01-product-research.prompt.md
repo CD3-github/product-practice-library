@@ -6,13 +6,15 @@ Draft 0.1 · Decision-focused research; cross-product and cross-repository.
 
 Turn uncertainty about users, alternatives, constraints, or feasibility into evidence that supports a concrete decision. Use the current conversation, supplied artifacts, accessible repository, and approved public sources. Recover the decision, population, task, timeframe, maturity, access, privacy, time/cost budget, and output destination before asking questions.
 
-Apply [the task contract](../_shared/task-contract.md). Select `research-plan`, `source-research`, or `synthesis` and complete its deliverable. Default to read-only analysis and report; planning does not authorize participant contact, paid access, private-data upload, product changes, or publishing.
+Apply [the task contract](../_shared/task-contract.md). Select `research-plan`, `source-research`, or `synthesis` and complete its deliverable. If the task is to learn how a partially observable product behaves through realistic interaction, route to [Product System Probing](02-product-system-probing.prompt.md) instead of stretching source research into behavioral claims. Default to read-only analysis and report; planning does not authorize participant contact, paid access, private-data upload, product changes, or publishing.
 
 | Mode | Apply | Completion |
 |---|---|---|
 | `research-plan` | Frame questions, select methods, design sampling/tasks, and define interpretation and stopping rules | A usable research plan with draft session questions or source strategy, expected evidence, assumptions, and access/consent prerequisites |
 | `source-research` | Frame, collect authorized sources, synthesize, and recommend | Actual source-linked findings and their limits |
 | `synthesis` | Frame the decision, interpret supplied evidence, and recommend | Traceable themes, exceptions, competing explanations, and implications |
+
+These are selectable routes rather than a complete research checklist. Do not add Product System Probing, participant work, product planning, analytics, or testing merely because the method exists. If several methods are materially relevant, label each `use now`, `planned later`, `not applicable`, or `blocked by prerequisite`; otherwise state only the selected route.
 
 For a plan, source inspection is bounded to what changes the method. Participant evidence and findings are future outputs, not entry requirements. For synthesis, missing raw material limits conclusions; analyze available evidence and ask only for the missing material needed for the requested conclusion. Sections below supply methods for the selected mode, not an obligatory collection sequence.
 
@@ -34,6 +36,7 @@ Turn feature requests into investigable questions. Separate reported preferences
 |---|---|---|
 | How is the task performed and where does it fail? | Existing interviews, observation, task artifacts, support cases; plan new participant work if needed | Contextual patterns; frequency is limited by sampling |
 | What alternatives and constraints exist? | Primary documents, current product behavior, comparable task walkthroughs | Capability under documented or observed conditions |
+| How does a partially observable product interpret, decide, retain context, degrade, or cross an integration boundary? | [Product System Probing](02-product-system-probing.prompt.md) through realistic multi-turn trajectories | Observed behavior and bounded inference; internal architecture remains hypothetical until corroborated |
 | Where and how often does friction occur? | Validated behavior data, segment analysis, carefully designed surveys | Population/window and sampling limits must be explicit |
 | Can the proposed capability work? | Contracts, provider docs, bounded technical spike or eval with approval | Feasibility under tested conditions, not proven demand |
 | Did a change cause an outcome? | Route to controlled-experiment or causal-analysis practice | Causal claims require an appropriate identification design |
@@ -95,6 +98,7 @@ Keep the main report short enough to review. Put source excerpts, detailed metho
 ## Handoff and reusable sources
 
 - [General restructuring workflow](../product-ux-rethinking/00-general-product-restructuring-workflow.en.md): source authority, responsibility, risks, and artifact selection.
+- [Product System Probing](02-product-system-probing.prompt.md): build and update a behavioral product model through planned, guided, agent-operated, or hybrid interaction.
 - [Product framing](../product-ux-rethinking/02-new-feature-product-planning.en.md): move from supported problem to product concepts.
 - [Testing & eval](../testing-evaluation-system/README.md): formal performance measurement and benchmarks.
 - [Analytics & experiments](../product-analytics-experimentation/README.md): behavior measurement and causal impact.

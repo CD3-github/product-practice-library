@@ -33,6 +33,8 @@ Return the requested artifact now. A design includes concrete coverage, contract
 
 ## Decision-ready writing
 
+Follow the user's current language and established preferences.
+
 Open a substantial deliverable with a short recommendation, the concrete reasons that change the decision, material uncertainty, and the next action. Write this opening for a teammate with basic subject knowledge; retain technical precision in the body. Explain behavior with an actor or system, an action, and an observable result. Use established terms when useful, with a brief explanation at first consequential use; avoid inventing compressed labels that force the reader to decode the proposal.
 
 Separate the question being answered, the procedure, and the result that would support a decision. Mention a measurement unit when it changes interpretation; put formal unit definitions, schemas, exact identifiers and complete procedures in the relevant technical section. A short overview should summarize the reasoning, not merely shorten each technical section or repeat the task title. Examples clarify an established point and remain distinguishable from source evidence.

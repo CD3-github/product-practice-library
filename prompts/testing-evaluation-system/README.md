@@ -6,8 +6,9 @@ Agent entry point for designing, implementing, or operating a reusable product e
 
 ```text
 Read https://product-practice-library.vercel.app/prompts/testing-evaluation-system/README.md. Identify this turn's deliverable from our conversation, load only the relevant workflow, and complete it.
+Follow the user's current language and established preferences.
 Choose source-inspection depth to fit the task. Separate facts, design assumptions, and unverified items. Complete what available context supports; list later implementation or run requirements as execution prerequisites. Ask only about gaps that block this deliverable. Keep all actions within this turn's authorization.
-Open the deliverable with a decision overview: recommendation, short bullets for independent reasons, the scope of this round, concrete checks, results needed for the decision, when to wrap up, and consequential deferrals. Include key uncertainty and next action; keep technical detail in the body and estimate effort by component when planning.
+Open the deliverable with a brief decision overview: the recommended next action, the reasons that matter, and any uncertainty or choice that changes it. Describe the main check or comparison concretely. Put the full verification plan, acceptance/stopping rules and workload estimates in the body.
 Project: [describe the project or problem to solve]
 Project context: [repository path, relevant material, or data]
 ```
@@ -16,8 +17,9 @@ Project context: [repository path, relevant material, or data]
 
 ```text
 读取 https://product-practice-library.vercel.app/prompts/testing-evaluation-system/README.md，结合当前对话识别本轮交付物，按需加载工作流并直接完成。
+跟随用户当前的语言与既有偏好。
 按任务选择必要的资料检查深度，区分事实、设计假设与待验证项。先完成已有信息支持的部分，将后续实施或运行条件列为执行前提；只询问阻止本轮交付的问题。所有操作遵守本轮授权。
-在交付文档开头写决策总览：先给建议，独立理由用短 bullet；说明本轮测什么、具体怎么检查、什么结果支持什么决定，以及何时收尾、哪些留待后续。保留关键不确定性与下一步；技术细节放正文，规划时分项估算工作量。
+在交付文档开头写简短的决策总览：建议下一步做什么、关键理由，以及会改变建议的不确定性或待选事项；用具体行为说明主要检查或比较。完整验证方案、验收与停止规则、分项工作量放正文。
 本轮项目：[填写项目或要解决的问题]
 项目上下文：[仓库路径、相关资料或数据]
 ```
@@ -66,11 +68,11 @@ For a mixed request, complete the requested combination and keep current-state f
 For a substantial document, open the artifact itself with **0. Decision overview / 决策总览**. A reader should be able to choose the next action from this section alone. Synthesize the work; a list of section contents or completed activities is not the overview.
 
 - **Recommendation and reasons:** lead with what to do next. Put independent reasons in short bullets, each connecting a concrete issue or finding to why it changes this decision. In a plan, these are proposed choices; in an audit or run, distinguish observed results from recommendations.
-- **What to assess and how:** state the actual system boundary. For multiple questions, use a compact table: **Question to answer → How to check → What result meets the criterion → Decision supported**. Describe the check as a concrete action on an object or input, followed by what to observe; add the test/eval method or comparator where it helps. In a measured report, show actual results and limits instead of proposed expectations. Mention the analysis unit only where it changes interpretation, explaining what is counted or compared; keep its formal definition in the technical matrix. A single question can use a short paragraph instead.
+- **Verification approach or result:** state the assessed boundary and explain the main check or comparison in concrete terms. For a plan, say what would be supplied or changed, what would be observed, and how it informs the next decision. For an audit or run, give the decision-changing findings and their limits. Use a compact table only when it makes genuinely different choices easier to compare; put the complete decision-to-evidence matrix in the body.
 - **Confidence and trade-off:** surface the few limitations, risks, or alternatives that could change the recommendation. Preserve source status here: a documented defect is not a reproduced failure; a proposed threshold is not a validated standard.
 - **Action for the reader:** state the specific choice, recommended default and consequence, if a choice is needed now. Otherwise give the next step without inventing an approval request. Separate later execution requirements from blockers to this deliverable.
 
-For a bounded plan, make the current version or acceptance scope, sufficient-evidence stopping point, and consequential deferrals visible in the overview. Estimate setup, automated execution and human review separately in the body. With no supplied version scope, propose a limited round and its claim boundary. Use the design workflow's [scoping guidance](references/bounded-round-design.md); a budget stop records incomplete evidence rather than changing the acceptance standard.
+For a bounded plan, summarize what completing the round would establish and the main limit on that conclusion. Put full acceptance/stopping rules, deferrals and separate setup/execution/review estimates in the body; surface a particular rule up front only when it changes the immediate choice. With no supplied version scope, propose a limited round and its claim boundary. Use the design workflow's [scoping guidance](references/bounded-round-design.md); a budget stop records incomplete evidence rather than changing the acceptance standard.
 
 Keep this opening to one short reading pass. Combine headings or rows when helpful; its purpose is decision support, not completing a fixed form. Put exact commands, source inventories, case IDs, schemas, exhaustive prerequisites, and detailed scoring rules in linked body sections or appendices. Keep any material safety or evidence limitation visible in the overview, expressed through its consequence for the decision. Preserve a usable overview in plain Markdown; use collapsible detail only when the renderer supports it.
 

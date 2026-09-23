@@ -22,7 +22,7 @@ const href=route=>pathToFileURL(path.join(root,'prompts',route+'.html')).href;
       console.log('Checking '+route);
       await page.goto(href(route));
       check(await page.locator('#library-search-trigger').count()===1,route+': header entry');
-      check(await page.evaluate(()=>window.PPL_SEARCH_INDEX.length)===41,route+': loaded index');
+      check(await page.evaluate(()=>window.PPL_SEARCH_INDEX.length)===42,route+': loaded index');
       for(const width of [320,390,1440,1920]){
         await page.setViewportSize({width,height:900});
         check(await page.evaluate(()=>document.documentElement.scrollWidth<=innerWidth+1),route+'/'+width+': page width');
@@ -43,6 +43,9 @@ const href=route=>pathToFileURL(path.join(root,'prompts',route+'.html')).href;
     await page.keyboard.press('Meta+k');
     check(await page.locator('#library-search-dialog').getAttribute('open')!==null,'keyboard shortcut');
     const input=page.locator('#library-search-input');
+    await input.fill('system probing');
+    check(await page.locator('.search-result').count()>=1,'Product System Probing indexed');
+    check((await page.locator('.search-result').first().getAttribute('href')).includes('product-research.html#system-probing'),'probing search destination');
     await input.fill('同期群');
     check(await page.locator('.search-result').count()===1,'Chinese query in English UI');
     check((await page.locator('.search-result').getAttribute('href')).includes('searchLang=zh-CN'),'destination language follows match');

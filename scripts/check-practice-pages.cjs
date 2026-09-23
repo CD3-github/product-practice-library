@@ -106,22 +106,32 @@ for (const file of files) {
             }),`${route}/${width}/${lang}: sequential full-width vertical stack`);
           }
           check(await page.locator('html').getAttribute('lang')===lang,`${route}/${width}: language ${lang}`);
+          if (route.startsWith('product-research/')) await page.locator('.research-route-chip[data-route="all"]').click();
           check(await page.locator('.module-map-head h3').textContent()===(lang==='en'?'Internal files':'内部文件'),`${route}/${width}/${lang}: file map localized`);
           const instruction = page.locator('.agent-instruction');
           const expected=await instruction.getAttribute(lang==='en'?'data-en':'data-zh');
-          const localEntry=path.join(root,'prompts',path.dirname(route),'README.md');
-          check(expected.includes('`'+localEntry+'`'),`${route}/${width}/${lang}: local source routing`);
-          check(!expected.includes('https://product-practice-library.vercel.app'),`${route}/${width}/${lang}: no stale deployed workflow`);
+          const publicEntry='https://product-practice-library.vercel.app/prompts/'+path.dirname(route)+'/README.md';
+          const preferenceRule=lang==='en'
+            ? "Follow the user's current language and established preferences."
+            : '跟随用户当前的语言与既有偏好。';
+          check(expected.includes(publicEntry),`${route}/${width}/${lang}: public source routing`);
+          check(!expected.includes(root),`${route}/${width}/${lang}: no personal path in copied instruction`);
+          check(expected.includes(preferenceRule),`${route}/${width}/${lang}: concise language preference`);
           check(await instruction.textContent()===expected,`${route}/${width}/${lang}: rendered copy`);
           if (route.startsWith('testing-evaluation-system/')) {
-            check(expected.includes(lang==='en'?'Open the deliverable with a decision overview':'在交付文档开头写决策总览'),`${route}/${width}/${lang}: decision overview in copy`);
+            check(expected.includes(lang==='en'?'Open the deliverable with a brief decision overview':'在交付文档开头写简短的决策总览'),`${route}/${width}/${lang}: decision overview in copy`);
           }
           await page.locator('.copy-prompt').click();
           check(await page.evaluate(()=>window.__copied)===expected,`${route}/${width}/${lang}: clipboard wiring`);
           const details=page.locator('.quick-start details');
-          await details.locator('summary').click();
-          check(await details.getAttribute('open')!==null,`${route}/${width}/${lang}: expand`);
-          await details.locator('summary').click();
+          if (route.startsWith('product-research/')) {
+            check(await details.getAttribute('open')!==null,`${route}/${width}/${lang}: selected instruction visible by default`);
+            check(await page.locator('.research-route-chip').count()===5,`${route}/${width}/${lang}: five instruction scopes`);
+          } else {
+            await details.locator('summary').click();
+            check(await details.getAttribute('open')!==null,`${route}/${width}/${lang}: expand`);
+            await details.locator('summary').click();
+          }
           const before=await page.locator('html').getAttribute('data-theme');
           await page.locator('#theme-toggle').click();
           check(await page.locator('html').getAttribute('data-theme')!==before,`${route}/${width}/${lang}: theme`);
@@ -133,9 +143,35 @@ for (const file of files) {
       check(missingAnchors.length===0,`${route}: anchors ${missingAnchors.join(', ')}`);
       check(errors.length===0,`${route}: JS errors ${errors.join('; ')}`);
       check(await page.locator('meta[name="robots"]').getAttribute('content').then(s=>s.includes('noindex')),`${route}: noindex`);
+      if (route.startsWith('product-research/')) {
+        const publicResearchBase='https://product-practice-library.vercel.app/prompts/product-research/';
+        for (const lang of ['en','zh-CN']) {
+          if(await page.locator('html').getAttribute('lang')!==lang) await page.locator('#language-toggle').click();
+          const preferenceRule=lang==='en'
+            ? "Follow the user's current language and established preferences."
+            : '跟随用户当前的语言与既有偏好。';
+          for (const scope of ['all','plan','sources','probing','synthesis']) {
+            await page.locator(`.research-route-chip[data-route="${scope}"]`).click();
+            const scopedInstruction=await page.locator('.agent-instruction').textContent();
+            const scopedHref=await page.locator('.research-route-file a').getAttribute('href');
+            check(scopedInstruction.includes(publicResearchBase),`${route}/${lang}: ${scope} instruction uses public route`);
+            check(!scopedInstruction.includes(root),`${route}/${lang}: ${scope} instruction excludes personal path`);
+            check(scopedInstruction.includes(preferenceRule),`${route}/${lang}: ${scope} concise language preference`);
+            check(!scopedInstruction.includes('Output language: English for all deliverable files') && !scopedInstruction.includes('输出语言：交付文件与附带回复均用简体中文'),`${route}/${lang}: ${scope} no verbose language directive`);
+            check(scopedHref.startsWith(publicResearchBase),`${route}/${lang}: ${scope} link uses public route`);
+          }
+        }
+        await page.locator('.research-route-chip[data-route="probing"]').click();
+        const probingInstruction=await page.locator('.agent-instruction').textContent();
+        check(probingInstruction.includes('02-product-system-probing.prompt.md'),`${route}: probing chip routes to probing workflow`);
+        check(await page.locator('.research-route-file a').getAttribute('href')==='https://product-practice-library.vercel.app/prompts/product-research/02-product-system-probing.prompt.md',`${route}: selected public route file link`);
+        await page.locator('.copy-prompt').click();
+        check(await page.evaluate(()=>window.__copied)===probingInstruction,`${route}: selected probing instruction copies`);
+        check(await page.locator('#system-probing').count()===1 && await page.locator('.toc a[href="#system-probing"]').count()===1,`${route}: probing section and navigation`);
+      }
 
       // Simulate hosted URLs using local files only; this does not inspect or
-      // publish the deployed site. Confirm the local-path override stays local.
+      // publish the deployed site. Confirm copied routes stay canonical.
       await context.route('https://product-practice-library.vercel.app/**', async request => {
         const relative=decodeURIComponent(new URL(request.request().url()).pathname).slice(1);
         const target=path.resolve(root,relative);
@@ -146,11 +182,17 @@ for (const file of files) {
       await page.goto('https://product-practice-library.vercel.app/prompts/'+route+'.html');
       for(const lang of ['en','zh-CN']) {
         if(await page.locator('html').getAttribute('lang')!==lang) await page.locator('#language-toggle').click();
+        if (route.startsWith('product-research/')) await page.locator('.research-route-chip[data-route="all"]').click();
         const expected=await page.locator('.agent-instruction').textContent();
+        const preferenceRule=lang==='en'
+          ? "Follow the user's current language and established preferences."
+          : '跟随用户当前的语言与既有偏好。';
+        check(expected.includes(preferenceRule),`${route}/${lang}: concise language preference`);
+        check(!expected.includes('Output language: English for all deliverable files') && !expected.includes('输出语言：交付文件与附带回复均用简体中文'),`${route}/${lang}: page language does not force output language`);
         check(expected.includes('https://product-practice-library.vercel.app/prompts/'+path.dirname(route)+'/README.md'),`${route}/${lang}: hosted source routing`);
         check(!expected.includes(root),`${route}/${lang}: no personal path in hosted copy`);
         if (route.startsWith('testing-evaluation-system/')) {
-          check(expected.includes(lang==='en'?'Open the deliverable with a decision overview':'在交付文档开头写决策总览'),`${route}/${lang}: hosted decision overview in copy`);
+          check(expected.includes(lang==='en'?'Open the deliverable with a brief decision overview':'在交付文档开头写简短的决策总览'),`${route}/${lang}: hosted decision overview in copy`);
         }
         await page.locator('.copy-prompt').click();
         check(await page.evaluate(()=>window.__copied)===expected,`${route}/${lang}: hosted clipboard wiring`);

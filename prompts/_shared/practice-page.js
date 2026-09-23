@@ -10,24 +10,6 @@
   let theme = readSetting('ppl-theme') || (matchMedia('(prefers-color-scheme: dark)').matches ? 'dark' : 'light');
   const label = (en, zh) => language === 'zh-CN' ? zh : en;
 
-  // Local drafts must route agents to the files being previewed, not a deployed
-  // revision. Derive the path at runtime so personal paths stay out of the site.
-  if (window.location.protocol === 'file:') {
-    document.querySelectorAll('.agent-instruction[data-entry]').forEach(element => {
-      const entry = new URL(element.dataset.entry, window.location.href);
-      const localPath = '`' + decodeURIComponent(entry.pathname) + '`';
-      for (const key of ['en', 'zh']) {
-        const localReference = key === 'zh'
-          ? localPath + '（工作流及相对引用从此本地副本读取）'
-          : localPath + ' (resolve linked workflows and references within this local checkout)';
-        element.dataset[key] = element.dataset[key].replace(
-          /https:\/\/product-practice-library\.vercel\.app\/prompts\/[^\s，。]+\/README\.md/,
-          localReference,
-        );
-      }
-    });
-  }
-
   function showCurrentLibraryPage() {
     requestAnimationFrame(() => {
       const nav = document.querySelector('.library-nav');
