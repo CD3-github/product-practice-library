@@ -1,6 +1,8 @@
-# AI Product System Audit
+# AI System Implementation Audit
 
-这是一个与具体产品、功能和仓库无关的双语审查 prompt，用于审查已经存在的 AI 产品、agent workflow、generation pipeline 或 orchestration harness。
+这是一个与具体产品、功能和仓库无关的双语审查 prompt，用于从代码、配置、测试、trace 与 runtime 内部审查已经存在的 AI 产品、agent workflow、generation pipeline 或 orchestration harness。
+
+它不同于 Product System Probing：Probing 从真实交互建立外部行为模型；本审查依赖实现证据，判断能力是否真正接入、契约是否成立，以及系统能否安全迭代和移除。
 
 它审查 AI 产品的完整运行路径：哪些能力真正接入了、每个关键环节如何验证、移除策略是否能清理干净、schema 与 contract 是否支持迭代，以及如何组合测试 test 与评估 eval。每项标准选择适合的代码检查、人工评审或模型评分，分别保留必要约束与输出质量的证据。
 
@@ -22,8 +24,8 @@
 
 ## 文件
 
-- `ai-product-system-audit.zh-CN.md`：简体中文版。
-- `ai-product-system-audit.en.md`：英文版。
+- `ai-system-implementation-audit.zh-CN.md`：简体中文版。
+- `ai-system-implementation-audit.en.md`：英文版。
 
 ## 推荐用法
 

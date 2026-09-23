@@ -25,7 +25,7 @@ flowchart TD
   S --> W0
   O["相关细节需要时 / Only when needed"]
   W0 -.-> O
-  R0["AI 系统审查 / AI system audit<br/>../ai-product-system-audit/README.md"]
+  R0["AI 系统实现审查 / AI implementation audit<br/>../ai-system-implementation-audit/README.md"]
   O -.-> R0
   R1["测试与评估 / Testing and eval<br/>../testing-evaluation-system/README.md"]
   O -.-> R1
@@ -43,7 +43,7 @@ flowchart TD
 |---|---|
 | [../_shared/task-contract.md](../_shared/task-contract.md) | 分别判断交付物、所需证据与允许的操作。 Separate the deliverable, evidence needed, and permitted actions. |
 | [01-delivery-learning.prompt.md](01-delivery-learning.prompt.md) | 根据已确定范围和本轮目标选择模式。 Choose the mode from the agreed scope and requested outcome. |
-| [../ai-product-system-audit/README.md](../ai-product-system-audit/README.md) | 接入、harness 或契约存在关键不确定性时读取。 For material wiring, harness or contract uncertainty. |
+| [../ai-system-implementation-audit/README.md](../ai-system-implementation-audit/README.md) | 接入、harness 或契约存在关键不确定性时读取。 For material wiring, harness or contract uncertainty. |
 | [../testing-evaluation-system/README.md](../testing-evaluation-system/README.md) | 需要具体质量、可靠性或对照衡量方案时读取。 For concrete quality, reliability or comparative measurement. |
 | [../product-analytics-experimentation/README.md](../product-analytics-experimentation/README.md) | 涉及用户行为或因果影响时读取。 For behavior or causal-impact questions. |
 | [../product-ux-rethinking/00-general-product-restructuring-workflow.en.md](../product-ux-rethinking/00-general-product-restructuring-workflow.en.md) · [简中](../product-ux-rethinking/00-general-product-restructuring-workflow.zh-CN.md) | 需要深入处理证据、责任或结构问题时读取。 For deeper evidence, responsibility or structural questions. |

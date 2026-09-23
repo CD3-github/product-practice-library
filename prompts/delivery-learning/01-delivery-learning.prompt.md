@@ -41,7 +41,7 @@ Keep the path explicit: input → processing → result/action → persistence/r
 
 ## 3. Check boundaries before implementation
 
-Use [AI Product System Audit](../ai-product-system-audit/ai-product-system-audit.en.md) when wiring or modularity is uncertain. It owns the detailed audit; do not duplicate it in the plan.
+Use [AI System Implementation Audit](../ai-system-implementation-audit/ai-system-implementation-audit.en.md) when wiring or modularity is uncertain. It owns the detailed audit; do not duplicate it in the plan.
 
 For material interfaces, inspect schema meaning separately from behavioral promises. Confirm producer/consumer, validation point, error and retry semantics, source/tenant scope, version compatibility, and migration. Frozen upstream artifacts enable local stage checks; the real E2E path still needs verification.
 
@@ -100,7 +100,7 @@ Use existing maintained documents when available. Record intent, decisions, curr
 ## Reusable sources
 
 - [General restructuring workflow](../product-ux-rethinking/00-general-product-restructuring-workflow.en.md): structural slices and four-axis validation.
-- [AI system audit](../ai-product-system-audit/ai-product-system-audit.en.md): harness, capability lifecycle, schemas, and removal drills.
+- [AI implementation audit](../ai-system-implementation-audit/ai-system-implementation-audit.en.md): harness, capability lifecycle, schemas, and removal drills.
 - [Testing & eval](../testing-evaluation-system/README.md): repeatable evidence and human triage.
 - [Context discipline](../context-update-discipline/scope-deletion-and-positive-rewrite.en.md): preserve clean current intent while retaining justified safety rules.
 - [Google SRE: Canarying Releases](https://sre.google/workbook/canarying-releases/): bounded exposure, release automation, and operating evidence.

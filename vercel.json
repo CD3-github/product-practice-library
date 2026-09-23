@@ -1,6 +1,28 @@
 {
   "$schema": "https://openapi.vercel.sh/vercel.json",
   "cleanUrls": true,
+  "redirects": [
+    {
+      "source": "/prompts/ai-product-system-audit/README.md",
+      "destination": "/prompts/ai-system-implementation-audit/README.md",
+      "permanent": true
+    },
+    {
+      "source": "/prompts/ai-product-system-audit/ai-product-system-audit.en.md",
+      "destination": "/prompts/ai-system-implementation-audit/ai-system-implementation-audit.en.md",
+      "permanent": true
+    },
+    {
+      "source": "/prompts/ai-product-system-audit/ai-product-system-audit.zh-CN.md",
+      "destination": "/prompts/ai-system-implementation-audit/ai-system-implementation-audit.zh-CN.md",
+      "permanent": true
+    },
+    {
+      "source": "/prompts/ai-product-system-audit/:path*",
+      "destination": "/prompts/ai-system-implementation-audit/:path*",
+      "permanent": true
+    }
+  ],
   "rewrites": [
     {
       "source": "/",

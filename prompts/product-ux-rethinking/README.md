@@ -50,7 +50,7 @@ Project context: [repository path, relevant material, or data]
 ## Supporting practices
 
 - [Product Research](../product-research/README.md): unresolved user, alternative, or feasibility questions.
-- [AI Product System Audit](../ai-product-system-audit/README.md): harness, wiring, schema, contract, and removal risks.
+- [AI System Implementation Audit](../ai-system-implementation-audit/README.md): harness, wiring, schema, contract, and removal risks.
 - [Testing & Eval](../testing-evaluation-system/README.md): evidence design and quality verification.
 - [Delivery & Learning](../delivery-learning/README.md): approved slice, release readiness, and handoff.
 - [Context Update Discipline](../context-update-discipline/README.md): clean canonical intent after feedback.

@@ -32,7 +32,7 @@ flowchart TD
   W1 -.-> O
   R0["产品研究 / Product research<br/>../product-research/README.md"]
   O -.-> R0
-  R1["AI 系统审查 / AI system audit<br/>../ai-product-system-audit/README.md"]
+  R1["AI 系统实现审查 / AI implementation audit<br/>../ai-system-implementation-audit/README.md"]
   O -.-> R1
   R2["测试与评估 / Testing and eval<br/>../testing-evaluation-system/README.md"]
   O -.-> R2
@@ -51,7 +51,7 @@ flowchart TD
 | [01-existing-mvp-ux-reimagination.en.md](01-existing-mvp-ux-reimagination.en.md) · [简中](01-existing-mvp-ux-reimagination.zh-CN.md) | 已有实现需要重新设计体验时选择。 When an existing implementation needs a better experience. |
 | [02-new-feature-product-planning.en.md](02-new-feature-product-planning.en.md) · [简中](02-new-feature-product-planning.zh-CN.md) | 产品模型或 MVP 尚未确定时选择。 When the product model or MVP is unsettled. |
 | [../product-research/README.md](../product-research/README.md) | 缺少用户或任务证据时读取。 For missing user or task evidence. |
-| [../ai-product-system-audit/README.md](../ai-product-system-audit/README.md) | 接入、harness 或契约存在关键不确定性时读取。 For material wiring, harness or contract uncertainty. |
+| [../ai-system-implementation-audit/README.md](../ai-system-implementation-audit/README.md) | 接入、harness 或契约存在关键不确定性时读取。 For material wiring, harness or contract uncertainty. |
 | [../testing-evaluation-system/README.md](../testing-evaluation-system/README.md) | 需要具体质量、可靠性或对照衡量方案时读取。 For concrete quality, reliability or comparative measurement. |
 | [../delivery-learning/README.md](../delivery-learning/README.md) | 进入已批准的迁移切片时读取。 For an approved migration slice. |
 | [../context-update-discipline/README.md](../context-update-discipline/README.md) | 反馈改变当前范围或意图时读取。 When feedback changes the current scope or intent. |

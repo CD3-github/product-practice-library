@@ -19,7 +19,7 @@ Default to planning or review. Product approval, code-edit approval, paid/live e
 
 ## Load only relevant supporting workflows
 
-- [AI product system audit](../ai-product-system-audit/README.md): wiring, harness, contracts, removability, recovery.
+- [AI system implementation audit](../ai-system-implementation-audit/README.md): wiring, harness, contracts, removability, recovery.
 - [Testing & eval](../testing-evaluation-system/README.md): evidence design, implementation, or one verification round.
 - [Analytics & experiments](../product-analytics-experimentation/README.md): behavior and impact evidence.
 - [Context update discipline](../context-update-discipline/README.md): clean canonical intent after feedback.

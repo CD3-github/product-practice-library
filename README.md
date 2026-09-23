@@ -60,16 +60,16 @@ Canonical files:
 - `prompts/product-ux-rethinking/02-new-feature-product-planning.zh-CN.md`
 - `prompts/product-ux-rethinking/02-new-feature-product-planning.en.md`
 
-### AI Product System Audit
+### AI System Implementation Audit
 
-Folder: `prompts/ai-product-system-audit/`
+Folder: `prompts/ai-system-implementation-audit/`
 
-A feature- and repository-agnostic bilingual prompt for auditing an existing AI product, agent workflow, generation pipeline, or orchestration harness. It verifies the real end-to-end path; identifies documented-but-unwired, unreachable, redundant, and unmeasured capabilities; tests modularity through removal drills; separates schema and contract layers; and combines tests and evals with appropriate code, human or model graders so stage-level and E2E quality can be improved safely.
+A feature- and repository-agnostic bilingual prompt for auditing the internal implementation of an existing AI product, agent workflow, generation pipeline, or orchestration harness. It verifies the real end-to-end path; identifies documented-but-unwired, unreachable, redundant, and unmeasured capabilities; tests modularity through removal drills; separates schema and contract layers; and combines tests and evals with appropriate code, human or model graders so stage-level and E2E quality can be improved safely.
 
 Canonical files:
 
-- `prompts/ai-product-system-audit/ai-product-system-audit.zh-CN.md`
-- `prompts/ai-product-system-audit/ai-product-system-audit.en.md`
+- `prompts/ai-system-implementation-audit/ai-system-implementation-audit.zh-CN.md`
+- `prompts/ai-system-implementation-audit/ai-system-implementation-audit.en.md`
 
 ### Testing & Evaluation System
 
